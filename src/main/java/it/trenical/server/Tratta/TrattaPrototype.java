@@ -1,5 +1,7 @@
 package it.trenical.server.Tratta;
 
+import java.util.Objects;
+
 public abstract class TrattaPrototype {
     String codiceTratta;
     String stazionePartenza;
@@ -73,5 +75,17 @@ public abstract class TrattaPrototype {
                 dataArrivo + " | Durata: " +
                 tempoPercorrenza + "h"+ " | Distanza: " +
                 distanza;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TrattaPrototype that = (TrattaPrototype) o;
+        return distanza == that.distanza && tempoPercorrenza == that.tempoPercorrenza && Objects.equals(codiceTratta, that.codiceTratta) && Objects.equals(stazionePartenza, that.stazionePartenza) && Objects.equals(stazioneArrivo, that.stazioneArrivo) && Objects.equals(dataPartenza, that.dataPartenza) && Objects.equals(dataArrivo, that.dataArrivo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codiceTratta, stazionePartenza, stazioneArrivo, dataPartenza, dataArrivo, distanza, tempoPercorrenza);
     }
 }

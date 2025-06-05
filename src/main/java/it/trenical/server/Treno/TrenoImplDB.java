@@ -53,12 +53,13 @@ public class TrenoImplDB implements TrenoImpl{
 
             stmt.setInt(1, tr.getTrenoID());
             stmt.setString(2, tr.getTipoTreno());
-            stmt.setString(3, tratta.getStazionePartenza());
-            stmt.setString(4, tratta.getStazioneArrivo());
-            stmt.setInt(5, tratta.getTempoPercorrenza());
-            stmt.setInt(6, tratta.getDistanza());
-            stmt.setString(7, tratta.getDataPartenza());
-            stmt.setString(8, tratta.getDataArrivo());
+            stmt.setString(3, tratta.getCodiceTratta());
+            stmt.setString(4, tratta.getStazionePartenza());
+            stmt.setString(5, tratta.getStazioneArrivo());
+            stmt.setInt(6, tratta.getTempoPercorrenza());
+            stmt.setInt(7, tratta.getDistanza());
+            stmt.setString(8, tratta.getDataPartenza());
+            stmt.setString(9, tratta.getDataArrivo());
 
             stmt.executeUpdate();
 
@@ -81,5 +82,17 @@ public class TrenoImplDB implements TrenoImpl{
             System.err.println("Errore rimozione treno: " + e.getMessage());
             return false;
         }
+
+
     }
+    public static void removeAll() {
+        String sql = "DELETE FROM Treno";
+        String url1 = "jdbc:sqlite:db/treniCal.db";
+        try (Connection conn = DriverManager.getConnection(url1);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.executeUpdate();
+    }catch (SQLException e) {
+            System.err.println("Errore rimozione treno: " + e.getMessage());
+            }
+        }
 }
