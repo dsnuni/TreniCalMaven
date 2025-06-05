@@ -1,0 +1,1 @@
+progetto TreniCal, le precedenti modifiche del progetto sono state fatte su una repo diversa, perche la build con maven non era stata creata correttamente, forzando cosi il trasferimetno di tutte le classi manualmente
