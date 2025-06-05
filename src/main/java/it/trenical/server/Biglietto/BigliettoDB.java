@@ -10,7 +10,8 @@ import java.util.List;
 
 public class BigliettoDB implements BigliettoImpl {
 
-    private final String DB_URL = "jdbc:sqlite=./db/treniCal.db";
+    private final String DB_URL = "jdbc:sqlite:db/treniCal.db";
+
 
     @Override
     public void setBiglietto(Biglietto biglietto) {
