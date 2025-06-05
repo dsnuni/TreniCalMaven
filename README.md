@@ -1,1 +1,1 @@
-progetto TreniCal, le precedenti modifiche del progetto sono state fatte su una repo diversa, perche la build con maven non era stata creata correttamente, forzando cosi il trasferimetno di tutte le classi manualmente
+progetto TreniCal, le precedenti modifiche del progetto sono state fatte su una repo diversa, perche la build con maven non era stata creata correttamente, forzando cosi il trasferimetno di tutte le classi manualmente su un nuovo progetto e di conseguenza su una nuova repo gh 
