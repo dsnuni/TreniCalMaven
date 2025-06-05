@@ -56,8 +56,18 @@ public class ClienteImplDB implements ClienteImpl {
     }
 
         @Override
-        public boolean remove() {
-            return false; // da implementare se serve
+        public boolean removeCliente(String codiceFiscale) {
+            String sql = "DELETE FROM Cliente WHERE codiceFiscale = ?";
+            try (Connection conn = DriverManager.getConnection(DB_URL);
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, codiceFiscale);
+                int righe = stmt.executeUpdate();
+                return righe > 0;
+            } catch (SQLException e) {
+                System.err.println("Errore rimozione treno: " + e.getMessage());
+                return false;
+            }
         }
+
     }
 

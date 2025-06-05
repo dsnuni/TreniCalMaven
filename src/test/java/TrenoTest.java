@@ -13,13 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrenoTest {
 
-    static class InMemoryTrenoImpl  extends TrenoImplDB {
-        private final Map<Integer, Treno> storage = new HashMap<>();
-
-
-
-
-    }
 
     static class TestableTrenoConcr extends TrenoConcr {
         TestableTrenoConcr(int trenoID, String tipoTreno, TrattaPrototype tratta, TrenoImpl impl) {
@@ -42,7 +35,7 @@ class TrenoTest {
 
     @Test
     void testSetAndGetTreno() {
-        InMemoryTrenoImpl impl = new InMemoryTrenoImpl();
+        TrenoImpl impl = new TrenoImplDB();
         TrattaPrototype tratta = new TrattaStandard("T1", "A", "B", "dp", "da", 100, 2);
         TestableTrenoConcr treno = new TestableTrenoConcr(1, "Freccia", tratta, impl);
         treno.setTreno();
@@ -57,7 +50,7 @@ class TrenoTest {
 
     @Test
     void testRemoveTreno() {
-        InMemoryTrenoImpl impl = new InMemoryTrenoImpl();
+        TrenoImpl impl = new TrenoImplDB();
         TrattaPrototype tratta = new TrattaStandard("T1", "A", "B", "dp", "da", 100, 2);
         TestableTrenoConcr treno = new TestableTrenoConcr(2, "Regionale", tratta, impl);
         treno.setTreno();
@@ -69,7 +62,7 @@ class TrenoTest {
 
     @Test
     void testTrenoFactoryGetTrenoByID() {
-        InMemoryTrenoImpl impl = new InMemoryTrenoImpl();
+        TrenoImpl impl = new TrenoImplDB();
         TrenoFactory factory = new TrenoFactory(impl);
         TrattaPrototype tratta = new TrattaStandard("T1", "A", "B", "dp", "da", 100, 2);
         TestableTrenoConcr treno = new TestableTrenoConcr(42, "AltaVelocita", tratta, impl);
@@ -82,7 +75,7 @@ class TrenoTest {
 
     @Test
     void testTrenoGetters() {
-        InMemoryTrenoImpl impl = new InMemoryTrenoImpl();
+        TrenoImpl impl = new TrenoImplDB();
         TrattaPrototype tratta = new TrattaStandard("T2", "X", "Y", "dp2", "da2", 80, 3);
         TestableTrenoConcr treno = new TestableTrenoConcr(5, "Regional", tratta, impl);
         System.out.println("testTrenoGetters -> " + treno.getTrenoID() + "," + treno.getTipoTreno());

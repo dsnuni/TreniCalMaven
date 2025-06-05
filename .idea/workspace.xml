@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="aggiunte le dipendenze di Junit">
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="primo test Junit su modulo Treno effettuato, FUNZIONANTE">
       <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Prova.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/TrenoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ClienteTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaPrototype.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaPrototype.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TrenoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TrenoTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +49,13 @@
   "keyToString": {
     "Application.GeneratorConcr.executor": "Run",
     "Application.Prova.executor": "Run",
+    "JUnit.ClienteTest.executor": "Run",
+    "JUnit.ClienteTest.testClienteFactoryGetClienteByCodiceFiscale.executor": "Run",
+    "JUnit.ClienteTest.testRemoveCliente.executor": "Run",
+    "JUnit.ClienteTest.testSetAndGetCliente.executor": "Run",
     "JUnit.TrenoTest.executor": "Run",
+    "JUnit.TrenoTest.testRemoveTreno.executor": "Run",
+    "JUnit.TrenoTest.testTrenoGetters.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -75,6 +83,67 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="ClienteTest.testClienteFactoryGetClienteByCodiceFiscale" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TreniCal" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ClienteTest" />
+      <option name="METHOD_NAME" value="testClienteFactoryGetClienteByCodiceFiscale" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClienteTest.testRemoveCliente" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TreniCal" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ClienteTest" />
+      <option name="METHOD_NAME" value="testRemoveCliente" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClienteTest.testSetAndGetCliente" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TreniCal" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ClienteTest" />
+      <option name="METHOD_NAME" value="testSetAndGetCliente" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TrenoTest.testRemoveTreno" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TreniCal" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TrenoTest" />
+      <option name="METHOD_NAME" value="testRemoveTreno" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TrenoTest.testTrenoGetters" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TreniCal" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TrenoTest" />
+      <option name="METHOD_NAME" value="testTrenoGetters" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TrenoTest.testTrenoGetters" />
+        <item itemvalue="JUnit.ClienteTest.testRemoveCliente" />
+        <item itemvalue="JUnit.TrenoTest.testRemoveTreno" />
+        <item itemvalue="JUnit.ClienteTest.testClienteFactoryGetClienteByCodiceFiscale" />
+        <item itemvalue="JUnit.ClienteTest.testSetAndGetCliente" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -92,7 +161,7 @@
       <updated>1749111555076</updated>
       <workItem from="1749111556240" duration="1126000" />
       <workItem from="1749112690585" duration="3955000" />
-      <workItem from="1749125769546" duration="8160000" />
+      <workItem from="1749125769546" duration="11227000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -126,7 +195,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749127757233</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="primo test Junit su modulo Treno effettuato, FUNZIONANTE">
+      <option name="closed" value="true" />
+      <created>1749134981827</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1749134981827</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -137,6 +214,7 @@
     <MESSAGE value="database collegato, provo il testing in locale con main di prova per verificare il funzionamento lato server" />
     <MESSAGE value="prova da terminale" />
     <MESSAGE value="aggiunte le dipendenze di Junit" />
-    <option name="LAST_COMMIT_MESSAGE" value="aggiunte le dipendenze di Junit" />
+    <MESSAGE value="primo test Junit su modulo Treno effettuato, FUNZIONANTE" />
+    <option name="LAST_COMMIT_MESSAGE" value="primo test Junit su modulo Treno effettuato, FUNZIONANTE" />
   </component>
 </project>
