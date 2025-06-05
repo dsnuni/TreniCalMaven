@@ -1,0 +1,63 @@
+package it.trenical.server.Cliente;
+import java.sql.*;
+
+public class ClienteImplDB implements ClienteImpl {
+
+
+    private static final String DB_URL = "jdbc:sqlite:db/treniCal.db";
+
+    @Override
+    public void setCliente(Cliente cliente) {
+        String sql = "INSERT OR REPLACE INTO Cliente (codiceFiscale, nome, cognome, codiceCliente, eta) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cliente.getCodiceFiscale());
+            stmt.setString(2, cliente.getNome());
+            stmt.setString(3, cliente.getCognome());
+            stmt.setString(4, cliente.getCodiceCliente());
+            stmt.setInt(5, cliente.getEtà());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Errore inserimento cliente: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Cliente getCliente(String codiceFiscale) {
+        String sql = "SELECT * FROM Cliente WHERE codiceFiscale = ?";
+        Cliente cliente = null;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, codiceFiscale);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                String codiceCliente = rs.getString("codiceCliente");
+                int eta = rs.getInt("eta");
+
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente); // o CSecondaClasse, etc.
+                (cliente).setEtà(eta);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore recupero cliente: " + e.getMessage());
+        }
+
+        return cliente;
+    }
+
+        @Override
+        public boolean remove() {
+            return false; // da implementare se serve
+        }
+    }
+
