@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "it.trenical.grpc";
+option java_outer_classname = "TreniCalProto";
+
+package trenical;
+
+// Cliente messages
+message Cliente {
+  string codiceFiscale = 1;
+  string nome = 2;
+  string cognome = 3;
+  string codiceCliente = 4;
+  int32 eta = 5;
+}
+
+message AddClienteRequest {
+  Cliente cliente = 1;
+}
+
+message AddClienteResponse {
+  bool success = 1;
+}
+
+message GetClienteRequest {
+  string codiceFiscale = 1;
+}
+
+message RemoveClienteRequest {
+  string codiceFiscale = 1;
+}
+
+message RemoveClienteResponse {
+  bool success = 1;
+}
+
+// Tratta messages
+message Tratta {
+  string codiceTratta = 1;
+  string stazionePartenza = 2;
+  string stazioneArrivo = 3;
+  string dataPartenza = 4;
+  string dataArrivo = 5;
+  int32 distanza = 6;
+  int32 tempoPercorrenza = 7;
+}
+
+// Treno messages
+message Treno {
+  int32 trenoID = 1;
+  string tipoTreno = 2;
+  Tratta tratta = 3;
+}
+
+message AddTrenoRequest {
+  Treno treno = 1;
+}
+
+message AddTrenoResponse {
+  bool success = 1;
+}
+
+message GetTrenoRequest {
+  int32 trenoID = 1;
+}
+
+message RemoveTrenoRequest {
+  int32 trenoID = 1;
+}
+
+message RemoveTrenoResponse {
+  bool success = 1;
+}
+
+// Biglietto messages
+message Biglietto {
+  string bigliettoID = 1;
+  string classe = 2;
+  int32 trenoID = 3;
+  string carrozza = 4;
+  string posto = 5;
+  string clienteID = 6;
+  repeated string priorita = 7;
+  int32 prezzo = 8;
+}
+
+message AddBigliettoRequest {
+  Biglietto biglietto = 1;
+}
+
+message AddBigliettoResponse {
+  bool success = 1;
+}
+
+message GetBigliettoRequest {
+  string bigliettoID = 1;
+}
+
+message RemoveBigliettoRequest {
+  string bigliettoID = 1;
+}
+
+message RemoveBigliettoResponse {
+  bool success = 1;
+}
+
+// Services
+service ClienteService {
+  rpc AddCliente(AddClienteRequest) returns (AddClienteResponse);
+  rpc GetCliente(GetClienteRequest) returns (Cliente);
+  rpc RemoveCliente(RemoveClienteRequest) returns (RemoveClienteResponse);
+}
+
+service TrenoService {
+  rpc AddTreno(AddTrenoRequest) returns (AddTrenoResponse);
+  rpc GetTreno(GetTrenoRequest) returns (Treno);
+  rpc RemoveTreno(RemoveTrenoRequest) returns (RemoveTrenoResponse);
+}
+
+service BigliettoService {
+  rpc AddBiglietto(AddBigliettoRequest) returns (AddBigliettoResponse);
+  rpc GetBiglietto(GetBigliettoRequest) returns (Biglietto);
+  rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
+}

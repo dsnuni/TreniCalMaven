@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="modifiche con builder apportate al package  biglietto">
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="aggiunta classe PromozioniGenerator">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Notifica.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/PromozioniGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/PromozioniGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Prova.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Prova.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +65,7 @@
     "JUnit.TrenoTest.testRemoveTreno.executor": "Run",
     "JUnit.TrenoTest.testSetAndGetTreno.executor": "Run",
     "JUnit.TrenoTest.testTrenoGetters.executor": "Run",
+    "Maven.TreniCalGrpc [compile].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -96,7 +93,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.BigliettoTest.testSovrascritturaBiglietto">
     <configuration name="BigliettoTest.testClasseBigliettoDiversa" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TreniCal" />
       <option name="PACKAGE_NAME" value="" />
@@ -149,11 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BigliettoTest.testSovrascritturaBiglietto" />
         <item itemvalue="JUnit.BigliettoTest.testSetAndGetBiglietto" />
         <item itemvalue="JUnit.BigliettoTest.testClasseBigliettoDiversa" />
         <item itemvalue="JUnit.BigliettoTest.testPrioritaSerializzazione" />
         <item itemvalue="JUnit.TrenoTest.testSetAndGetTreno" />
-        <item itemvalue="JUnit.BigliettoTest.testSovrascritturaBiglietto" />
       </list>
     </recent_temporary>
   </component>
@@ -176,7 +173,8 @@
       <workItem from="1749112690585" duration="3955000" />
       <workItem from="1749125769546" duration="16639000" />
       <workItem from="1749193954250" duration="6415000" />
-      <workItem from="1749218599050" duration="9263000" />
+      <workItem from="1749218599050" duration="10997000" />
+      <workItem from="1749236692700" duration="961000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -242,7 +240,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749223586295</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="aggiunta classe PromozioniGenerator">
+      <option name="closed" value="true" />
+      <created>1749229485217</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749229485217</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,6 +263,7 @@
     <MESSAGE value="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE" />
     <MESSAGE value="terzo test Junit su modulo Biglietto  effettuato, FUNZIONANTE, procediamo alla creazione di grpc" />
     <MESSAGE value="modifiche con builder apportate al package  biglietto" />
-    <option name="LAST_COMMIT_MESSAGE" value="modifiche con builder apportate al package  biglietto" />
+    <MESSAGE value="aggiunta classe PromozioniGenerator" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiunta classe PromozioniGenerator" />
   </component>
 </project>
