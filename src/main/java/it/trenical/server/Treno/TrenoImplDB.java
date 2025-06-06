@@ -95,4 +95,60 @@ public class TrenoImplDB implements TrenoImpl{
             System.err.println("Errore rimozione treno: " + e.getMessage());
             }
         }
+
+    public int contaTreni() {
+        String sql = "SELECT COUNT(*) FROM Treno";
+        String DB_URL = "jdbc:sqlite:db/treniCal.db";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore conteggio treni: " + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    public TrenoConcr getTrenoDallaRiga(int riga) {
+        String sql = "SELECT * FROM Treno LIMIT 1 OFFSET ?";
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, riga); // indice parte da 0
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                TrattaPrototype tratta = new TrattaStandard(
+                        rs.getString("trattaID"),
+                        rs.getString("stazione_partenza"),
+                        rs.getString("stazione_arrivo"),
+                        rs.getString("data_partenza"),
+                        rs.getString("data_arrivo"),
+                        rs.getInt("distanza"),
+                        rs.getInt("durata_viaggio")
+                );
+
+                return new TrenoConcr(
+                        rs.getInt("trenoID"),
+                        rs.getString("tipoTreno"),
+                        tratta
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore recupero treno alla riga " + riga + ": " + e.getMessage());
+        }
+
+        return null;
+    }
+
+
+
+
 }

@@ -24,7 +24,7 @@ public class BigliettoTest {
     String carrozza = "111";
     String posto = "G1";
     List<String> priorità = new ArrayList<>();
-    int prezzo = 259000;
+    int prezzo = 259;
 
     private BigliettoDB db;
     private BTerzaClasse bterzaClasse;
@@ -62,6 +62,8 @@ public class BigliettoTest {
         assertEquals(carrozza, recuperato.getCarrozza());
         assertEquals(posto, recuperato.getPosto());
         assertEquals(prezzo, recuperato.getPrezzo());
+        //System.out.println(prezzo);
+        //System.out.println(recuperato.getPrezzo());
     }
 
     @Test
