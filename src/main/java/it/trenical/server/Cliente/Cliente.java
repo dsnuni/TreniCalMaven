@@ -61,16 +61,32 @@ public abstract class Cliente {
     public abstract boolean remove();
 
     @Override
-    public String toString() {
-        return "";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClienteConcr that = (ClienteConcr) o;
+
+        return codiceFiscale.equals(that.codiceFiscale)
+                && nome.equals(that.nome)
+                && cognome.equals(that.cognome)
+                && codiceCliente.equals(that.codiceCliente);
     }
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
+
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return java.util.Objects.hash(codiceFiscale, nome, cognome, codiceCliente);
     }
+
+    @Override
+    public String toString() {
+        return "ClienteConcr{" +
+                "codiceFiscale='" + codiceFiscale + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", codiceCliente='" + codiceCliente + '\'' +
+                '}';
+    }
+
 }
 

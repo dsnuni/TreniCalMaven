@@ -3,13 +3,13 @@ package it.trenical.server.Cliente;
 
 public class ClienteFactory {
 
-    private ClienteImpl db = new ClienteImplDB();
+    private static ClienteImpl db = new ClienteImplDB();
 
-    public static Cliente getClienteByCodiceFiscale(String codiceFiscale) {
+    public static ClienteConcr getClienteByCodiceFiscale(String codiceFiscale) {
 
-         ClienteImpl db = new ClienteImplDB();
 
-        return db.getCliente(codiceFiscale);
+
+        return (ClienteConcr) db.getCliente(codiceFiscale);
     }
 }
 

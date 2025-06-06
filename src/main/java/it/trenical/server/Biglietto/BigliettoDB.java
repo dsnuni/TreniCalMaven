@@ -8,7 +8,11 @@ import it.trenical.server.Treno.*;
 import java.sql.*;
 import java.util.List;
 
+import static it.trenical.server.Cliente.ClienteFactory.getClienteByCodiceFiscale;
+import static it.trenical.server.Treno.TrenoFactory.getTrenoByID;
+
 public class BigliettoDB implements BigliettoImpl {
+
 
     private final String DB_URL = "jdbc:sqlite:db/treniCal.db";
 
@@ -36,7 +40,6 @@ public class BigliettoDB implements BigliettoImpl {
             System.err.println("Errore salvataggio biglietto: " + e.getMessage());
         }
     }
-
     @Override
     public Biglietto getBiglietto(String bigliettoID) {
         String sql = "SELECT * FROM Biglietto WHERE id = ?";
@@ -48,23 +51,18 @@ public class BigliettoDB implements BigliettoImpl {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                // Ottieni campi
                 String classe = rs.getString("classe");
-                String trenoID = rs.getString("treno_id");
+                String trenoID = rs.getString("treno_id"); // resta String
                 String carrozza = rs.getString("carrozza");
                 String posto = rs.getString("posto");
                 String clienteID = rs.getString("cliente_id");
                 String prioritaCSV = rs.getString("priorita");
                 int prezzo = rs.getInt("prezzo");
 
-                // Ricostruisci oggetti (richiede servizi o DAO per Cliente e Treno)
-                TrenoFactory trenoFactory= null;
-                Treno treno =  trenoFactory.getTrenoByID(trenoID);
-                ClienteFactory clienteFactory = null;
-                ClienteConcr cliente = (ClienteConcr) clienteFactory.getClienteByCodiceFiscale(clienteID);
+                ClienteConcr cliente = (ClienteConcr) getClienteByCodiceFiscale(clienteID);
+                Treno treno = getTrenoByID(trenoID);  // Factory method accetta String
                 List<String> priorita = List.of(prioritaCSV.split(","));
 
-                // Factory classi specifiche
                 return switch (classe) {
                     case "PrimaClasse" -> new BPrimaClasse(bigliettoID, cliente, treno, carrozza, posto, priorita, prezzo);
                     case "SecondaClasse" -> new BSecondaClasse(bigliettoID, cliente, treno, carrozza, posto, priorita, prezzo);
@@ -79,6 +77,7 @@ public class BigliettoDB implements BigliettoImpl {
 
         return null;
     }
+
 
     @Override
     public boolean removeBiglietto(String bigliettoID) {
@@ -95,6 +94,17 @@ public class BigliettoDB implements BigliettoImpl {
         }
 
         return false;
+    }
+
+    public static void removeAll() {
+        String sql = "DELETE FROM Biglietto";
+        String url1 = "jdbc:sqlite:db/treniCal.db";
+        try (Connection conn = DriverManager.getConnection(url1);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        }catch (SQLException e) {
+            System.err.println("Errore rimozione treno: " + e.getMessage());
+        }
     }
 }
 

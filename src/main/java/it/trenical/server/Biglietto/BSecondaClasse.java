@@ -14,9 +14,10 @@ public class BSecondaClasse extends Biglietto {
     public BSecondaClasse(String bigliettoID, ClienteConcr titolareBiglietto, Treno trenoBiglietto, String carrozza, String posto, List<String> priorità, int prezzo) {
         this.bigliettoID = bigliettoID;
         this.titolareBiglietto = titolareBiglietto;
+        this.trenoBiglietto = trenoBiglietto;
         this.carrozza = carrozza;
         this.posto = posto;
-        this.priorità= new ArrayList<>();
+        this.priorità=priorità;
         this.prezzo=prezzo;
     }
 }

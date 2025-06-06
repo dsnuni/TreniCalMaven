@@ -69,5 +69,16 @@ public class ClienteImplDB implements ClienteImpl {
             }
         }
 
+    public static void removeAll() {
+        String sql = "DELETE FROM Cliente";
+        String url1 = "jdbc:sqlite:db/treniCal.db";
+        try (Connection conn = DriverManager.getConnection(url1);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        }catch (SQLException e) {
+            System.err.println("Errore rimozione treno: " + e.getMessage());
+        }
+    }
+
     }
 
