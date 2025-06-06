@@ -40,6 +40,7 @@ public class BigliettoDB implements BigliettoImpl {
             System.err.println("Errore salvataggio biglietto: " + e.getMessage());
         }
     }
+
     @Override
     public Biglietto getBiglietto(String bigliettoID) {
         String sql = "SELECT * FROM Biglietto WHERE id = ?";
@@ -52,7 +53,7 @@ public class BigliettoDB implements BigliettoImpl {
 
             if (rs.next()) {
                 String classe = rs.getString("classe");
-                String trenoID = rs.getString("treno_id"); // resta String
+                String trenoID = rs.getString("treno_id");
                 String carrozza = rs.getString("carrozza");
                 String posto = rs.getString("posto");
                 String clienteID = rs.getString("cliente_id");
@@ -60,13 +61,43 @@ public class BigliettoDB implements BigliettoImpl {
                 int prezzo = rs.getInt("prezzo");
 
                 ClienteConcr cliente = (ClienteConcr) getClienteByCodiceFiscale(clienteID);
-                Treno treno = getTrenoByID(trenoID);  // Factory method accetta String
+                Treno treno = getTrenoByID(trenoID);
                 List<String> priorita = List.of(prioritaCSV.split(","));
 
                 return switch (classe) {
-                    case "PrimaClasse" -> new BPrimaClasse(bigliettoID, cliente, treno, carrozza, posto, priorita, prezzo);
-                    case "SecondaClasse" -> new BSecondaClasse(bigliettoID, cliente, treno, carrozza, posto, priorita, prezzo);
-                    case "TerzaClasse" -> new BTerzaClasse(bigliettoID, cliente, treno, carrozza, posto, priorita, prezzo);
+                    case "PrimaClasse" -> new BPrimaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
+                    case "SecondaClasse" -> new BSecondaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
+                    case "TerzaClasse" -> new BTerzaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
                     default -> null;
                 };
             }

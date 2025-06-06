@@ -5,19 +5,23 @@ import it.trenical.server.Treno.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class BSecondaClasse extends Biglietto {
 
-    public BSecondaClasse(BigliettoImpl impl) {
-        this.implementazione = impl;
+    private BSecondaClasse(Builder builder) {
+        super(builder);
     }
 
-    public BSecondaClasse(String bigliettoID, ClienteConcr titolareBiglietto, Treno trenoBiglietto, String carrozza, String posto, List<String> priorità, int prezzo) {
-        this.bigliettoID = bigliettoID;
-        this.titolareBiglietto = titolareBiglietto;
-        this.trenoBiglietto = trenoBiglietto;
-        this.carrozza = carrozza;
-        this.posto = posto;
-        this.priorità=priorità;
-        this.prezzo=prezzo;
+    public static class Builder extends Biglietto.Builder<Builder> {
+        @Override
+        protected Builder self() {
+            return this;
+        }
+
+        @Override
+        public BSecondaClasse build() {
+            return new BSecondaClasse(this);
+        }
     }
 }
+

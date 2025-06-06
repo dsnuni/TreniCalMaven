@@ -4,18 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE">
-      <change afterPath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="terzo test Junit su modulo Biglietto  effettuato, FUNZIONANTE, procediamo alla creazione di grpc">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/PromozioniGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BPrimaClasse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BPrimaClasse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BSecondaClasse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BSecondaClasse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BTerzaClasse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BTerzaClasse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +26,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -71,7 +72,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "provaBuilder",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -148,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BigliettoTest.testClasseBigliettoDiversa" />
         <item itemvalue="JUnit.BigliettoTest.testPrioritaSerializzazione" />
         <item itemvalue="JUnit.TrenoTest.testSetAndGetTreno" />
         <item itemvalue="JUnit.BigliettoTest.testSetAndGetBiglietto" />
         <item itemvalue="JUnit.BigliettoTest.testSovrascritturaBiglietto" />
-        <item itemvalue="JUnit.BigliettoTest.testClasseBigliettoDiversa" />
       </list>
     </recent_temporary>
   </component>
@@ -174,7 +175,8 @@
       <workItem from="1749111556240" duration="1126000" />
       <workItem from="1749112690585" duration="3955000" />
       <workItem from="1749125769546" duration="16639000" />
-      <workItem from="1749193954250" duration="5901000" />
+      <workItem from="1749193954250" duration="6415000" />
+      <workItem from="1749218599050" duration="3279000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -224,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749137868799</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="terzo test Junit su modulo Biglietto  effettuato, FUNZIONANTE, procediamo alla creazione di grpc">
+      <option name="closed" value="true" />
+      <created>1749201493368</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749201493368</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,6 +247,7 @@
     <MESSAGE value="aggiunte le dipendenze di Junit" />
     <MESSAGE value="primo test Junit su modulo Treno effettuato, FUNZIONANTE" />
     <MESSAGE value="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE" />
-    <option name="LAST_COMMIT_MESSAGE" value="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE" />
+    <MESSAGE value="terzo test Junit su modulo Biglietto  effettuato, FUNZIONANTE, procediamo alla creazione di grpc" />
+    <option name="LAST_COMMIT_MESSAGE" value="terzo test Junit su modulo Biglietto  effettuato, FUNZIONANTE, procediamo alla creazione di grpc" />
   </component>
 </project>
