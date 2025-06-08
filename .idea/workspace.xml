@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="Risoluzione bug classe BigliettoServiceImpl, inizio gui lato server, e modifiche xml">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="Inizio gui lato server con swing, prove con java FX">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +38,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Security Analysis" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -188,7 +187,7 @@
       <workItem from="1749373185982" duration="5369000" />
       <workItem from="1749378572603" duration="1130000" />
       <workItem from="1749379718704" duration="3499000" />
-      <workItem from="1749393320578" duration="7770000" />
+      <workItem from="1749393320578" duration="21480000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -286,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749381613317</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Inizio gui lato server con swing, prove con java FX">
+      <option name="closed" value="true" />
+      <created>1749401656815</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1749401656815</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,7 +312,8 @@
     <MESSAGE value="INizio grpc, creazione file TreniCal.proto" />
     <MESSAGE value="Creazione classi ServiceImpl, creazione classe TreniCalServer, e main di prova nel package client" />
     <MESSAGE value="Risoluzione bug classe BigliettoServiceImpl, inizio gui lato server, e modifiche xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Risoluzione bug classe BigliettoServiceImpl, inizio gui lato server, e modifiche xml" />
+    <MESSAGE value="Inizio gui lato server con swing, prove con java FX" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inizio gui lato server con swing, prove con java FX" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
