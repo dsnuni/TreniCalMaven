@@ -8,11 +8,12 @@ public abstract class Cliente {
     String codiceCliente = "";
     int età = 0;
 
-    public Cliente(String codiceFiscale, String nome, String cognome, String codiceCliente) {
+    public Cliente(String codiceFiscale, String nome, String cognome, String codiceCliente, int età) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
         this.cognome = cognome;
         this.codiceCliente = codiceCliente;
+        this.età = età;
     }
 
     public String getCodiceCliente() {

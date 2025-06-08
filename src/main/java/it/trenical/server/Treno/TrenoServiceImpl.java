@@ -1,16 +1,22 @@
 package it.trenical.server.Treno;
 
 import io.grpc.stub.StreamObserver;
+import it.trenical.grpc.Tratta;
 import it.trenical.grpc.Treno;
+import it.trenical.server.Tratta.TrattaPrototype;
+import it.trenical.server.Tratta.TrattaStandard;
+
+
 
 
 public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoServiceImplBase {
+    private final TrenoImpl db = new TrenoImplDB();
 
     @Override
     public void addTreno(it.trenical.grpc.AddTrenoRequest request, StreamObserver<it.trenical.grpc.AddTrenoResponse> responseObserver) {
-        Treno treno = request.getTreno();
-        System.out.println("Aggiunto treno ID: " + treno.getTrenoID());
+        TrenoConcr trenoJava = convertiProtoInJava(request.getTreno());
 
+        db.setTreno(trenoJava);
         it.trenical.grpc.AddTrenoResponse response = it.trenical.grpc.AddTrenoResponse.newBuilder()
                 .setSuccess(true)
                 .build();
@@ -21,39 +27,56 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
 
     @Override
     public void getTreno(it.trenical.grpc.GetTrenoRequest request, StreamObserver<Treno> responseObserver) {
-        int id = request.getTrenoID();
-        System.out.println("Richiesta treno ID: " + id);
+        it.trenical.server.Treno.Treno trenoJava = db.getTreno(request.getTrenoID());
 
-        it.trenical.grpc.Tratta tratta = it.trenical.grpc.Tratta.newBuilder()
-                .setCodiceTratta("TRT001")
-                .setStazionePartenza("Milano")
-                .setStazioneArrivo("Roma")
-                .setDataPartenza("2025-06-10 08:00")
-                .setDataArrivo("2025-06-10 11:00")
-                .setDistanza(600)
-                .setTempoPercorrenza(180)
-                .build();
+        Treno trenoProto = convertiJavaInProto(trenoJava);
 
-        Treno treno = Treno.newBuilder()
-                .setTrenoID(id)
-                .setTipoTreno("Frecciarossa")
-                .setTratta(tratta)
-                .build();
-
-        responseObserver.onNext(treno);
+        responseObserver.onNext(trenoProto);
         responseObserver.onCompleted();
+
     }
 
     @Override
     public void removeTreno(it.trenical.grpc.RemoveTrenoRequest request, StreamObserver<it.trenical.grpc.RemoveTrenoResponse> responseObserver) {
-        int id = request.getTrenoID();
-        System.out.println("Rimozione treno ID: " + id);
+        boolean successo = db.removeTreno(request.getTrenoID());
 
         it.trenical.grpc.RemoveTrenoResponse response = it.trenical.grpc.RemoveTrenoResponse.newBuilder()
-                .setSuccess(true)
+                .setSuccess(successo)
                 .build();
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+    private TrenoConcr convertiProtoInJava(it.trenical.grpc.Treno trenoProto) {
+        Tratta tratta = trenoProto.getTratta();
+        TrattaPrototype trattaJava = new TrattaStandard(
+                tratta.getCodiceTratta(),
+                tratta.getStazionePartenza(),
+                tratta.getStazioneArrivo(),
+                tratta.getDataPartenza(),
+                tratta.getDataArrivo(),
+                tratta.getDistanza(),
+                tratta.getTempoPercorrenza()
+        );
+        return new TrenoConcr(trenoProto.getTrenoID(), trenoProto.getTipoTreno(), trattaJava);
+    }
+
+    private it.trenical.grpc.Treno convertiJavaInProto(it.trenical.server.Treno.Treno trenoJava) {
+        TrattaPrototype tratta = trenoJava.getTratta();
+        Tratta trattaProto = Tratta.newBuilder()
+                .setCodiceTratta(tratta.getCodiceTratta())
+                .setStazionePartenza(tratta.getStazionePartenza())
+                .setStazioneArrivo(tratta.getStazioneArrivo())
+                .setDataPartenza(tratta.getDataPartenza())
+                .setDataArrivo(tratta.getDataArrivo())
+                .setDistanza(tratta.getDistanza())
+                .setTempoPercorrenza(tratta.getTempoPercorrenza())
+                .build();
+
+        return it.trenical.grpc.Treno.newBuilder()
+                .setTrenoID(trenoJava.getTrenoID())
+                .setTipoTreno(trenoJava.getTipoTreno())
+                .setTratta(trattaProto)
+                .build();
     }
 }

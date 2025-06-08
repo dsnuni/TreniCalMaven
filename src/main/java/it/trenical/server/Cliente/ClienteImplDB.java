@@ -44,7 +44,7 @@ public class ClienteImplDB implements ClienteImpl {
                 String codiceCliente = rs.getString("codiceCliente");
                 int eta = rs.getInt("eta");
 
-                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente); // o CSecondaClasse, etc.
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,eta); // o CSecondaClasse, etc.
                 (cliente).setEtà(eta);
             }
 

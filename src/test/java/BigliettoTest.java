@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BigliettoTest {
 
     String bigliettoID = "24C43";
-    ClienteConcr titolareBiglietto = new ClienteConcr("QNTDVD03P24D086Q", "Davide", "Iaquinta", "GAY!!!");
+    ClienteConcr titolareBiglietto = new ClienteConcr("QNTDVD03P24D086Q", "Davide", "Iaquinta", "GAY!!!",20);
     TrenoConcr trenoBiglietto = new TrenoConcr(
             11,
             "787887",

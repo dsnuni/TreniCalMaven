@@ -55,7 +55,7 @@ public class Main {
                 .setTrenoID(1001)
                 .setCarrozza("A")
                 .setPosto("12A")
-                .setClienteID("TRNCL123")
+                .setClienteID("RSSMRA80A01H501Z")
                 .addPriorita("Finestrino")
                 .setPrezzo(49)
                 .build();
