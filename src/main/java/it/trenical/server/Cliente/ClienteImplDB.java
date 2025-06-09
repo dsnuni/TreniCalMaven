@@ -104,6 +104,27 @@ public class ClienteImplDB implements ClienteImpl {
         return clienti;
     }
 
+    public Cliente getClienteByCodiceCLiente(String codiceCliente) {
+        Cliente cliente = null;
+        String sql = "SELECT * FROM Cliente WHERE codiceCliente = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, codiceCliente);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String codiceFiscale = rs.getString("codiceFiscale");
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                int eta = rs.getInt("eta");
+
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore filtro cliente: " + e.getMessage());
+        }
+        return cliente;
+    }
+
 
 }
 

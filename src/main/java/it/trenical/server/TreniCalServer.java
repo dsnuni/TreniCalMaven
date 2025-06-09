@@ -5,6 +5,8 @@ import io.grpc.ServerBuilder;
 import it.trenical.server.Cliente.ClienteServiceImpl;
 import it.trenical.server.Treno.TrenoServiceImpl;
 import it.trenical.server.Biglietto.BigliettoServiceImpl;
+import it.trenical.server.igGenerator.IDGeneratorServiceImpl;
+
 import java.io.IOException;
 
 public class TreniCalServer {
@@ -13,6 +15,7 @@ public class TreniCalServer {
                 .addService(new ClienteServiceImpl())
                 .addService(new TrenoServiceImpl())
                 .addService(new BigliettoServiceImpl())
+                .addService( new IDGeneratorServiceImpl())
                 .build();
 
         server.start();

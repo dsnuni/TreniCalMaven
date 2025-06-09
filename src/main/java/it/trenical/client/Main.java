@@ -45,7 +45,7 @@ public class Main {
                 .setTipoTreno("Frecciarossa")
                 .setTratta(tratta)
                 .build();
-
+System.out.println(treno.getTrenoID());
         it.trenical.grpc.AddTrenoResponse trenoResponse = trenoStub.addTreno(it.trenical.grpc.AddTrenoRequest.newBuilder().setTreno(treno).build());
         System.out.println("✔ Treno aggiunto: " + trenoResponse.getSuccess());
 

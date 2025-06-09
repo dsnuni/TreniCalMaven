@@ -1,12 +1,13 @@
 package it.trenical.server.Treno;
 
 import io.grpc.stub.StreamObserver;
+import it.trenical.grpc.GetAllTreniResponse;
 import it.trenical.grpc.Tratta;
 import it.trenical.grpc.Treno;
 import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 
-
+import java.util.List;
 
 
 public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoServiceImplBase {
@@ -45,6 +46,18 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
                 .build();
 
         responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+    @Override
+    public void getAllTreni(it.trenical.grpc.GetAllTreniRequest request, StreamObserver<it.trenical.grpc.GetAllTreniResponse> responseObserver) {
+        List<it.trenical.server.Treno.Treno> listaTreni = db.getAllTreno();
+
+        GetAllTreniResponse.Builder response = GetAllTreniResponse.newBuilder();
+        for (it.trenical.server.Treno.Treno trenoJava : listaTreni) {
+            Treno trenoProto = convertiJavaInProto(trenoJava);
+            response.addTreni(trenoProto);
+        }
+        responseObserver.onNext(response.build());
         responseObserver.onCompleted();
     }
     private TrenoConcr convertiProtoInJava(it.trenical.grpc.Treno trenoProto) {

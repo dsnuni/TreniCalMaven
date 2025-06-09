@@ -193,7 +193,7 @@ public class AdminDashboardSwing extends JFrame {
         }
     }
 
-    private void caricaDatiDaDB(String tabella, DefaultTableModel model) {
+    public void caricaDatiDaDB(String tabella, DefaultTableModel model) {
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + tabella)) {

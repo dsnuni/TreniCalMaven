@@ -73,6 +73,12 @@ message RemoveTrenoResponse {
   bool success = 1;
 }
 
+message GetAllTreniRequest {}
+
+message GetAllTreniResponse {
+  repeated Treno treni = 1;
+}
+
 // Biglietto messages
 message Biglietto {
   string bigliettoID = 1;
@@ -104,6 +110,15 @@ message RemoveBigliettoRequest {
 message RemoveBigliettoResponse {
   bool success = 1;
 }
+// ID Generator
+message GetGeneratedIDRequest {}
+
+message GetGeneratedIDResponse {
+  string clienteID = 1;
+  string codiceCliente = 2;
+  string bigliettoID = 3;
+  int32 trenoID = 4;
+}
 
 // Services
 service ClienteService {
@@ -116,6 +131,7 @@ service TrenoService {
   rpc AddTreno(AddTrenoRequest) returns (AddTrenoResponse);
   rpc GetTreno(GetTrenoRequest) returns (Treno);
   rpc RemoveTreno(RemoveTrenoRequest) returns (RemoveTrenoResponse);
+  rpc GetAllTreni(GetAllTreniRequest) returns (GetAllTreniResponse);
 }
 
 service BigliettoService {
@@ -123,3 +139,8 @@ service BigliettoService {
   rpc GetBiglietto(GetBigliettoRequest) returns (Biglietto);
   rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
 }
+
+service IDGeneratorService {
+  rpc GetGeneratedID(GetGeneratedIDRequest) returns (GetGeneratedIDResponse);
+}
+
