@@ -1,6 +1,7 @@
 package it.trenical.server.gui;
 import it.trenical.server.Biglietto.*;
 import it.trenical.server.Cliente.*;
+import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.*;
 
@@ -78,19 +79,20 @@ public class AdminDashboardSwing extends JFrame {
             caricaDatiDaDB(tabellaNome, nuovoModel);
             table.setModel(nuovoModel);
         });
+
         filtri.addActionListener(e -> {
             switch (tabellaNome) {
                 case "Cliente":
-                    String[] opzioniC = {"nome", "cognome", "età"};
-                    filtra(tabellaNome, opzioniC);
+                    String[] opzioniC = {"nome", "cognome", "eta"};
+                    filtra(tabellaNome, opzioniC,model);
                     break;
                 case "Treno":
-                    String[] opzioniT = {"tipoTreno","trattaID","stazioPartenza","stazioneArrivo","durataViaggio","distanza","dataPartenza","dataArrivo"};
-                    filtra(tabellaNome, opzioniT);
+                    String[] opzioniT = {"tipoTreno","trattaID","stazione_partenza","stazione_arrivo","durata_viaggio","distanza","data_partenza","data_arrivo"};
+                    filtra(tabellaNome, opzioniT,model);
                     break;
                 case "Biglietto":
-                    String[] opzioniB = {"classe","trenoId","carrozza","posto","clienteId","prezzo"};
-                    filtra(tabellaNome, opzioniB);
+                    String[] opzioniB = {"classe","treno_id","carrozza","posto","cliente_id","prezzo"};
+                    filtra(tabellaNome, opzioniB,model);
                     break;
             }
         });
@@ -98,27 +100,99 @@ public class AdminDashboardSwing extends JFrame {
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
         return panel;
     }
-    private void filtra(String tabella, String[] opzioni) {
-
-            JComboBox<String> comboBox = new JComboBox<>(opzioni);
-
-            JPanel pannello = new JPanel();
-            pannello.add(new JLabel("Scegli un'opzione:"));
-            pannello.add(comboBox);
-
-            int result = JOptionPane.showConfirmDialog(
-                    null, pannello, "Menu a tendina",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
-            );
-
-            if (result == JOptionPane.OK_OPTION) {
-                String scelta = (String) comboBox.getSelectedItem();
-                JOptionPane.showMessageDialog(null, "Hai selezionato: " + scelta);
-            }
 
 
+    private void filtra(String tabella, String[] opzioni, DefaultTableModel model) {
+        JComboBox<String> comboBox = new JComboBox<>(opzioni);
+
+        JPanel pannello = new JPanel();
+        pannello.setLayout(new BoxLayout(pannello, BoxLayout.Y_AXIS));
+        pannello.setPreferredSize(new Dimension(400, 120));
+
+        JPanel rigaCombo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        rigaCombo.add(new JLabel("Scegli un'opzione:"));
+        rigaCombo.add(comboBox);
+
+        JPanel rigaFiltro = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JTextField field = new JTextField(15);
+        JLabel filtroLabel = new JLabel("Filtro:");
+        rigaFiltro.add(filtroLabel);
+        rigaFiltro.add(field);
+        pannello.add(rigaCombo);
+        pannello.add(rigaFiltro);
+
+        int result = JOptionPane.showConfirmDialog(
+                null, pannello, "Menu a tendina",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+        System.out.println(result);
+        System.out.println(JOptionPane.OK_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String colonna = (String) comboBox.getSelectedItem();
+            System.out.println(colonna);
+            String valore = field.getText();
+            System.out.println(valore);
+
+            //DefaultTableModel model = (DefaultTableModel) table.getModel();
+           // model.setRowCount(0);
+
+            caricaDatiDaDB2(tabella,model,colonna,valore);
+//            switch (tabella) {
+//                case "Cliente":
+//                    DefaultTableModel nuovoModel = new DefaultTableModel();
+//                    nuovoModel.setRowCount(0);
+//                    ClienteImplDB clientedb = new ClienteImplDB();
+//                    for (Cliente c : clientedb.getByFiltro(colonna, valore)) {
+//                        nuovoModel.addRow(new Object[]{
+//                                c.getCodiceFiscale(),
+//                                c.getNome(),
+//                                c.getCognome(),
+//                                c.getCodiceCliente(),
+//                                c.getEtà()
+//                        });
+//                        System.out.println(c.getEtà());
+//
+//                    }
+//                break;
+//                case "Treno":
+//                    TrenoImplDB trenodb = new TrenoImplDB();
+//                    for (Treno t : trenodb.getByFiltro(colonna, valore)) {
+//                        TrattaPrototype tr = t.getTratta();
+//                        model.addRow(new Object[]{
+//                                t.getTrenoID(),
+//                                t.getTipoTreno(),
+//                                tr.getCodiceTratta(),
+//                                tr.getStazionePartenza(),
+//                                tr.getStazioneArrivo(),
+//                                tr.getDistanza(),
+//                                tr.getTempoPercorrenza(),
+//                                tr.getDataPartenza(),
+//                                tr.getDataArrivo()
+//                        });
+//                    }
+//                    break;
+//                case "Biglietto":
+//                    BigliettoDB bigliettodb = new BigliettoDB();
+//                    for (Biglietto b : bigliettodb.getByFiltro(colonna, valore)) {
+//                        model.addRow(new Object[]{
+//                                b.getBigliettoID(),
+//                                b.getTitolareBiglietto().getCodiceFiscale(),
+//                                b.getTrenoBiglietto().getTrenoID(),
+//                                b.getCarrozza(),
+//                                b.getPosto(),
+//                                b.getClass().getSimpleName(),
+//                                String.join(",", b.getPriorità()),
+//                                b.getPrezzo()
+//                        });
+//                    }
+//                    break;
+//
+//            }
+
+        }
     }
+
     private void caricaDatiDaDB(String tabella, DefaultTableModel model) {
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement();
@@ -141,6 +215,37 @@ public class AdminDashboardSwing extends JFrame {
 
         } catch (SQLException e) {
             System.err.println("Errore caricamento dati da tabella " + tabella + ": " + e.getMessage());
+        }
+    }
+    private void caricaDatiDaDB2(String tabella, DefaultTableModel model, String colonna, String valore) {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + tabella + " WHERE " + colonna + " = ?")) {
+
+            stmt.setString(1, valore);
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                ResultSetMetaData metaData = rs.getMetaData();
+                int colCount = metaData.getColumnCount();
+
+                // Pulisce il modello esistente
+                model.setRowCount(0);
+                model.setColumnCount(0);
+
+                for (int i = 1; i <= colCount; i++) {
+                    model.addColumn(metaData.getColumnName(i));
+                }
+
+                while (rs.next()) {
+                    Object[] rowData = new Object[colCount];
+                    for (int i = 1; i <= colCount; i++) {
+                        rowData[i - 1] = rs.getObject(i);
+                    }
+                    model.addRow(rowData);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore filtrando la tabella " + tabella + ": " + e.getMessage());
         }
     }
 
@@ -177,6 +282,7 @@ public class AdminDashboardSwing extends JFrame {
         JButton submit = new JButton("Submit");
         submit.addActionListener(e -> {
             eseguiAggiunta(tabella,fields);
+            frame.dispose();
         });
 
         frame.add(inputPanel, BorderLayout.CENTER);

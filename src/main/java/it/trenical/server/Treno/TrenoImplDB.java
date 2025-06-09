@@ -1,9 +1,12 @@
 package it.trenical.server.Treno;
 
+import it.trenical.grpc.Tratta;
 import it.trenical.server.Tratta.*;
 
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TrenoImplDB implements TrenoImpl{
@@ -147,6 +150,37 @@ public class TrenoImplDB implements TrenoImpl{
 
         return null;
     }
+
+    public List<Treno> getByFiltro(String colonna, String valore) {
+        List<Treno> treni = new ArrayList<>();
+        String sql = "SELECT * FROM Treno WHERE " + colonna + " = ?";
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, valore);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                TrattaPrototype tratta = new TrattaStandard(
+                        rs.getString("trattaID"),
+                        rs.getString("stazione_partenza"),
+                        rs.getString("stazione_arrivo"),
+                        rs.getString("data_partenza"),
+                        rs.getString("data_arrivo"),
+                        rs.getInt("distanza"),
+                        rs.getInt("durata_viaggio")
+                );
+
+                treni.add(new TrenoConcr(
+                        rs.getInt("trenoID"),
+                        rs.getString("tipoTreno"),
+                        tratta
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore filtro treno: " + e.getMessage());
+        }
+        return treni;
+    }
+
 
 
 

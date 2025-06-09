@@ -6,6 +6,7 @@ import it.trenical.server.Cliente.*;
 import it.trenical.server.Treno.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static it.trenical.server.Cliente.ClienteFactory.getClienteByCodiceFiscale;
@@ -136,6 +137,34 @@ public class BigliettoDB implements BigliettoImpl {
         }catch (SQLException e) {
             System.err.println("Errore rimozione treno: " + e.getMessage());
         }
+    }
+    public List<Biglietto> getByFiltro(String colonna, String valore) {
+        List<Biglietto> biglietti = new ArrayList<>();
+        String sql = "SELECT * FROM Biglietto WHERE " + colonna + " = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, valore);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Cliente cliente = ClienteFactory.getClienteByCodiceFiscale(rs.getString("cliente_id"));
+                Treno treno = TrenoFactory.getTrenoByID(rs.getString("treno_id"));
+                Biglietto b = new BPrimaClasse.Builder()
+                        .bigliettoID(rs.getString("id"))
+                        //.classe(rs.getString("classe"))
+                        .trenoBiglietto(treno)
+                        .carrozza(rs.getString("carrozza"))
+                        .posto(rs.getString("posto"))
+                        .titolareBiglietto(cliente)
+                        .priorità(List.of(rs.getString("priorita").split(",")))
+                        .prezzo(rs.getInt("prezzo"))
+                        .implementazione(this)
+                        .build();
+                biglietti.add(b);
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore filtro biglietto: " + e.getMessage());
+        }
+        return biglietti;
     }
 
 

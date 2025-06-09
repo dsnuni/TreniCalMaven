@@ -1,5 +1,7 @@
 package it.trenical.server.Cliente;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClienteImplDB implements ClienteImpl {
 
@@ -80,5 +82,28 @@ public class ClienteImplDB implements ClienteImpl {
         }
     }
 
+    public List<Cliente> getByFiltro(String colonna, String valore) {
+        List<Cliente> clienti = new ArrayList<>();
+        String sql = "SELECT * FROM Cliente WHERE " + colonna + " = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, valore);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                clienti.add(new ClienteConcr(
+                        rs.getString("codiceFiscale"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getString("codiceCliente"),
+                        rs.getInt("eta")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore filtro cliente: " + e.getMessage());
+        }
+        return clienti;
     }
+
+
+}
 
