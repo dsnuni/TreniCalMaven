@@ -13,7 +13,6 @@ import java.sql.*;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-
 public class AdminDashboardSwing extends JFrame {
 
     private static final String DB_URL = "jdbc:sqlite:db/treniCal.db";
@@ -309,7 +308,9 @@ public class AdminDashboardSwing extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            System.setProperty("sun.java2d.uiScale", "3.0");
             new AdminDashboardSwing().setVisible(true);
+
         });
     }
 

@@ -8,8 +8,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class ClientDashboardSwing extends JFrame {
-    private boolean registrato=false;
-    private Cliente client;
+    private static boolean registrato=false;
+    private  static Cliente cliente=null;
+
     public ClientDashboardSwing() {
         setTitle("Terminale Utente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,17 +92,8 @@ public class ClientDashboardSwing extends JFrame {
                 clientePanel.setBorder(BorderFactory.createTitledBorder("Dati Cliente"));
                 clientePanel.setBackground(sfondoScuro);
                 clientePanel.setOpaque(true);
-
-                clientePanel.add(new JLabel("Codice Fiscale:"));
-                clientePanel.add(new JTextField(20));
-                clientePanel.add(new JLabel("Nome:"));
-                clientePanel.add(new JTextField(20));
-                clientePanel.add(new JLabel("Cognome:"));
-                clientePanel.add(new JTextField(20));
-                clientePanel.add(new JLabel("Codice Cliente:"));
-                clientePanel.add(new JTextField(20));
-                clientePanel.add(new JLabel("Età:"));
-                clientePanel.add(new JTextField(5));
+                JButton bt = new JButton("Acquista Biglietto");
+                clientePanel.add(pannelloCLiente(panel,channel));
 
                 // Pannello Biglietti
                 JPanel bigliettiPanel = new JPanel(new BorderLayout());
@@ -123,20 +115,125 @@ public class ClientDashboardSwing extends JFrame {
                 panel.setBackground(sfondoPannelli); // sfondo più chiaro per contrasto
                 panel.setOpaque(true);
                 panel.add(splitPane, BorderLayout.CENTER);
-                break;
 
+
+                break;
         }
 
 
-        channel.shutdown();
+
         return panel;
     }
+// rivedi la dimensione del pannello e il refresh
+    private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel) {
+        JPanel clientePanel  = new JPanel();
+        clientePanel.removeAll(); // pulizia per refresh
+        clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
+        clientePanel.setMaximumSize(new Dimension(400, 220));
+        clientePanel.setBackground(new Color(180, 180, 180));
 
-    private static void acquista(Object id, ManagedChannel channel) {
+        if (!registrato) {
+            clientePanel.add(new JLabel("Codice Fiscale:"));
+            JTextField codiceFiscaleField = new JTextField(20);
+            clientePanel.add(codiceFiscaleField);
+
+            clientePanel.add(new JLabel("Nome:"));
+            JTextField nomeField = new JTextField(20);
+            clientePanel.add(nomeField);
+
+            clientePanel.add(new JLabel("Cognome:"));
+            JTextField cognomeField = new JTextField(20);
+            clientePanel.add(cognomeField);
+
+//            clientePanel.add(new JLabel("Codice Cliente:"));
+//            JTextField codiceClienteField = new JTextField(20);
+//            clientePanel.add(codiceClienteField);
+
+            clientePanel.add(new JLabel("Età:"));
+            JTextField etaField = new JTextField(5);
+            clientePanel.add(etaField);
+
+
+            JButton submitButton = new JButton("Submit");
+            clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+            clientePanel.add(submitButton);
+            clientePanel.revalidate();
+            //clientePanel.repaint();
+
+            submitButton.addActionListener(e -> {
+                String cf = codiceFiscaleField.getText();
+                String nome = nomeField.getText();
+                String cognome = cognomeField.getText();
+                //String codice = codiceClienteField.getText();
+                String etaStr = etaField.getText();
+                System.out.println(cf+" "+nome+" "+cognome+" "+etaStr);
+                if (cf.isEmpty() || nome.isEmpty() || cognome.isEmpty() || etaStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(clientePanel, "Completa tutti i campi prima di continuare.");
+                } else {
+                    try {
+                        IDGeneratorServiceGrpc.IDGeneratorServiceBlockingStub idStub = IDGeneratorServiceGrpc.newBlockingStub(channel);
+                        GetGeneratedIDRequest requestID = GetGeneratedIDRequest.newBuilder().build();
+                        GetGeneratedIDResponse responseID = idStub.getGeneratedID(requestID);
+
+                        ClienteServiceGrpc.ClienteServiceBlockingStub clienteStub = ClienteServiceGrpc.newBlockingStub(channel);
+                        it.trenical.grpc.Cliente clienteGrpc = it.trenical.grpc.Cliente.newBuilder()
+                                .setCodiceFiscale(cf)
+                                .setNome(nome)
+                                .setCognome(cognome)
+                                .setCodiceCliente(responseID.getCodiceCliente())
+                                .setEta(Integer.parseInt(etaStr))
+                                .build();
+
+                        AddClienteResponse response = clienteStub.addCliente(
+                                AddClienteRequest.newBuilder().setCliente(clienteGrpc).build()
+                        );
+
+                        if (response.getSuccess()) {
+                            // aggiorna stato
+                            registrato = true;
+                            cliente = clienteGrpc;
+                            System.out.println(cliente);
+                            System.out.println(registrato);
+                            // refresh pannello
+                            pannelloCLiente(clientePanel, channel);
+                            clientePanel.revalidate();
+                            clientePanel.repaint();
+
+                        } else {
+                            JOptionPane.showMessageDialog(clientePanel, "Errore: cliente non aggiunto.");
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(clientePanel, "Errore: " + ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+        } else { //cliente registrato
+
+            clientePanel.add(new JLabel("Codice Fiscale:"));
+            clientePanel.add(new JLabel(cliente.getCodiceFiscale()));
+
+            clientePanel.add(new JLabel("Nome:"));
+            clientePanel.add(new JLabel(cliente.getNome()));
+
+            clientePanel.add(new JLabel("Cognome:"));
+            clientePanel.add(new JLabel(cliente.getCognome()));
+
+            clientePanel.add(new JLabel("Codice Cliente:"));
+            clientePanel.add(new JLabel(cliente.getCodiceCliente()));
+
+            clientePanel.add(new JLabel("Età:"));
+            clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
+        }
+        return clientePanel;
+    }
+
+        private static void acquista(Object id, ManagedChannel channel) {
         IDGeneratorServiceGrpc.IDGeneratorServiceBlockingStub idStub = IDGeneratorServiceGrpc.newBlockingStub(channel);
         GetGeneratedIDRequest requestID = GetGeneratedIDRequest.newBuilder().build();
         GetGeneratedIDResponse responseID = idStub.getGeneratedID(requestID);
-
+            /// DEVI USARE LA CLASSE PAGAMENTO E SIMULARE LA TRANSAZIONE
         it.trenical.grpc.BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = it.trenical.grpc.BigliettoServiceGrpc.newBlockingStub(channel);
         it.trenical.grpc.Biglietto biglietto = it.trenical.grpc.Biglietto.newBuilder()
 
@@ -153,6 +250,7 @@ public class ClientDashboardSwing extends JFrame {
 
     }
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.uiScale", "3.0");
         SwingUtilities.invokeLater(() -> {
             new ClientDashboardSwing().setVisible(true);
         });
