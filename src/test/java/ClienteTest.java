@@ -19,7 +19,7 @@ public class ClienteTest {
 
     @BeforeEach
     public void setup() {
-        db = new ClienteImplDB();
+        db = ClienteImplDB.getInstance();
         cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,età);
         db.removeCliente(codiceFiscale); // pulizia preventiva
     }

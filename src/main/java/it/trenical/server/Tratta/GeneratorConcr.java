@@ -217,7 +217,8 @@ public class GeneratorConcr implements Generator {
         Generator generatore = new GeneratorConcr(prototipoBase);
         TrenoImplDB dbt= TrenoImplDB.getInstance();
         TrattaImplDB dbt2 = TrattaImplDB.getInstance();
-
+        dbt2.addObserver(new NotificheConcr());
+        dbt.addObserver(new NotificheConcr());
         for (int i = 0; i < 5; i++) {
             generatore.genera();
         }
@@ -234,7 +235,7 @@ public class GeneratorConcr implements Generator {
                     IdGenerator.generaTrenoID(),
                     IdGenerator.generaTipoTreno(),
                     dbt2.getTrattaByIndex(numTratta),
-                    0, 0, 0, 0, 100
+                    0, 0, 0, 0, 110
             );
             dbt.setTreno(dividiPosti(tr));
         }

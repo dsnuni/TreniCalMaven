@@ -33,7 +33,9 @@ public abstract class Treno  {
 
     }
     private int setTempoPercorrenza() {
+        System.out.println("ciao"+tratta);
         int distanza = tratta.getDistanza();
+        System.out.println("distanza"+distanza);
         switch(tipoTreno){
             case "FrecciaArgento" :
                 return (distanza/300);
@@ -99,11 +101,11 @@ public abstract class Treno  {
     @Override
     public String toString() {
         return "Treno{" +
-                "postiPrima=" + postiPrima +
-                ", trenoID='" + trenoID + '\'' +
+                "  trenoID='" + trenoID + '\'' +
                 ", tipoTreno='" + tipoTreno + '\'' +
                 ", tratta=" + tratta +
                 ", prezzo=" + prezzo +
+                ", postiPrima=" + postiPrima +
                 ", postiSeconda=" + postiSeconda +
                 ", postiTerza=" + postiTerza +
                 ", postiTot=" + postiTot +

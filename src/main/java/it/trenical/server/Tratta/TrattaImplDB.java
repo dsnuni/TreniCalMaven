@@ -1,12 +1,10 @@
 package it.trenical.server.Tratta;
 
-import it.trenical.server.Cliente.Cliente;
-import it.trenical.server.Cliente.ClienteConcr;
-import it.trenical.server.Treno.TrenoImplDB;
+import it.trenical.server.notifiche.Observable;
 
 import java.sql.*;
 
-public class TrattaImplDB implements TrattaImpl {
+public class TrattaImplDB extends Observable implements TrattaImpl {
     private final String url = "jdbc:sqlite:db/treniCal.db";
     private static final TrattaImplDB instance = new TrattaImplDB();
     public static TrattaImplDB getInstance() {
@@ -20,7 +18,7 @@ public class TrattaImplDB implements TrattaImpl {
     }
     @Override
     public TrattaPrototype getTratta(String trattaID) {
-        String sql = "SELECT * FROM Cliente WHERE  trattaID = ?";
+        String sql = "SELECT * FROM Tratta WHERE  trattaID = ?";
         TrattaPrototype tratta = null;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -65,7 +63,7 @@ public class TrattaImplDB implements TrattaImpl {
             stmt.setInt(7, tratta.getTempoPercorrenza());
 
             stmt.executeUpdate();
-
+            notifyObservers("Aggiunta tratta con ID: " + tratta.getCodiceTratta());
         } catch (SQLException e) {
             System.err.println("Errore inserimento cliente: " + e.getMessage());
         }

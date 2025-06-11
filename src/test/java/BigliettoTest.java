@@ -1,9 +1,12 @@
 import it.trenical.server.Biglietto.*;
 import it.trenical.server.Cliente.ClienteConcr;
 import it.trenical.server.Cliente.ClienteImplDB;
+import it.trenical.server.Tratta.GeneratorConcr;
+import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
+import it.trenical.server.igGenerator.IdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +19,8 @@ public class BigliettoTest {
 
     String bigliettoID = "24C43";
     ClienteConcr titolareBiglietto = new ClienteConcr("QNTDVD03P24D086Q", "Davide", "Iaquinta", "GAY!!!",20);
-    TrenoConcr trenoBiglietto = new TrenoConcr(
-            11,
-            "787887",
-            new TrattaStandard("11111", "Lesbo", "Veminchia", "09-06-2025 14:00", "09-06-2025 00:00", 9, 1000)
-    );
+    TrattaPrototype tratta = new TrattaStandard("TRT-8c3eae47", "Terni", "Bressanone", "12-06-2025 10:00", "12-06-2025 12:00 ", 468, 2);
+    TrenoConcr trenoBiglietto = new TrenoConcr(IdGenerator.generaTrenoID(),IdGenerator.generaTipoTreno(), tratta,100,0,0,0,0);
     String carrozza = "111";
     String posto = "G1";
     List<String> priorità = new ArrayList<>();
@@ -31,9 +31,9 @@ public class BigliettoTest {
 
     @BeforeEach
     public void setup() {
-        db = new BigliettoDB();
-        ClienteImplDB dbCl = new ClienteImplDB();
-        TrenoImplDB trenoCl = new TrenoImplDB();
+        db = BigliettoDB.getInstance();
+        ClienteImplDB dbCl = ClienteImplDB.getInstance();
+        TrenoImplDB trenoCl = TrenoImplDB.getInstance();
         dbCl.setCliente(titolareBiglietto);
         trenoCl.setTreno(trenoBiglietto);
         priorità.clear();

@@ -94,9 +94,10 @@ public abstract class Biglietto {
         }
 
         public T prezzo(int prezzo) {
-            int prezzoScontato = PromozioniGenerator.getInstance()
-                    .calcolaPrezzo(prezzo, titolareBiglietto.getCodiceCliente(), trenoBiglietto.getTratta());
-            this.prezzo = prezzoScontato;
+//            int prezzoScontato = PromozioniGenerator.getInstance()
+//                    .calcolaPrezzo(prezzo, titolareBiglietto.getCodiceCliente(), trenoBiglietto.getTratta());
+//            this.prezzo = prezzoScontato;
+            this.prezzo = prezzo;
             return self();
         }
 

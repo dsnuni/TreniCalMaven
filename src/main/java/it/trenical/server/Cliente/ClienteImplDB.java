@@ -1,9 +1,11 @@
 package it.trenical.server.Cliente;
+import it.trenical.server.notifiche.Observable;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteImplDB implements ClienteImpl {
+public class ClienteImplDB extends Observable implements ClienteImpl {
     private static final String DB_URL = "jdbc:sqlite:db/treniCal.db";
     private static final ClienteImplDB instance = new ClienteImplDB();
     public static ClienteImplDB getInstance() {
@@ -32,7 +34,7 @@ public class ClienteImplDB implements ClienteImpl {
             stmt.setInt(5, cliente.getEtà());
 
             stmt.executeUpdate();
-
+            notifyObservers("Aggiunto Cliente con ID: " + cliente.getCodiceFiscale());
         } catch (SQLException e) {
             System.err.println("Errore inserimento cliente: " + e.getMessage());
         }

@@ -4,6 +4,7 @@ package it.trenical.server.Biglietto;
 
 import it.trenical.server.Cliente.*;
 import it.trenical.server.Treno.*;
+import it.trenical.server.notifiche.Observable;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 import static it.trenical.server.Cliente.ClienteFactory.getClienteByCodiceFiscale;
 import static it.trenical.server.Treno.TrenoFactory.getTrenoByID;
 
-public class BigliettoDB implements BigliettoImpl {
+public class BigliettoDB extends Observable implements BigliettoImpl {
     private final String DB_URL = "jdbc:sqlite:db/treniCal.db";
     private static final BigliettoDB instance = new BigliettoDB();
     public static BigliettoDB getInstance() {
@@ -45,6 +46,7 @@ public class BigliettoDB implements BigliettoImpl {
             stmt.setInt(8, biglietto.getPrezzo());
 
             stmt.executeUpdate();
+            notifyObservers("Aggiunto Biglietto con ID: " + biglietto.getBigliettoID());
 
         } catch (SQLException e) {
             System.err.println("Errore salvataggio biglietto: " + e.getMessage());
