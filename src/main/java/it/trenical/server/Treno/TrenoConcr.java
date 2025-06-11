@@ -10,8 +10,8 @@ public class TrenoConcr  extends Treno{
         this.trenoImpl = trenoImpl;
     }
 
-    public TrenoConcr(int trenoID, String tipoTreno, TrattaPrototype tratta) {
-        super(trenoID,tipoTreno,tratta);
+    public TrenoConcr(String trenoID, String tipoTreno, TrattaPrototype tratta, int prezzo, int postiPrima, int postiSeconda,int postiTerza, int postiTot) {
+        super(trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
     }
 
     @Override

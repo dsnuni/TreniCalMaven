@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface TrenoImpl {
 
-    public Treno getTreno(int TrenoID);
+    public Treno getTreno(String TrenoID);
     public void setTreno(Treno tr);
-    public boolean removeTreno(int TrenoID);
+    public boolean removeTreno(String TrenoID);
     public List<Treno> getAllTreno();
 }

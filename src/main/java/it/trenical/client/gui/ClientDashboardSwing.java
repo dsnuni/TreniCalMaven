@@ -10,7 +10,7 @@ import java.awt.*;
 public class ClientDashboardSwing extends JFrame {
     private static boolean registrato=false;
     private  static Cliente cliente=null;
-
+/**
     public ClientDashboardSwing() {
         setTitle("Terminale Utente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -254,5 +254,5 @@ public class ClientDashboardSwing extends JFrame {
         SwingUtilities.invokeLater(() -> {
             new ClientDashboardSwing().setVisible(true);
         });
-    }
+    } **/
 }

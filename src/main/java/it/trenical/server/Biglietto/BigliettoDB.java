@@ -28,7 +28,7 @@ public class BigliettoDB implements BigliettoImpl {
 
             stmt.setString(1, biglietto.getBigliettoID());
             stmt.setString(2, biglietto.getClass().getSimpleName().replace("B", "")); // es: "PrimaClasse"
-            stmt.setInt(3, biglietto.getTrenoBiglietto().getTrenoID());
+            stmt.setString(3, biglietto.getTrenoBiglietto().getTrenoID());
             stmt.setString(4, biglietto.getCarrozza());
             stmt.setString(5, biglietto.getPosto());
             stmt.setString(6, biglietto.getTitolareBiglietto().getCodiceFiscale());

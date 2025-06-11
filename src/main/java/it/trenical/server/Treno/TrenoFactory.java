@@ -9,7 +9,7 @@ public class TrenoFactory {
     }
 
     public static Treno getTrenoByID(String trenoID) {
-        int trnInt = Integer.parseInt(trenoID);
+        String trnInt = trenoID;
 
         return impl.getTreno(trnInt);
     }

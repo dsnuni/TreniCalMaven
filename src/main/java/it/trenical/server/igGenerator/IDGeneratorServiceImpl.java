@@ -12,13 +12,15 @@ public class IDGeneratorServiceImpl extends IDGeneratorServiceGrpc.IDGeneratorSe
         String clienteID = IdGenerator.generaClienteID();
         String codiceCliente = IdGenerator.generaCodiceCliente();
         String bigliettoID = IdGenerator.generaBigliettoID();
-        int trenoID = IdGenerator.generaTrenoID();
+        String trenoID = IdGenerator.generaTrenoID();
+        String trattaID = IdGenerator.generaTrattaID();
 
         GetGeneratedIDResponse response = GetGeneratedIDResponse.newBuilder()
                 .setClienteID(clienteID)
                 .setCodiceCliente(codiceCliente)
                 .setBigliettoID(bigliettoID)
                 .setTrenoID(trenoID)
+                .setTrattaID(trattaID)
                 .build();
 
         responseObserver.onNext(response);

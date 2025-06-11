@@ -4,9 +4,11 @@ import it.trenical.server.Biglietto.BigliettoDB;
 import it.trenical.server.Biglietto.BigliettoImpl;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
+import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImpl;
 import it.trenical.server.Treno.TrenoImplDB;
 
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -51,19 +53,48 @@ public class IdGenerator {
         return id;
     }
 
-    public static int generaTrenoID() {
+    public static String generaTrenoID() {
         boolean flag = true;
-        int id = 0;
+        String id = " ";
         while(flag) {
-            id= trenoCounter.getAndIncrement();
-            TrenoImpl tr= new TrenoImplDB();
-            if(tr.getTreno(id) == null) {
+            id = "TRN-" + UUID.randomUUID().toString().substring(0, 8);
+            ClienteImpl cl= new ClienteImplDB();
+            if(cl.getCliente(id) == null) {
                 flag=false;
             }
         }
         return id;
     }
-
+    public static String generaTrattaID() {
+        boolean flag = true;
+        String id = " ";
+        while(flag) {
+            id = "TRT-" + UUID.randomUUID().toString().substring(0, 8);
+            ClienteImpl cl= new ClienteImplDB();
+            if(cl.getCliente(id) == null) {
+                flag=false;
+            }
+        }
+        return id;
+    }
+    public static String generaTipoTreno() {
+        String[] treni = new String[]{"FrecciaArgento", "FrecciaRossa", "FrecciaBianca", "Regionale"};
+        String treno= null;
+        boolean flag = true;
+        while(flag) {
+            Random random = new Random();
+            int t = random.nextInt(3) + 1;
+            return treni[t];
+        }
+        return treno;
+    }
+public static TrenoConcr dividiPosti(TrenoConcr tr) {
+        int posti = tr.getPostiTot();
+        int postiPrima= (posti/100)*10;
+        int postiSeconda = (posti/100)*40;
+        int postiTerza = (posti/100)*50;
+        return new TrenoConcr(tr.getTrenoID(),tr.getTipoTreno(),tr.getTratta(),0,postiPrima,postiSeconda,postiTerza,posti);
+}
 
     public static void resetCounters() {
         trenoCounter.set(1000);
@@ -73,7 +104,7 @@ public class IdGenerator {
         String clienteID = generaClienteID();
         String codiceCliente = generaCodiceCliente();
         String bigliettoID = generaBigliettoID();
-        int trenoID = generaTrenoID();
+        String trenoID = generaTrenoID();
 
         ClienteImplDB cl = new ClienteImplDB();
         BigliettoImpl bg = new BigliettoDB();

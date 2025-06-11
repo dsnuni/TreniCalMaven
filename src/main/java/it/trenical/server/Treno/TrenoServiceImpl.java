@@ -4,6 +4,8 @@ import io.grpc.stub.StreamObserver;
 import it.trenical.grpc.GetAllTreniResponse;
 import it.trenical.grpc.Tratta;
 import it.trenical.grpc.Treno;
+import it.trenical.server.Tratta.TrattaImpl;
+import it.trenical.server.Tratta.TrattaImplDB;
 import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoServiceImplBase {
     private final TrenoImpl db = new TrenoImplDB();
-
+    private final TrattaImpl trattadb = new TrattaImplDB();
     @Override
     public void addTreno(it.trenical.grpc.AddTrenoRequest request, StreamObserver<it.trenical.grpc.AddTrenoResponse> responseObserver) {
         TrenoConcr trenoJava = convertiProtoInJava(request.getTreno());
@@ -30,7 +32,7 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
     public void getTreno(it.trenical.grpc.GetTrenoRequest request, StreamObserver<Treno> responseObserver) {
         it.trenical.server.Treno.Treno trenoJava = db.getTreno(request.getTrenoID());
 
-        Treno trenoProto = convertiJavaInProto(trenoJava);
+        Treno trenoProto = convertiJavaInProto((TrenoConcr) trenoJava);
 
         responseObserver.onNext(trenoProto);
         responseObserver.onCompleted();
@@ -54,42 +56,48 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
 
         GetAllTreniResponse.Builder response = GetAllTreniResponse.newBuilder();
         for (it.trenical.server.Treno.Treno trenoJava : listaTreni) {
-            Treno trenoProto = convertiJavaInProto(trenoJava);
+            Treno trenoProto = convertiJavaInProto((TrenoConcr) trenoJava);
             response.addTreni(trenoProto);
         }
         responseObserver.onNext(response.build());
         responseObserver.onCompleted();
     }
-    private TrenoConcr convertiProtoInJava(it.trenical.grpc.Treno trenoProto) {
-        Tratta tratta = trenoProto.getTratta();
-        TrattaPrototype trattaJava = new TrattaStandard(
-                tratta.getCodiceTratta(),
-                tratta.getStazionePartenza(),
-                tratta.getStazioneArrivo(),
-                tratta.getDataPartenza(),
-                tratta.getDataArrivo(),
-                tratta.getDistanza(),
-                tratta.getTempoPercorrenza()
+    private TrenoConcr convertiProtoInJava(Treno t) {
+        String trattaID = t.getTrattaID();
+        TrattaPrototype trattaProto = trattadb.getTratta(trattaID) ;
+        TrattaStandard tratta = new TrattaStandard(
+                trattaProto.getCodiceTratta(),
+                trattaProto.getStazionePartenza(),
+                trattaProto.getStazioneArrivo(),
+                trattaProto.getDataPartenza(),
+                trattaProto.getDataArrivo(),
+                trattaProto.getDistanza(),
+                trattaProto.getTempoPercorrenza()
         );
-        return new TrenoConcr(trenoProto.getTrenoID(), trenoProto.getTipoTreno(), trattaJava);
+
+        return new TrenoConcr(
+                t.getTrenoID(),
+                t.getTipoTreno(),
+                tratta,
+                t.getPrezzo(),
+                t.getPostiPrima(),
+                t.getPostiSeconda(),
+                t.getPostiTerza(),
+                t.getPostiTot()
+        );
     }
 
-    private it.trenical.grpc.Treno convertiJavaInProto(it.trenical.server.Treno.Treno trenoJava) {
-        TrattaPrototype tratta = trenoJava.getTratta();
-        Tratta trattaProto = Tratta.newBuilder()
-                .setCodiceTratta(tratta.getCodiceTratta())
-                .setStazionePartenza(tratta.getStazionePartenza())
-                .setStazioneArrivo(tratta.getStazioneArrivo())
-                .setDataPartenza(tratta.getDataPartenza())
-                .setDataArrivo(tratta.getDataArrivo())
-                .setDistanza(tratta.getDistanza())
-                .setTempoPercorrenza(tratta.getTempoPercorrenza())
-                .build();
+    private Treno convertiJavaInProto(TrenoConcr t) {
+        TrattaStandard tratta = (TrattaStandard) t.getTratta();
 
-        return it.trenical.grpc.Treno.newBuilder()
-                .setTrenoID(trenoJava.getTrenoID())
-                .setTipoTreno(trenoJava.getTipoTreno())
-                .setTratta(trattaProto)
+        return Treno.newBuilder()
+                .setTrenoID(t.getTrenoID())
+                .setTipoTreno(t.getTipoTreno())
+                .setTrattaID(tratta.getCodiceTratta())
+                .setPrezzo(t.getPrezzo())
+                .setPostiPrima(t.getPostiPrima())
+                .setPostiSeconda(t.getPostiSeconda())
+                .setPostiTerza(t.getPostiTerza())
                 .build();
     }
 }

@@ -11,31 +11,33 @@ import java.util.List;
 
 public class TrenoImplDB implements TrenoImpl{
     private final String url = "jdbc:sqlite:db/treniCal.db";
-
+    private TrattaImpl db = new TrattaImplDB();
     @Override
-    public Treno getTreno(int id) {
+    public Treno getTreno(String  trenoID) {
         String sql = "SELECT * FROM Treno WHERE trenoID = ?";
         Treno t = null;
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setString(1, trenoID);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                // ricostruisco TrattaPrototype (es. come TrattaStandard)
-                TrattaPrototype tratta = new TrattaStandard(
-                        rs.getString("trattaID"),
-                        rs.getString("stazione_partenza"),
-                        rs.getString("stazione_arrivo"),
-                        rs.getString("data_partenza"),
-                        rs.getString("data_arrivo"),
-                        rs.getInt("distanza"),
-                        rs.getInt("durata_viaggio")
-                );
 
-                t = new TrenoConcr(rs.getInt("trenoID"), rs.getString("tipoTreno"), tratta);
+                String tipoTreno = rs.getString("tipoTreno");
+                String trattaID = rs.getString("trattaID");
+                int prezzo = rs.getInt("prezzo");
+                int postiPrima = rs.getInt("postiPrima");
+                int postiSeconda = rs.getInt("postiSeconda");
+                int postiTerza = rs.getInt("postiTerza");
+                int postiTot = rs.getInt("postiTot");
+               // int tempoPercorrenza = rs.getInt("tempoPercorrenza");
+
+                TrattaPrototype tratta =  db.getTratta(trattaID);
+
+                t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+
             }
 
         } catch (SQLException e) {
@@ -47,22 +49,25 @@ public class TrenoImplDB implements TrenoImpl{
 
     @Override
     public void setTreno(Treno tr) {
-        String sql = "INSERT INTO Treno (trenoID, tipoTreno, trattaID,stazione_partenza, stazione_arrivo, durata_viaggio, distanza, data_partenza, data_arrivo) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql =
+                "INSERT INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza,postiTot, tempoPercorrenza)  " +
+                "VALUES (?,?, ?, ?, ?, ?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             TrattaPrototype tratta = tr.getTratta();
 
-            stmt.setInt(1, tr.getTrenoID());
+            stmt.setString(1, tr.getTrenoID());
             stmt.setString(2, tr.getTipoTreno());
             stmt.setString(3, tratta.getCodiceTratta());
-            stmt.setString(4, tratta.getStazionePartenza());
-            stmt.setString(5, tratta.getStazioneArrivo());
-            stmt.setInt(6, tratta.getTempoPercorrenza());
-            stmt.setInt(7, tratta.getDistanza());
-            stmt.setString(8, tratta.getDataPartenza());
-            stmt.setString(9, tratta.getDataArrivo());
+            stmt.setInt(4, tr.getPrezzo());
+            stmt.setInt(5, tr.getPostiPrima());
+            stmt.setInt(6, tr.getPostiSeconda());
+            stmt.setInt(7, tr.getPostiTerza());
+            stmt.setInt(8,tr.getPostiTot());
+            stmt.setInt(9, tr.getTempoPercorrenza());
+
 
             stmt.executeUpdate();
 
@@ -72,12 +77,12 @@ public class TrenoImplDB implements TrenoImpl{
     }
 
     @Override
-    public boolean removeTreno(int trenoID) {
+    public boolean removeTreno(String trenoID) {
         String sql = "DELETE FROM Treno WHERE trenoID = ?";
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, trenoID);
+            stmt.setString(1, trenoID);
             int righe = stmt.executeUpdate();
             return righe > 0; // true se è stato effettivamente rimosso
 
@@ -120,35 +125,38 @@ public class TrenoImplDB implements TrenoImpl{
 
     public TrenoConcr getTrenoDallaRiga(int riga) {
         String sql = "SELECT * FROM Treno LIMIT 1 OFFSET ?";
+        TrenoConcr t= null;
+
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, riga); // indice parte da 0
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                TrattaPrototype tratta = new TrattaStandard(
-                        rs.getString("trattaID"),
-                        rs.getString("stazione_partenza"),
-                        rs.getString("stazione_arrivo"),
-                        rs.getString("data_partenza"),
-                        rs.getString("data_arrivo"),
-                        rs.getInt("distanza"),
-                        rs.getInt("durata_viaggio")
-                );
 
-                return new TrenoConcr(
-                        rs.getInt("trenoID"),
-                        rs.getString("tipoTreno"),
-                        tratta
-                );
+            if (rs.next()) {
+
+                String trenoID = rs.getString("trenoID");
+                String tipoTreno = rs.getString("tipoTreno");
+                String trattaID = rs.getString("trattaID");
+                int prezzo = rs.getInt("prezzo");
+                int postiPrima = rs.getInt("postiPrima");
+                int postiSeconda = rs.getInt("postiSeconda");
+                int postiTerza = rs.getInt("postiTerza");
+                int postiTot = rs.getInt("postiTot");
+
+                TrattaPrototype tratta =  db.getTratta(trattaID);
+
+                t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+
             }
+
 
         } catch (SQLException e) {
             System.err.println("Errore recupero treno alla riga " + riga + ": " + e.getMessage());
         }
 
-        return null;
+        return t;
     }
     @Override
     public List<Treno> getAllTreno() {
@@ -158,22 +166,21 @@ public class TrenoImplDB implements TrenoImpl{
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                TrattaPrototype tratta = new TrattaStandard(
-                        rs.getString("trattaID"),
-                        rs.getString("stazione_partenza"),
-                        rs.getString("stazione_arrivo"),
-                        rs.getString("data_partenza"),
-                        rs.getString("data_arrivo"),
-                        rs.getInt("distanza"),
-                        rs.getInt("durata_viaggio")
-                );
+                String trenoID = rs.getString("trenoID");
+                String tipoTreno = rs.getString("tipoTreno");
+                String trattaID = rs.getString("trattaID");
+                int prezzo = rs.getInt("prezzo");
+                int postiPrima = rs.getInt("postiPrima");
+                int postiSeconda = rs.getInt("postiSeconda");
+                int postiTerza = rs.getInt("postiTerza");
+                int postiTot = rs.getInt("postiTot");
 
-                treni.add(new TrenoConcr(
-                        rs.getInt("trenoID"),
-                        rs.getString("tipoTreno"),
-                        tratta
-                ));
-        }}catch (SQLException e) {
+                TrattaPrototype tratta =  db.getTratta(trattaID);
+
+                Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+                treni.add(t);
+
+            }}catch (SQLException e) {
             System.err.println("Errore filtro treno: " + e.getMessage());
         }
         return treni;
@@ -188,21 +195,21 @@ public class TrenoImplDB implements TrenoImpl{
             stmt.setString(1, valore);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                TrattaPrototype tratta = new TrattaStandard(
-                        rs.getString("trattaID"),
-                        rs.getString("stazione_partenza"),
-                        rs.getString("stazione_arrivo"),
-                        rs.getString("data_partenza"),
-                        rs.getString("data_arrivo"),
-                        rs.getInt("distanza"),
-                        rs.getInt("durata_viaggio")
-                );
 
-                treni.add(new TrenoConcr(
-                        rs.getInt("trenoID"),
-                        rs.getString("tipoTreno"),
-                        tratta
-                ));
+                String trenoID = rs.getString("trenoID");
+                String tipoTreno = rs.getString("tipoTreno");
+                String trattaID = rs.getString("trattaID");
+                int prezzo = rs.getInt("prezzo");
+                int postiPrima = rs.getInt("postiPrima");
+                int postiSeconda = rs.getInt("postiSeconda");
+                int postiTerza = rs.getInt("postiTerza");
+                int postiTot = rs.getInt("postiTot");
+
+                TrattaPrototype tratta =  db.getTratta(trattaID);
+
+                Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+                treni.add(t);
+
             }
         } catch (SQLException e) {
             System.err.println("Errore filtro treno: " + e.getMessage());

@@ -46,11 +46,38 @@ message Tratta {
   int32 tempoPercorrenza = 7;
 }
 
+
+message AddTrattaRequest {
+  Tratta tratta = 1;
+}
+
+message AddTrattaResponse {
+  bool success = 1;
+}
+
+message GetTrattaRequest {
+  string codiceTratta = 1;
+}
+
+message RemoveTrattaRequest {
+  string codiceTratta = 1;
+}
+
+message RemoveTrattaResponse {
+  bool success = 1;
+}
+
 // Treno messages
 message Treno {
-  int32 trenoID = 1;
+  string trenoID = 1;
   string tipoTreno = 2;
-  Tratta tratta = 3;
+  string trattaID = 3;
+  int32 prezzo = 4;
+  int32 postiPrima = 5;
+  int32 postiSeconda = 6;
+  int32 postiTerza = 7;
+  int32 postiTot = 8;
+  int32 tempoPercorrenza = 9;
 }
 
 message AddTrenoRequest {
@@ -62,11 +89,11 @@ message AddTrenoResponse {
 }
 
 message GetTrenoRequest {
-  int32 trenoID = 1;
+  string trenoID = 1;
 }
 
 message RemoveTrenoRequest {
-  int32 trenoID = 1;
+  string trenoID = 1;
 }
 
 message RemoveTrenoResponse {
@@ -83,7 +110,7 @@ message GetAllTreniResponse {
 message Biglietto {
   string bigliettoID = 1;
   string classe = 2;
-  int32 trenoID = 3;
+  string trenoID = 3;
   string carrozza = 4;
   string posto = 5;
   string clienteID = 6;
@@ -117,7 +144,8 @@ message GetGeneratedIDResponse {
   string clienteID = 1;
   string codiceCliente = 2;
   string bigliettoID = 3;
-  int32 trenoID = 4;
+  string trenoID = 4;
+  string trattaID = 5;
 }
 
 // Services
@@ -139,7 +167,11 @@ service BigliettoService {
   rpc GetBiglietto(GetBigliettoRequest) returns (Biglietto);
   rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
 }
-
+service TrattaService {
+  rpc AddTratta(AddTrenoRequest) returns (AddTrattaResponse);
+  rpc GetTratta(GetTrenoRequest) returns (Tratta);
+  rpc RemoveTratta(RemoveTrenoRequest) returns (RemoveTrattaResponse);
+}
 service IDGeneratorService {
   rpc GetGeneratedID(GetGeneratedIDRequest) returns (GetGeneratedIDResponse);
 }

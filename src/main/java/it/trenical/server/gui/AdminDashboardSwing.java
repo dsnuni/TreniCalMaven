@@ -4,7 +4,7 @@ import it.trenical.server.Cliente.*;
 import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.*;
-
+/*
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
@@ -257,7 +257,7 @@ public class AdminDashboardSwing extends JFrame {
                 break;
             case "Treno":
                 TrenoImpl trenodb = new TrenoImplDB();
-                trenodb.removeTreno(Integer.parseInt(id.toString()));
+                trenodb.removeTreno(id.toString());
                 break;
             case "Biglietto":
                 BigliettoImpl bigliettodb = new BigliettoDB();
@@ -416,11 +416,10 @@ public class AdminDashboardSwing extends JFrame {
 
         if(tabellaNome.equals("Treno")) {
             Treno tr = new TrenoConcr(
-                    Integer.parseInt(fields[0].getText()),
+                    fields[0].getText(),
                     fields[1].getText(),
-                    new TrattaStandard(
-                            fields[2].getText(),
-                            fields[3].getText(),
+                    fields[2].getText(),
+                    Integer.parseInt([3].getText()),
                             fields[4].getText(),
                             fields[7].getText(),
                             fields[8].getText(),
@@ -450,3 +449,4 @@ public class AdminDashboardSwing extends JFrame {
         return null;
     }
 }
+*/
