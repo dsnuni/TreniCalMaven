@@ -4,6 +4,7 @@ import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.igGenerator.IdGenerator;
+import it.trenical.server.notifiche.NotificheConcr;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -52,7 +53,7 @@ public class GeneratorConcr implements Generator {
 
     private final Random random = new Random();
     private final TrattaPrototype ts;
-    private TrattaImpl db = new TrattaImplDB();
+    private TrattaImpl db = TrattaImplDB.getInstance();
     String codiceTratta = null;
     String stazPartenza = null;
     String stazArrivo = null;
@@ -214,8 +215,8 @@ public class GeneratorConcr implements Generator {
     public static void main(String[] args) {
         TrattaPrototype prototipoBase = new TrattaStandard();
         Generator generatore = new GeneratorConcr(prototipoBase);
-        TrenoImplDB dbt = new TrenoImplDB();
-        TrattaImplDB dbt2 = new TrattaImplDB();
+        TrenoImplDB dbt= TrenoImplDB.getInstance();
+        TrattaImplDB dbt2 = TrattaImplDB.getInstance();
 
         for (int i = 0; i < 5; i++) {
             generatore.genera();

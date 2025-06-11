@@ -10,7 +10,7 @@ import it.trenical.server.Cliente.ClienteImplDB;
 
 public class ClienteServiceImpl extends it.trenical.grpc.ClienteServiceGrpc.ClienteServiceImplBase {
 
-    private final ClienteImplDB db = new ClienteImplDB();
+    private final ClienteImplDB db = ClienteImplDB.getInstance();
 
     @Override
     public void addCliente(it.trenical.grpc.AddClienteRequest request, StreamObserver<it.trenical.grpc.AddClienteResponse> responseObserver) {

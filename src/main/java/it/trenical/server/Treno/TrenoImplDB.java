@@ -2,6 +2,7 @@ package it.trenical.server.Treno;
 
 import it.trenical.grpc.Tratta;
 import it.trenical.server.Tratta.*;
+import it.trenical.server.notifiche.Observable;
 
 
 import java.sql.*;
@@ -9,9 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TrenoImplDB implements TrenoImpl{
+public class TrenoImplDB extends Observable implements TrenoImpl {
     private final String url = "jdbc:sqlite:db/treniCal.db";
-    private TrattaImpl db = new TrattaImplDB();
+    private static final TrenoImplDB instance = new TrenoImplDB();
+    public static TrenoImplDB getInstance() {
+        return instance;
+    }
+
+
+    private TrattaImpl db = TrattaImplDB.getInstance();
+
+    private TrenoImplDB() {
+
+        if (instance != null) {
+            throw new RuntimeException("Usa getInstance() per ottenere l'istanza di TrenoImplDB");
+        }
+    }
+
+
     @Override
     public Treno getTreno(String  trenoID) {
         String sql = "SELECT * FROM Treno WHERE trenoID = ?";
@@ -68,7 +84,7 @@ public class TrenoImplDB implements TrenoImpl{
             stmt.setInt(8,tr.getPostiTot());
             stmt.setInt(9, tr.getTempoPercorrenza());
 
-
+            notifyObservers("Aggiunto treno con ID: " + tr.getTrenoID());
             stmt.executeUpdate();
 
         } catch (SQLException e) {

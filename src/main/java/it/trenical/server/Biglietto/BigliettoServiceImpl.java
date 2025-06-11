@@ -15,9 +15,9 @@ import java.util.List;
 
 public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.BigliettoServiceImplBase {
 
-    private final BigliettoImpl db = new BigliettoDB();
-    private final TrenoImpl trenoDB = new TrenoImplDB();
-    private final ClienteImpl clienteDB = new ClienteImplDB();
+    private final BigliettoImpl db = BigliettoDB.getInstance();
+    private final TrenoImpl trenoDB = TrenoImplDB.getInstance();
+    private final ClienteImpl clienteDB = ClienteImplDB.getInstance();
 
     @Override
     public void addBiglietto(it.trenical.grpc.AddBigliettoRequest request, StreamObserver<it.trenical.grpc.AddBigliettoResponse> responseObserver) {

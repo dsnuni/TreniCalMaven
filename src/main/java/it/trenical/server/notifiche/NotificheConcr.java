@@ -1,6 +1,6 @@
 package it.trenical.server.notifiche;
 
-public class notificheConcr implements Observer {
+public class NotificheConcr implements Observer {
     @Override
     public void update(String messaggio) {
         System.out.println("[NOTIFICA] " + messaggio);

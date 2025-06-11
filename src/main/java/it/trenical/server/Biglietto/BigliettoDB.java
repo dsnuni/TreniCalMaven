@@ -13,9 +13,18 @@ import static it.trenical.server.Cliente.ClienteFactory.getClienteByCodiceFiscal
 import static it.trenical.server.Treno.TrenoFactory.getTrenoByID;
 
 public class BigliettoDB implements BigliettoImpl {
-
-
     private final String DB_URL = "jdbc:sqlite:db/treniCal.db";
+    private static final BigliettoDB instance = new BigliettoDB();
+    public static BigliettoDB getInstance() {
+        return instance;
+    }
+
+    private BigliettoDB() {
+        if (instance != null) {
+            throw new RuntimeException("Usa getInstance() per ottenere l'istanza di TrattaImplDB");
+        }
+    }
+
 
 
     @Override

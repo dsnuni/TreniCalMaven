@@ -8,6 +8,16 @@ import java.sql.*;
 
 public class TrattaImplDB implements TrattaImpl {
     private final String url = "jdbc:sqlite:db/treniCal.db";
+    private static final TrattaImplDB instance = new TrattaImplDB();
+    public static TrattaImplDB getInstance() {
+        return instance;
+    }
+
+    private TrattaImplDB() {
+        if (instance != null) {
+            throw new RuntimeException("Usa getInstance() per ottenere l'istanza di TrattaImplDB");
+        }
+    }
     @Override
     public TrattaPrototype getTratta(String trattaID) {
         String sql = "SELECT * FROM Cliente WHERE  trattaID = ?";

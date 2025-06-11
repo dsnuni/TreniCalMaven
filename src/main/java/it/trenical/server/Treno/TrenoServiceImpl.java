@@ -13,8 +13,8 @@ import java.util.List;
 
 
 public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoServiceImplBase {
-    private final TrenoImpl db = new TrenoImplDB();
-    private final TrattaImpl trattadb = new TrattaImplDB();
+    private final TrenoImpl db = TrenoImplDB.getInstance();
+    private final TrattaImpl trattadb = TrattaImplDB.getInstance();
     @Override
     public void addTreno(it.trenical.grpc.AddTrenoRequest request, StreamObserver<it.trenical.grpc.AddTrenoResponse> responseObserver) {
         TrenoConcr trenoJava = convertiProtoInJava(request.getTreno());

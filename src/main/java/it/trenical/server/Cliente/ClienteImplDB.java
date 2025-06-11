@@ -4,9 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteImplDB implements ClienteImpl {
-
-
     private static final String DB_URL = "jdbc:sqlite:db/treniCal.db";
+    private static final ClienteImplDB instance = new ClienteImplDB();
+    public static ClienteImplDB getInstance() {
+        return instance;
+    }
+
+    private ClienteImplDB() {
+        if (instance != null) {
+            throw new RuntimeException("Usa getInstance() per ottenere l'istanza di TrattaImplDB");
+        }
+    }
+
 
     @Override
     public void setCliente(Cliente cliente) {

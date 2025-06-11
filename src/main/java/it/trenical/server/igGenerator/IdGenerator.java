@@ -21,7 +21,7 @@ public class IdGenerator {
         String id = " ";
         while(flag) {
         id = "CL-" + UUID.randomUUID().toString().substring(0, 8);
-        ClienteImpl cl= new ClienteImplDB();
+        ClienteImpl cl= ClienteImplDB.getInstance();
         if(cl.getCliente(id) == null) {
             flag=false;
         }
@@ -33,7 +33,7 @@ public class IdGenerator {
         String id = " ";
         while(flag) {
             id = "TRCL-" + UUID.randomUUID().toString().substring(0, 8);
-            ClienteImplDB cl = new ClienteImplDB();
+            ClienteImplDB cl = ClienteImplDB.getInstance();
             if (cl.getClienteByCodiceCLiente(id) == null) {
                 flag = false;
             }
@@ -45,7 +45,7 @@ public class IdGenerator {
         String id = " ";
         while(flag) {
             id = "BGN" + UUID.randomUUID().toString().substring(0, 8);
-            BigliettoImpl bg= new BigliettoDB();
+            BigliettoImpl bg= BigliettoDB.getInstance();
             if(bg.getBiglietto(id) == null) {
                 flag=false;
             }
@@ -58,7 +58,7 @@ public class IdGenerator {
         String id = " ";
         while(flag) {
             id = "TRN-" + UUID.randomUUID().toString().substring(0, 8);
-            ClienteImpl cl= new ClienteImplDB();
+            ClienteImpl cl= ClienteImplDB.getInstance();
             if(cl.getCliente(id) == null) {
                 flag=false;
             }
@@ -70,7 +70,7 @@ public class IdGenerator {
         String id = " ";
         while(flag) {
             id = "TRT-" + UUID.randomUUID().toString().substring(0, 8);
-            ClienteImpl cl= new ClienteImplDB();
+            ClienteImpl cl= ClienteImplDB.getInstance();
             if(cl.getCliente(id) == null) {
                 flag=false;
             }
@@ -106,9 +106,9 @@ public static TrenoConcr dividiPosti(TrenoConcr tr) {
         String bigliettoID = generaBigliettoID();
         String trenoID = generaTrenoID();
 
-        ClienteImplDB cl = new ClienteImplDB();
-        BigliettoImpl bg = new BigliettoDB();
-        TrenoImpl tr = new TrenoImplDB();
+        ClienteImplDB cl = ClienteImplDB.getInstance();
+        BigliettoImpl bg = BigliettoDB.getInstance();
+        TrenoImpl tr = TrenoImplDB.getInstance();
 
         System.out.println("TEST GENERAZIONE ID:");
         System.out.println("Cliente ID: " + clienteID + " -> nel DB? " + (cl.getCliente(clienteID) != null));

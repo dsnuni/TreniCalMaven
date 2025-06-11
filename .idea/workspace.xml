@@ -4,28 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="creazione classe IdGenerator e inizio gui utente">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/CittaCoordinate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Observable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Observer.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="fine modifiche post ricevimento, inizio gestione notifiche">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/Generator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/PromozioniGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/PromozioniGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Prova.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Prova.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoConcr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/notificheConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificheConcr.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,8 +188,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GeneratorConcr" />
-        <item itemvalue="Application.ClientDashboardSwing" />
         <item itemvalue="Application.TreniCalServer" />
+        <item itemvalue="Application.ClientDashboardSwing" />
         <item itemvalue="Application.IdGenerator" />
         <item itemvalue="Application.Main" />
       </list>
@@ -235,7 +228,8 @@
       <workItem from="1749545782855" duration="1660000" />
       <workItem from="1749549774039" duration="155000" />
       <workItem from="1749563736744" duration="18067000" />
-      <workItem from="1749626364184" duration="3998000" />
+      <workItem from="1749626364184" duration="5198000" />
+      <workItem from="1749649342505" duration="4414000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -365,7 +359,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749490617059</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="fine modifiche post ricevimento, inizio gestione notifiche">
+      <option name="closed" value="true" />
+      <created>1749630891397</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1749630891397</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,7 +390,8 @@
     <MESSAGE value="fini implementazione e testing, funzioni add remove e refresh, inizio filtra" />
     <MESSAGE value="fine gui Amministrativa, e classe di simulazione pagamento" />
     <MESSAGE value="creazione classe IdGenerator e inizio gui utente" />
-    <option name="LAST_COMMIT_MESSAGE" value="creazione classe IdGenerator e inizio gui utente" />
+    <MESSAGE value="fine modifiche post ricevimento, inizio gestione notifiche" />
+    <option name="LAST_COMMIT_MESSAGE" value="fine modifiche post ricevimento, inizio gestione notifiche" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -47,7 +47,7 @@ public class PromozioniGenerator {
 
     private ArrayList tratteInSconto() {
         ArrayList<String> tratteSconto = new ArrayList();
-        TrenoImplDB db = new TrenoImplDB();
+        TrenoImplDB db = TrenoImplDB.getInstance();
         for (int i = 0; i < 10; i++) {
             int numero = random.nextInt(db.contaTreni());
             TrenoConcr tr = db.getTrenoDallaRiga(numero);
