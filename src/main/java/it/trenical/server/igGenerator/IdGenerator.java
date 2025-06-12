@@ -28,11 +28,15 @@ public class IdGenerator {
         }
         return id;
     }
-    public static String generaCodiceCliente(){
+    public static String generaCodiceCliente(boolean fidelizzato){
         boolean flag = true;
         String id = " ";
         while(flag) {
-            id = "TRCL-" + UUID.randomUUID().toString().substring(0, 8);
+            if(!fidelizzato) {
+                id = "TRCL-" + UUID.randomUUID().toString().substring(0, 8);
+            } else if(fidelizzato) {
+                id = "FTRCL-" + UUID.randomUUID().toString().substring(0, 8);
+            }
             ClienteImplDB cl = ClienteImplDB.getInstance();
             if (cl.getClienteByCodiceCLiente(id) == null) {
                 flag = false;
@@ -96,13 +100,21 @@ public static TrenoConcr dividiPosti(TrenoConcr tr) {
         return new TrenoConcr(tr.getTrenoID(),tr.getTipoTreno(),tr.getTratta(),0,postiPrima,postiSeconda,postiTerza,posti);
 }
 
+public static String generaPromozioniID() {
+    boolean flag = true;
+    String id = " ";
+    while(flag) {
+        id = "PR-" + UUID.randomUUID().toString().substring(0, 8);
+    }
+    return id;
+}
     public static void resetCounters() {
         trenoCounter.set(1000);
         bigliettoCounter.set(1);
     }
     public static void main(String[] args) {
         String clienteID = generaClienteID();
-        String codiceCliente = generaCodiceCliente();
+        String codiceCliente = generaCodiceCliente(false);
         String bigliettoID = generaBigliettoID();
         String trenoID = generaTrenoID();
 

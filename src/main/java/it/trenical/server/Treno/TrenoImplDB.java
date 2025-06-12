@@ -233,6 +233,36 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         return treni;
     }
 
+    public List<Treno> trovaTreniPerTrattaID(String trattaID) {
+        List<Treno> treni = new ArrayList<>();
+        TrattaImplDB dbtrt = TrattaImplDB.getInstance();
+        String sql = "SELECT * FROM Treno WHERE trattaID = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, trattaID);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Treno treno = new TrenoConcr(
+                        rs.getString("trenoID"),
+                        rs.getString("tipoTreno"),
+                        dbtrt.getTratta(trattaID),
+                        rs.getInt("prezzo"),
+                        rs.getInt("postiPrima"),
+                        rs.getInt("postiSeconda"),
+                        rs.getInt("postiTerza"),
+                        rs.getInt("numeroPosti"));
+                treni.add(treno);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore nella ricerca dei treni per trattaID: " + e.getMessage());
+        }
+
+        return treni;
+    }
 
 
 

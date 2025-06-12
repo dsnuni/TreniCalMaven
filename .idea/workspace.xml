@@ -4,20 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="notifiche db treni aggiunte, modifiche di tutti i db con singleton">
-      <change afterPath="$PROJECT_DIR$/src/test/java/TrattaTest.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="test rifatti">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/Promozione.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoConcr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ClienteTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ClienteTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TrenoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TrenoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +87,7 @@
     "JUnit.TrenoTest.testTrenoGetters.executor": "Run",
     "Maven.TreniCalGrpc [clean].executor": "Run",
     "Maven.TreniCalGrpc [compile].executor": "Run",
+    "Maven.TreniCalGrpc [test].executor": "Run",
     "Maven.TreniCalGrpc [validate].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -211,7 +208,8 @@
       <workItem from="1749549774039" duration="155000" />
       <workItem from="1749563736744" duration="18067000" />
       <workItem from="1749626364184" duration="5198000" />
-      <workItem from="1749649342505" duration="16572000" />
+      <workItem from="1749649342505" duration="16620000" />
+      <workItem from="1749719179123" duration="20566000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -357,7 +355,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749654294383</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="test rifatti">
+      <option name="closed" value="true" />
+      <created>1749667424174</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1749667424174</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -382,7 +388,8 @@
     <MESSAGE value="creazione classe IdGenerator e inizio gui utente" />
     <MESSAGE value="fine modifiche post ricevimento, inizio gestione notifiche" />
     <MESSAGE value="notifiche db treni aggiunte, modifiche di tutti i db con singleton" />
-    <option name="LAST_COMMIT_MESSAGE" value="notifiche db treni aggiunte, modifiche di tutti i db con singleton" />
+    <MESSAGE value="test rifatti" />
+    <option name="LAST_COMMIT_MESSAGE" value="test rifatti" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

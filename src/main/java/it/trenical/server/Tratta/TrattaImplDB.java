@@ -124,4 +124,26 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             return false;
         }
     }
+
+    public String trovaTrattaID(String cittaPartenza, String cittaArrivo) {
+        String sql = "SELECT trattaID FROM Tratta WHERE cittaPartenza = ? AND cittaArrivo = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, cittaPartenza);
+            pstmt.setString(2, cittaArrivo);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("trattaID");
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore nella ricerca della tratta: " + e.getMessage());
+        }
+
+        return null;
+    }
+
 }
