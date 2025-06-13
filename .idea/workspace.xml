@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="test rifatti">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/Promozione.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="creazione package promozioni">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/ApplicaPromozione.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/MainPromozioneTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/Promozione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/Promozione.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +64,8 @@
     "Application.GeneratorConcr.executor": "Run",
     "Application.IdGenerator.executor": "Run",
     "Application.Main.executor": "Run",
+    "Application.MainPromozioneTest.executor": "Run",
+    "Application.PromozioneTest.executor": "Run",
     "Application.Prova.executor": "Run",
     "Application.TreniCalServer.executor": "Run",
     "JUnit.BigliettoTest.executor": "Run",
@@ -118,6 +118,13 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration name="MainPromozioneTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MainPromozioneTest" />
+      <module name="TreniCal" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BigliettoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TreniCal" />
       <option name="PACKAGE_NAME" value="" />
@@ -146,15 +153,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TrattaTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TreniCal" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TrattaTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="TrenoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TreniCal" />
       <option name="PACKAGE_NAME" value="" />
@@ -166,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainPromozioneTest" />
         <item itemvalue="JUnit.BigliettoTest.testSetAndGetBiglietto" />
         <item itemvalue="JUnit.BigliettoTest" />
         <item itemvalue="JUnit.ClienteTest" />
         <item itemvalue="JUnit.TrenoTest" />
-        <item itemvalue="JUnit.TrattaTest" />
       </list>
     </recent_temporary>
   </component>
@@ -209,7 +207,8 @@
       <workItem from="1749563736744" duration="18067000" />
       <workItem from="1749626364184" duration="5198000" />
       <workItem from="1749649342505" duration="16620000" />
-      <workItem from="1749719179123" duration="20566000" />
+      <workItem from="1749719179123" duration="20611000" />
+      <workItem from="1749805749223" duration="12348000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -363,7 +362,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749667424174</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="creazione package promozioni">
+      <option name="closed" value="true" />
+      <created>1749747516372</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1749747516372</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -389,7 +396,8 @@
     <MESSAGE value="fine modifiche post ricevimento, inizio gestione notifiche" />
     <MESSAGE value="notifiche db treni aggiunte, modifiche di tutti i db con singleton" />
     <MESSAGE value="test rifatti" />
-    <option name="LAST_COMMIT_MESSAGE" value="test rifatti" />
+    <MESSAGE value="creazione package promozioni" />
+    <option name="LAST_COMMIT_MESSAGE" value="creazione package promozioni" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -402,6 +410,11 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/MainPromozioneTest.java</url>
+          <line>7</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

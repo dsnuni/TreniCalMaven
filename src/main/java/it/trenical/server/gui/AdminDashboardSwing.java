@@ -1,10 +1,14 @@
 package it.trenical.server.gui;
 import it.trenical.server.Biglietto.*;
 import it.trenical.server.Cliente.*;
+import it.trenical.server.Tratta.TrattaImpl;
 import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.*;
-
+import it.trenical.server.promozione.Promozione;
+import it.trenical.server.promozione.PromozioneImpl;
+import it.trenical.server.promozione.PromozioneImplDB;
+import it.trenical.server.Tratta.*;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
@@ -58,16 +62,18 @@ public class AdminDashboardSwing extends JFrame {
                 addButton.addActionListener(e -> apriFinestraAdd(tabellaNome,5));
                 break;
             case "Treno":
-                addButton.addActionListener(e -> apriFinestraAdd(tabellaNome,8));
+                addButton.addActionListener(e -> apriFinestraAdd(tabellaNome,9));
                 break;
             case "Biglietto":
-                addButton.addActionListener(e -> apriFinestraAdd(tabellaNome,9));
+                addButton.addActionListener(e -> apriFinestraAdd(tabellaNome,8));
                 break;
             case "Promozione":
                 addButton.addActionListener(e -> apriFinestraAdd(tabellaNome, 8));
                 break;
-                case "Tratte":
-                    addButton.addActionListener(e -> apriFinestraAdd(tabellaNome, 7));
+            case "Tratta":
+
+                addButton.addActionListener(e -> apriFinestraAdd(tabellaNome, 7));
+                break;
                 }
 
         removeButton.addActionListener(e -> {int row = table.getSelectedRow();
@@ -91,7 +97,7 @@ public class AdminDashboardSwing extends JFrame {
                     filtra(tabellaNome, opzioniC,model);
                     break;
                 case "Treno":
-                    String[] opzioniT = {"tipoTreno","trattaID","stazione_partenza","stazione_arrivo","durata_viaggio","distanza","data_partenza","data_arrivo"};
+                    String[] opzioniT = {"tipoTreno","trattaID","prezzo","postiPrima","postiSeconda","postiTerza","postiTot","tempoPercorrenza"};
                     filtra(tabellaNome, opzioniT,model);
                     break;
                 case "Biglietto":
@@ -102,7 +108,7 @@ public class AdminDashboardSwing extends JFrame {
                     String[] opzioneP = {"trenoID","trattaID","dataPartenza","dataFine","clientiFedelta","prezzoPartenza","scontistica"};
                     filtra(tabellaNome, opzioneP,model);
                     break;
-                case "Tratte":
+                case "Tratta":
                     String[] opzioneT = {"stazione_partenza", "stazione_arrivo", "data_partenza","data_arrivo", "distanza", "durata_viaggio"};
                     filtra(tabellaNome, opzioneT,model);
                     break;
@@ -149,58 +155,7 @@ public class AdminDashboardSwing extends JFrame {
             //DefaultTableModel model = (DefaultTableModel) table.getModel();
            // model.setRowCount(0);
 
-          //  caricaDatiDaDB2(tabella,model,colonna,valore);
-//            switch (tabella) {
-//                case "Cliente":
-//                    DefaultTableModel nuovoModel = new DefaultTableModel();
-//                    nuovoModel.setRowCount(0);
-//                    ClienteImplDB clientedb = new ClienteImplDB();
-//                    for (Cliente c : clientedb.getByFiltro(colonna, valore)) {
-//                        nuovoModel.addRow(new Object[]{
-//                                c.getCodiceFiscale(),
-//                                c.getNome(),
-//                                c.getCognome(),
-//                                c.getCodiceCliente(),
-//                                c.getEtà()
-//                        });
-//                        System.out.println(c.getEtà());
-//
-//                    }
-//                break;
-//                case "Treno":
-//                    TrenoImplDB trenodb = new TrenoImplDB();
-//                    for (Treno t : trenodb.getByFiltro(colonna, valore)) {
-//                        TrattaPrototype tr = t.getTratta();
-//                        model.addRow(new Object[]{
-//                                t.getTrenoID(),
-//                                t.getTipoTreno(),
-//                                tr.getCodiceTratta(),
-//                                tr.getStazionePartenza(),
-//                                tr.getStazioneArrivo(),
-//                                tr.getDistanza(),
-//                                tr.getTempoPercorrenza(),
-//                                tr.getDataPartenza(),
-//                                tr.getDataArrivo()
-//                        });
-//                    }
-//                    break;
-//                case "Biglietto":
-//                    BigliettoDB bigliettodb = new BigliettoDB();
-//                    for (Biglietto b : bigliettodb.getByFiltro(colonna, valore)) {
-//                        model.addRow(new Object[]{
-//                                b.getBigliettoID(),
-//                                b.getTitolareBiglietto().getCodiceFiscale(),
-//                                b.getTrenoBiglietto().getTrenoID(),
-//                                b.getCarrozza(),
-//                                b.getPosto(),
-//                                b.getClass().getSimpleName(),
-//                                String.join(",", b.getPriorità()),
-//                                b.getPrezzo()
-//                        });
-//                    }
-//                    break;
-//
-//            }
+            caricaDatiDaDB2(tabella,model,colonna,valore);
 
         }
     }
@@ -262,7 +217,7 @@ public class AdminDashboardSwing extends JFrame {
     }
 
     private void rimuoviDaDB(String tabella, Object id) {
-        System.out.println(id.toString());
+
         switch (tabella) {
             case "Cliente":
                 ClienteImpl clientedb = ClienteImplDB.getInstance();
@@ -282,6 +237,7 @@ public class AdminDashboardSwing extends JFrame {
     }
 
     private void apriFinestraAdd(String tabella, int campi) {
+
         JFrame frame = new JFrame("Add new entry to " + tabella);
         frame.setSize(400, 300);
         frame.setLocationRelativeTo(null);
@@ -289,7 +245,7 @@ public class AdminDashboardSwing extends JFrame {
 
         JPanel inputPanel = new JPanel(new GridLayout(0, 2));
         JTextField[] fields = new JTextField[campi];
-        assembla(inputPanel,fields,campi); //switch
+        assembla(inputPanel,fields, tabella); //switch
 
         JButton submit = new JButton("Submit");
         submit.addActionListener(e -> {
@@ -315,6 +271,14 @@ public class AdminDashboardSwing extends JFrame {
                 BigliettoImpl bigliettodb = BigliettoDB.getInstance();
                 bigliettodb.setBiglietto(creaBiglietto(tabellaNome,fields,bigliettodb));
                 break;
+            case "Promozione" :
+                PromozioneImpl promozionedb = PromozioneImplDB.getInstance();
+               promozionedb.setPromozione(creaPromozione(tabellaNome,fields));
+                break;
+            case "Tratta" :
+
+                TrattaImpl trattadb = TrattaImplDB.getInstance();
+                trattadb.setTratta(creaTratta(tabellaNome,fields));
 
         }
     }
@@ -327,9 +291,9 @@ public class AdminDashboardSwing extends JFrame {
         });
     }
 
-    private JTextField[] assembla(JPanel inputPanel,JTextField[] fields, int campi) {
-        switch(campi) {
-            case 5:
+    private JTextField[] assembla(JPanel inputPanel,JTextField[] fields, String tabella) {
+        switch(tabella) {
+            case "Cliente":
 
                 inputPanel.add(new JLabel("codiceFiscale:"));
                 fields[0] = new JTextField();
@@ -351,7 +315,7 @@ public class AdminDashboardSwing extends JFrame {
                 fields[4] = new JTextField();
                 inputPanel.add(fields[4]);
                 break;
-            case 9:
+            case "Treno":
                 inputPanel.add(new JLabel("trenoID:"));
                 fields[0] = new JTextField();
                 inputPanel.add(fields[0]);
@@ -361,26 +325,26 @@ public class AdminDashboardSwing extends JFrame {
                 inputPanel.add(new JLabel("TrattaID:"));
                 fields[2] = new JTextField();
                 inputPanel.add(fields[2]);
-                inputPanel.add(new JLabel("stazionePartenza:"));
+                inputPanel.add(new JLabel("prezzo:"));
                 fields[3] = new JTextField();
                 inputPanel.add(fields[3]);
-                inputPanel.add(new JLabel("stazioneArrivo:"));
+                inputPanel.add(new JLabel("postiPrima:"));
                 fields[4] = new JTextField();
                 inputPanel.add(fields[4]);
-                inputPanel.add(new JLabel("durataViaggio:"));
+                inputPanel.add(new JLabel("postiSeconda:"));
                 fields[5] = new JTextField();
                 inputPanel.add(fields[5]);
-                inputPanel.add(new JLabel("distanza:"));
+                inputPanel.add(new JLabel("postiTerza :"));
                 fields[6] = new JTextField();
                 inputPanel.add(fields[6]);
-                inputPanel.add(new JLabel("dataPartenza:"));
+                inputPanel.add(new JLabel("prezzoTot:"));
                 fields[7] = new JTextField();
                 inputPanel.add(fields[7]);
-                inputPanel.add(new JLabel("dataArrivo:"));
+                inputPanel.add(new JLabel(" tempoPercorrenza:"));
                 fields[8] = new JTextField();
                 inputPanel.add(fields[8]);
                 break;
-            case 8:
+            case "Biglietto":
                 inputPanel.add(new JLabel("bigliettoID:"));
                 fields[0] = new JTextField();
                 inputPanel.add(fields[0]);
@@ -406,6 +370,54 @@ public class AdminDashboardSwing extends JFrame {
                 fields[7] = new JTextField();
                 inputPanel.add(fields[7]);
                 break;
+            case "Promozione":
+                inputPanel.add(new JLabel("promozioneID:"));
+                fields[0] = new JTextField();
+                inputPanel.add(fields[0]);
+                inputPanel.add(new JLabel("trenoID:"));
+                fields[1] = new JTextField();
+                inputPanel.add(fields[1]);
+                inputPanel.add(new JLabel("trattaID:"));
+                fields[2] = new JTextField();
+                inputPanel.add(fields[2]);
+                inputPanel.add(new JLabel("dataPartenza:"));
+                fields[3] = new JTextField();
+                inputPanel.add(fields[3]);
+                inputPanel.add(new JLabel("dataFine:"));
+                fields[4] = new JTextField();
+                inputPanel.add(fields[4]);
+                inputPanel.add(new JLabel("perezzoPartenza:"));
+                fields[5] = new JTextField();
+                inputPanel.add(fields[5]);
+                inputPanel.add(new JLabel("scontistica :"));
+                fields[6] = new JTextField();
+                inputPanel.add(fields[6]);
+               //ricordati il booleano
+                break;
+            case "Tratta":
+                inputPanel.add(new JLabel("trattaID:"));
+                fields[0] = new JTextField();
+                inputPanel.add(fields[0]);
+                inputPanel.add(new JLabel("stazione_Partenza:"));
+                fields[1] = new JTextField();
+                inputPanel.add(fields[1]);
+                inputPanel.add(new JLabel("stazione_arrivo:"));
+                fields[2] = new JTextField();
+                inputPanel.add(fields[2]);
+                inputPanel.add(new JLabel("data_partenza:"));
+                fields[3] = new JTextField();
+                inputPanel.add(fields[3]);
+                inputPanel.add(new JLabel("data_arrivo:"));
+                fields[4] = new JTextField();
+                inputPanel.add(fields[4]);
+                inputPanel.add(new JLabel("distanza:"));
+                fields[5] = new JTextField();
+                inputPanel.add(fields[5]);
+                inputPanel.add(new JLabel("durata_viaggio :"));
+                fields[6] = new JTextField();
+                inputPanel.add(fields[6]);
+
+                break;
 
         }
         return fields;
@@ -426,38 +438,68 @@ public class AdminDashboardSwing extends JFrame {
         return null;
         }
     private Treno creaTreno(String tabellaNome, JTextField[] fields) {
-//
-//        if(tabellaNome.equals("Treno")) {
-//            Treno tr = new TrenoConcr(
-//                    fields[0].getText(),
-//                    fields[1].getText(),
-//                    fields[2].getText(),
-//                    Integer.parseInt([3].getText()),
-//                            fields[4].getText(),
-//                            fields[7].getText(),
-//                            fields[8].getText(),
-//                            Integer.parseInt(fields[5].getText()),
-//                            Integer.parseInt(fields[6].getText())
-//                    )
-//            );
-//            return tr;
-//        }
+            TrattaImpl trdb = TrattaImplDB.getInstance();
+          if(tabellaNome.equals("Treno")) {
+              Treno tr = new TrenoConcr(
+                      fields[0].getText(),
+                      fields[1].getText(),
+                      trdb.getTratta(fields[2].getText()),
+                      Integer.parseInt(fields[3].getText()),
+                      Integer.parseInt(fields[4].getText()),
+                      Integer.parseInt(fields[5].getText()),
+                      Integer.parseInt(fields[6].getText()),
+                      Integer.parseInt(fields[7].getText())
+
+             );
+             return tr;
+        }
         return null;
     }
     private Biglietto creaBiglietto(String tabellaNome, JTextField[] fields, BigliettoImpl db) {
         if(tabellaNome.equals("Biglietto")) {
             BPrimaClasse bPrimaClasse = new BPrimaClasse.Builder()
-                    .bigliettoID(fields[0].getText()) // id
-                    //.classe(fields[1].getText()) // es. "SecondaClasse", sarà gestito da .getClass().getSimpleName()
-                    .trenoBiglietto(TrenoFactory.getTrenoByID(fields[2].getText())) // treno_id
-                    .carrozza(fields[3].getText()) // carrozza
-                    .posto(fields[4].getText()) // posto
-                    .titolareBiglietto(ClienteFactory.getClienteByCodiceFiscale(fields[1].getText())) // cliente_id
-                    .priorità(List.of(fields[6].getText().split(","))) // priorità (CSV → List<String>)
-                    .prezzo(Integer.parseInt(fields[7].getText())) // prezzo
+                    .bigliettoID(fields[0].getText())
+                    .trenoBiglietto(TrenoFactory.getTrenoByID(fields[2].getText()))
+                    .carrozza(fields[3].getText())
+                    .posto(fields[4].getText())
+                    .titolareBiglietto(ClienteFactory.getClienteByCodiceFiscale(fields[1].getText()))
+                    .priorità(List.of(fields[6].getText().split(",")))
+                    .prezzo(Integer.parseInt(fields[7].getText()))
                     .implementazione(db)
                     .build();
             return bPrimaClasse;
+        }
+        return null;
+    }
+
+    private TrattaPrototype creaTratta(String tabellaNome, JTextField[] fields) {
+        if(tabellaNome.equals("Tratta")) {
+            TrattaPrototype tratta = new TrattaStandard(
+                    fields[0].getText(),
+                    fields[1].getText(),
+                    fields[2].getText(),
+                    fields[3].getText(),
+                    fields[4].getText(),
+                    Integer.parseInt(fields[5].getText()),
+                    Integer.parseInt(fields[6].getText())
+            );
+            return tratta;
+        }
+        return null;
+    }
+
+    private Promozione creaPromozione(String tabellaNome, JTextField[] fields) {
+        if(tabellaNome.equals("Promozione")) {
+            Promozione pr =  new Promozione.PromozioneBuilder()
+                    .setPromozioneID(fields[0].getText())
+                    .setTreno(TrenoFactory.getTrenoByID(fields[1].getText()))
+                    .setTratta(TrattaFactory.getTrattaByID(fields[2].getText()))
+                    .setDataPartenza(fields[3].getText())
+                    .setDataFine(fields[4].getText())
+                    .setPrezzoPartenza(Integer.parseInt(fields[5].getText()))
+                    .setScontistica(Integer.parseInt(fields[6].getText()))
+                    .build();
+            return pr;
         }
         return null;
     }

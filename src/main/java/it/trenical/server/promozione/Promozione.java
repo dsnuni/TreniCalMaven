@@ -15,7 +15,7 @@ public class Promozione {
     private String dataPartenza;
     private String dataFine;
     private boolean clientiFedelta;
-    private int prezzoPartenza;
+    private static int prezzoPartenza;
     private double scontistica;
 
 

@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PromozioneImplDB extends Observable {
+public class PromozioneImplDB extends Observable implements PromozioneImpl {
 
     private static final String DB_URL = "jdbc:sqlite:db/treniCal.db";
     private static final PromozioneImplDB instance = new PromozioneImplDB();
@@ -100,6 +100,7 @@ public class PromozioneImplDB extends Observable {
         }
         return pr;
     }
+
     // Esempio di recupero
     public List<Promozione> getAllPromozioni() {
         List<Promozione> list = new ArrayList<>();
@@ -140,4 +141,53 @@ public class PromozioneImplDB extends Observable {
 
         return list;
     }
+    public List<Promozione> cercaPromozioniContenenti(String chiave) {
+        List<Promozione> risultati = new ArrayList<>();
+        TrenoImpl dbtrn = TrenoImplDB.getInstance();
+        TrattaImpl dbtrt = TrattaImplDB.getInstance();
+        String sql = "SELECT * FROM Promozione";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String promozioneID = rs.getString("promozioneID");
+                String dataPartenza = rs.getString("dataPartenza");
+                String dataFine = rs.getString("dataFine");
+                String trattaID = rs.getString("trattaID");
+                String trenoID = rs.getString("trenoID");
+                Boolean clientiFedelta = rs.getBoolean("clientiFedelta");
+                int prezzoPartenza = rs.getInt("prezzoPartenza");
+                int scontistica = rs.getInt("scontistica");
+
+                // Controllo se uno dei campi contiene la chiave (case-sensitive)
+                if ((promozioneID != null && promozioneID.contains(chiave)) ||
+                        (dataPartenza != null && dataPartenza.contains(chiave)) ||
+                        (dataFine != null && dataFine.contains(chiave)) ||
+                        (trattaID != null && trattaID.contains(chiave)) ||
+                        (trenoID != null && trenoID.contains(chiave))) {
+
+                    Promozione promo = new Promozione.PromozioneBuilder()
+                            .setPromozioneID(promozioneID)
+                            .setTreno(dbtrn.getTreno(trenoID))
+                            .setTratta(dbtrt.getTratta(trattaID))
+                            .setDataPartenza(dataPartenza)
+                            .setDataFine(dataFine)
+                            .setClientiFedelta(clientiFedelta)
+                            .setPrezzoPartenza(prezzoPartenza)
+                            .setScontistica(scontistica)
+                            .build();
+
+                    risultati.add(promo);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca delle promozioni: " + e.getMessage());
+        }
+
+        return risultati;
+    }
+
 }
