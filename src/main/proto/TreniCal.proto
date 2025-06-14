@@ -36,7 +36,7 @@ message RemoveClienteResponse {
 }
 
 // Tratta messages
-message Tratta {
+message TrattaStandard {
   string codiceTratta = 1;
   string stazionePartenza = 2;
   string stazioneArrivo = 3;
@@ -48,7 +48,7 @@ message Tratta {
 
 
 message AddTrattaRequest {
-  Tratta tratta = 1;
+  TrattaStandard tratta = 1;
 }
 
 message AddTrattaResponse {
@@ -65,6 +65,13 @@ message RemoveTrattaRequest {
 
 message RemoveTrattaResponse {
   bool success = 1;
+}
+message GetAllTratteRequest {
+
+}
+
+message GetAllTratteResponse {
+  repeated TrattaStandard tratta = 1;
 }
 
 // Treno messages
@@ -100,9 +107,19 @@ message RemoveTrenoResponse {
   bool success = 1;
 }
 
-message GetAllTreniRequest {}
+message GetAllTreniRequest {
+
+}
 
 message GetAllTreniResponse {
+  repeated Treno treni = 1;
+}
+
+message GetTreniByTrattaIDRequest {
+  string trattaID = 1;
+}
+
+message GetTreniByTrattaIDResponse {
   repeated Treno treni = 1;
 }
 
@@ -137,6 +154,15 @@ message RemoveBigliettoRequest {
 message RemoveBigliettoResponse {
   bool success = 1;
 }
+
+message GetBigliettiByFiltroRequest {
+  string colonna = 1;
+  string valore = 2;
+}
+
+message GetBigliettiByFiltroResponse {
+  repeated Biglietto biglietti = 1;
+}
 // ID Generator
 message GetGeneratedIDRequest {}
 
@@ -160,17 +186,21 @@ service TrenoService {
   rpc GetTreno(GetTrenoRequest) returns (Treno);
   rpc RemoveTreno(RemoveTrenoRequest) returns (RemoveTrenoResponse);
   rpc GetAllTreni(GetAllTreniRequest) returns (GetAllTreniResponse);
+  rpc GetTreniByTrattaID(GetTreniByTrattaIDRequest) returns (GetTreniByTrattaIDResponse);
 }
 
 service BigliettoService {
   rpc AddBiglietto(AddBigliettoRequest) returns (AddBigliettoResponse);
   rpc GetBiglietto(GetBigliettoRequest) returns (Biglietto);
   rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
+  rpc GetBigliettiByFiltro (GetBigliettiByFiltroRequest) returns (GetBigliettiByFiltroResponse);
+
 }
 service TrattaService {
-  rpc AddTratta(AddTrenoRequest) returns (AddTrattaResponse);
-  rpc GetTratta(GetTrenoRequest) returns (Tratta);
-  rpc RemoveTratta(RemoveTrenoRequest) returns (RemoveTrattaResponse);
+  rpc AddTratta(AddTrattaRequest) returns (AddTrattaResponse);
+  rpc GetTratta(GetTrattaRequest) returns (TrattaStandard);
+  rpc RemoveTratta(RemoveTrattaRequest) returns (RemoveTrattaResponse);
+  rpc GetAllTratte(GetAllTratteRequest) returns (GetAllTratteResponse);
 }
 service IDGeneratorService {
   rpc GetGeneratedID(GetGeneratedIDRequest) returns (GetGeneratedIDResponse);

@@ -2,6 +2,8 @@ package it.trenical.server.Biglietto;
 
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import it.trenical.grpc.GetBigliettiByFiltroRequest;
+import it.trenical.grpc.GetBigliettiByFiltroResponse;
 import it.trenical.server.Biglietto.*;
 import it.trenical.server.Cliente.Cliente;
 import it.trenical.server.Cliente.ClienteConcr;
@@ -136,4 +138,35 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
                 .setPrezzo(java.getPrezzo())
                 .build();
     }
+
+    @Override
+    public void getBigliettiByFiltro(GetBigliettiByFiltroRequest request,
+                                     StreamObserver<GetBigliettiByFiltroResponse> responseObserver) {
+        try {
+            String colonna = request.getColonna();
+            String valore = request.getValore();
+
+            System.out.println("Ricevuta richiesta getBigliettiByFiltro: colonna=" + colonna + ", valore=" + valore);
+
+            List<it.trenical.server.Biglietto.Biglietto> risultati = db.getByFiltro(colonna, valore);
+            GetBigliettiByFiltroResponse.Builder responseBuilder = GetBigliettiByFiltroResponse.newBuilder();
+
+            for (it.trenical.server.Biglietto.Biglietto b : risultati) {
+                it.trenical.grpc.Biglietto proto = convertiJavaInProto(b);
+                responseBuilder.addBiglietti(proto);
+            }
+
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+
+        } catch (Exception e) {
+            System.err.println("Errore in getBigliettiByFiltro: " + e.getMessage());
+            e.printStackTrace();
+            responseObserver.onError(Status.INTERNAL
+                    .withDescription("Errore durante il filtro dei biglietti")
+                    .withCause(e)
+                    .asRuntimeException());
+        }
+    }
+
 }

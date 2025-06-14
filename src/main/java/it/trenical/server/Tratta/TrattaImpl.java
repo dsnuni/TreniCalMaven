@@ -1,7 +1,12 @@
 package it.trenical.server.Tratta;
 
+import it.trenical.server.Treno.Treno;
+
+import java.util.List;
+
 public interface TrattaImpl {
-     TrattaPrototype getTratta(String trattaID);
+     TrattaStandard getTratta(String trattaID);
      void setTratta( TrattaPrototype tratta );
      boolean removeTratta( String trattaID);
+      List<TrattaStandard> getAllTratte();
 }

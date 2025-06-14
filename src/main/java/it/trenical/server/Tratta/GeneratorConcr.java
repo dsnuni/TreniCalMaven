@@ -213,7 +213,7 @@ public class GeneratorConcr implements Generator {
     }
 
     public static void main(String[] args) {
-        TrattaPrototype prototipoBase = new TrattaStandard();
+        TrattaStandard prototipoBase = new TrattaStandard();
         Generator generatore = new GeneratorConcr(prototipoBase);
         TrenoImplDB dbt= TrenoImplDB.getInstance();
         TrattaImplDB dbt2 = TrattaImplDB.getInstance();

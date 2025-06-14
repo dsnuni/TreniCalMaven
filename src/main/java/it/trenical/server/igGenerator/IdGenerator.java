@@ -4,6 +4,7 @@ import it.trenical.server.Biglietto.BigliettoDB;
 import it.trenical.server.Biglietto.BigliettoImpl;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
+import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImpl;
 import it.trenical.server.Treno.TrenoImplDB;
@@ -97,7 +98,7 @@ public static TrenoConcr dividiPosti(TrenoConcr tr) {
         int postiPrima= (posti/100)*10;
         int postiSeconda = (posti/100)*40;
         int postiTerza = (posti/100)*50;
-        return new TrenoConcr(tr.getTrenoID(),tr.getTipoTreno(),tr.getTratta(),0,postiPrima,postiSeconda,postiTerza,posti);
+        return new TrenoConcr(tr.getTrenoID(),tr.getTipoTreno(), (TrattaStandard) tr.getTratta(),0,postiPrima,postiSeconda,postiTerza,posti);
 }
 
 public static String generaPromozioniID() {

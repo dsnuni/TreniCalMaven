@@ -11,7 +11,7 @@ public abstract class Treno  {
     private static final String[] tipiTreni = {"FrecciaArgento","FrecciaRossa","FrecciaBianca","Regionale"};
     private String trenoID;
     private String tipoTreno;
-    private TrattaPrototype tratta;
+    private TrattaStandard tratta;
     private int prezzo;
     private int postiPrima;
     private int postiSeconda;
@@ -19,8 +19,9 @@ public abstract class Treno  {
     private int postiTot;
     private int tempoPercorrenza;
 
-    public Treno(String trenoID, String tipoTrenoI, TrattaPrototype tratta,
+    public Treno(String trenoID, String tipoTrenoI, TrattaStandard tratta,
                  int prezzo, int postiPrima, int postiSeconda,int postiTerza, int postiTot) {
+        System.out.println("tratta passata: " + tratta);
         this.trenoID = trenoID;
         this.tipoTreno = this.setTipoTreno(tipoTrenoI);
         this.tratta = tratta;
@@ -33,27 +34,58 @@ public abstract class Treno  {
 
     }
     private int setTempoPercorrenza() {
-        System.out.println("ciao"+tratta);
-        int distanza = tratta.getDistanza();
-        System.out.println("distanza"+distanza);
-        switch(tipoTreno){
-            case "FrecciaArgento" :
-                return (distanza/300);
-            case "FrecciaRossa" :
-                 return (distanza/250);
-            case "FrecciaBianca" :
-                return (distanza/200);
-            case "Regionale" :
-                return (distanza/150);
+        System.out.println("📌 Avvio calcolo tempo percorrenza");
+
+        if (this.tratta == null) {
+            System.err.println("❌ ERRORE: Tratta non inizializzata (null)");
+            throw new IllegalStateException("Tratta non inizializzata");
         }
-        return 007;
+
+        if (this.tipoTreno == null || this.tipoTreno.isEmpty()) {
+            System.err.println("❌ ERRORE: tipoTreno non inizializzato");
+            throw new IllegalStateException("tipoTreno non inizializzato");
+        }
+
+        System.out.println("✅ Tratta passata: " + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo()
+                + ", distanza: " + tratta.getDistanza() + " km");
+
+        double distanza = tratta.getDistanza();
+        double velocita;
+
+        switch (tipoTreno) {
+            case "FrecciaArgento":
+                velocita = 300;
+                break;
+            case "FrecciaRossa":
+                velocita = 250;
+                break;
+            case "FrecciaBianca":
+                velocita = 200;
+                break;
+            case "Regionale":
+                velocita = 150;
+                break;
+            default:
+                System.err.println("❌ ERRORE: Tipo treno non riconosciuto: " + tipoTreno);
+                throw new IllegalArgumentException("Tipo treno non valido: " + tipoTreno);
+        }
+
+        double tempo = distanza / velocita;
+        int tempoArrotondato = (int) Math.ceil(tempo);
+
+        System.out.println("🛤 TipoTreno: " + tipoTreno + " → Velocità media: " + velocita + " km/h");
+        System.out.println("⏱ Tempo stimato (raw): " + tempo + " h → Arrotondato: " + tempoArrotondato + " h");
+
+        return tempoArrotondato;
+
     }
+
 
     private String setTipoTreno(String tipoTrenoI) {
         if( Arrays.asList(tipiTreni).contains(tipoTrenoI)) {
             return tipoTrenoI;
         }
-        return null;
+        throw new IllegalArgumentException("Tipo di treno non valido: " + tipoTrenoI);
     }
     public Treno() {
 
@@ -73,7 +105,7 @@ public abstract class Treno  {
         return tipoTreno;
     }
 
-   public TrattaPrototype getTratta() {
+   public TrattaStandard getTratta() {
         return tratta;
    }
 

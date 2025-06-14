@@ -2,14 +2,13 @@ package it.trenical.server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import it.trenical.server.Biglietto.BigliettoServiceImpl;
 import it.trenical.server.Cliente.ClienteServiceImpl;
-import it.trenical.server.Treno.TrenoConcr;
+import it.trenical.server.Tratta.TrattaServiceImpl;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.Treno.TrenoServiceImpl;
-import it.trenical.server.Biglietto.BigliettoServiceImpl;
 import it.trenical.server.igGenerator.IDGeneratorServiceImpl;
 import it.trenical.server.notifiche.NotificheConcr;
-import it.trenical.server.notifiche.Observer;
 
 import java.io.IOException;
 
@@ -17,17 +16,17 @@ public class TreniCalServer {
     public static void main(String[] args) throws IOException, InterruptedException {
         TrenoImplDB trenoDB = TrenoImplDB.getInstance();
         trenoDB.addObserver(new NotificheConcr());
+
         Server server = ServerBuilder.forPort(50051)
                 .addService(new ClienteServiceImpl())
                 .addService(new TrenoServiceImpl())
                 .addService(new BigliettoServiceImpl())
-                .addService( new IDGeneratorServiceImpl())
+                 .addService(new TrattaServiceImpl())
+                .addService(new IDGeneratorServiceImpl())
                 .build();
 
         server.start();
         System.out.println("Server gRPC avviato sulla porta 50051");
         server.awaitTermination();
-
-
     }
 }

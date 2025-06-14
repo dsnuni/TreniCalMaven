@@ -1,7 +1,7 @@
 package it.trenical.server.Treno;
-
-import it.trenical.grpc.Tratta;
-import it.trenical.server.Tratta.*;
+import it.trenical.server.Tratta.TrattaImpl;
+import it.trenical.server.Tratta.TrattaImplDB;
+import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.notifiche.Observable;
 
 
@@ -50,7 +50,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiTot = rs.getInt("postiTot");
                // int tempoPercorrenza = rs.getInt("tempoPercorrenza");
 
-                TrattaPrototype tratta =  db.getTratta(trattaID);
+                TrattaStandard tratta =  db.getTratta(trattaID);
 
                 t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
 
@@ -72,7 +72,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            TrattaPrototype tratta = tr.getTratta();
+            TrattaStandard tratta = tr.getTratta();
 
             stmt.setString(1, tr.getTrenoID());
             stmt.setString(2, tr.getTipoTreno());
@@ -161,7 +161,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
 
-                TrattaPrototype tratta =  db.getTratta(trattaID);
+                TrattaStandard tratta =  db.getTratta(trattaID);
 
                 t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
 
@@ -191,7 +191,8 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
 
-                TrattaPrototype tratta =  db.getTratta(trattaID);
+
+                TrattaStandard tratta =  db.getTratta(trattaID);
 
                 Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
                 treni.add(t);
@@ -221,7 +222,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
 
-                TrattaPrototype tratta =  db.getTratta(trattaID);
+                TrattaStandard tratta =  db.getTratta(trattaID);
 
                 Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
                 treni.add(t);
@@ -233,11 +234,11 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         return treni;
     }
 
-    public List<Treno> trovaTreniPerTrattaID(String trattaID) {
+    public List<Treno> getTrenoByTrattaID(String trattaID) {
         List<Treno> treni = new ArrayList<>();
         TrattaImplDB dbtrt = TrattaImplDB.getInstance();
         String sql = "SELECT * FROM Treno WHERE trattaID = ?";
-
+        System.out.println("cerco tratte");
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -253,7 +254,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                         rs.getInt("postiPrima"),
                         rs.getInt("postiSeconda"),
                         rs.getInt("postiTerza"),
-                        rs.getInt("numeroPosti"));
+                        rs.getInt("postiTot"));
                 treni.add(treno);
             }
 

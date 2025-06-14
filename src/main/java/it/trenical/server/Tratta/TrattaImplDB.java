@@ -1,8 +1,12 @@
 package it.trenical.server.Tratta;
 
+import it.trenical.server.Treno.Treno;
+import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.notifiche.Observable;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrattaImplDB extends Observable implements TrattaImpl {
     private final String url = "jdbc:sqlite:db/treniCal.db";
@@ -17,9 +21,9 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
         }
     }
     @Override
-    public TrattaPrototype getTratta(String trattaID) {
+    public TrattaStandard getTratta(String trattaID) {
         String sql = "SELECT * FROM Tratta WHERE  trattaID = ?";
-        TrattaPrototype tratta = null;
+        TrattaStandard tratta = null;
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -84,7 +88,7 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
         }
         return 0;
     }
-    public TrattaPrototype getTrattaByIndex(int index) {
+    public TrattaStandard getTrattaByIndex(int index) {
         String sql = "SELECT * FROM Tratta ORDER BY trattaID LIMIT 1 OFFSET ?";
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -144,6 +148,32 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
         }
 
         return null;
+    }
+
+    @Override
+    public List<TrattaStandard> getAllTratte() {
+        List<TrattaStandard> tratte = new ArrayList<>();
+        String sql = "SELECT * FROM Tratta";
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                        String trattaID = rs.getString("trattaID");
+                        String stazione_Partenza = rs.getString("stazione_partenza");
+                        String stazione_arrivo = rs.getString("stazione_arrivo");
+                        String data_partenza = rs.getString("data_partenza");
+                        String data_arrivo = rs.getString("data_arrivo");
+                        int distanza = rs.getInt("distanza");
+                        int durata_viaggio = rs.getInt("durata_viaggio");
+
+                TrattaStandard trt = new TrattaStandard(trattaID,stazione_Partenza,stazione_arrivo,data_partenza,data_arrivo,distanza,durata_viaggio);
+
+                tratte.add(trt);
+
+            }}catch (SQLException e) {
+            System.err.println("Errore filtro treno: " + e.getMessage());
+        }
+        return tratte;
     }
 
 }

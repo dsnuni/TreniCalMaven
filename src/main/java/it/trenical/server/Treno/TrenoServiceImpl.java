@@ -2,7 +2,7 @@ package it.trenical.server.Treno;
 
 import io.grpc.stub.StreamObserver;
 import it.trenical.grpc.GetAllTreniResponse;
-import it.trenical.grpc.Tratta;
+import it.trenical.grpc.GetTreniByTrattaIDResponse;
 import it.trenical.grpc.Treno;
 import it.trenical.server.Tratta.TrattaImpl;
 import it.trenical.server.Tratta.TrattaImplDB;
@@ -52,15 +52,55 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
     }
     @Override
     public void getAllTreni(it.trenical.grpc.GetAllTreniRequest request, StreamObserver<it.trenical.grpc.GetAllTreniResponse> responseObserver) {
-        List<it.trenical.server.Treno.Treno> listaTreni = db.getAllTreno();
+        try {
+            List<it.trenical.server.Treno.Treno> listaTreni = db.getAllTreno();
+            System.out.println(listaTreni);
+            GetAllTreniResponse.Builder response = GetAllTreniResponse.newBuilder();
 
-        GetAllTreniResponse.Builder response = GetAllTreniResponse.newBuilder();
-        for (it.trenical.server.Treno.Treno trenoJava : listaTreni) {
-            Treno trenoProto = convertiJavaInProto((TrenoConcr) trenoJava);
-            response.addTreni(trenoProto);
+            if (listaTreni != null) {
+                for (it.trenical.server.Treno.Treno trenoJava : listaTreni) {
+                    Treno trenoProto = convertiJavaInProto((TrenoConcr) trenoJava);
+                    response.addTreni(trenoProto);
+                    System.out.println(trenoProto);
+                }
+            }
+
+            responseObserver.onNext(response.build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(io.grpc.Status.INTERNAL
+                    .withDescription("Errore interno in getAllTreni()")
+                    .withCause(e)
+                    .asRuntimeException());
         }
-        responseObserver.onNext(response.build());
-        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getTreniByTrattaID(it.trenical.grpc.GetTreniByTrattaIDRequest request,
+                                   StreamObserver<GetTreniByTrattaIDResponse> responseObserver) {
+        try {
+            String trattaID = request.getTrattaID();
+            List<it.trenical.server.Treno.Treno> listaTreni = db.getTrenoByTrattaID(trattaID);
+            System.out.println(listaTreni);
+            GetTreniByTrattaIDResponse.Builder response = GetTreniByTrattaIDResponse.newBuilder();
+            if (listaTreni != null) {
+                for (it.trenical.server.Treno.Treno trenoJava : listaTreni) {
+                    Treno trenoProto = convertiJavaInProto((TrenoConcr) trenoJava);
+                    response.addTreni(trenoProto);
+                    System.out.println(trenoProto);
+                }
+            }
+
+            responseObserver.onNext(response.build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(io.grpc.Status.INTERNAL
+                    .withDescription("Errore interno in getTrenoByTattaID()")
+                    .withCause(e)
+                    .asRuntimeException());
+        }
     }
     private TrenoConcr convertiProtoInJava(Treno t) {
         String trattaID = t.getTrattaID();
@@ -98,6 +138,9 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
                 .setPostiPrima(t.getPostiPrima())
                 .setPostiSeconda(t.getPostiSeconda())
                 .setPostiTerza(t.getPostiTerza())
+                .setPostiTot(t.getPostiTot())
                 .build();
     }
+
+
 }

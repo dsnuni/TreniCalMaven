@@ -19,7 +19,7 @@ public class BigliettoTest {
 
     String bigliettoID = "24C43";
     ClienteConcr titolareBiglietto = new ClienteConcr("QNTDVD03P24D086Q", "Davide", "Iaquinta", "GAY!!!",20);
-    TrattaPrototype tratta = new TrattaStandard("TRT-8c3eae47", "Terni", "Bressanone", "12-06-2025 10:00", "12-06-2025 12:00 ", 468, 2);
+    TrattaStandard tratta = new TrattaStandard("TRT-8c3eae47", "Terni", "Bressanone", "12-06-2025 10:00", "12-06-2025 12:00 ", 468, 2);
     TrenoConcr trenoBiglietto = new TrenoConcr(IdGenerator.generaTrenoID(),IdGenerator.generaTipoTreno(), tratta,100,0,0,0,0);
     String carrozza = "111";
     String posto = "G1";
