@@ -2,13 +2,16 @@ package it.trenical.client.gui;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import it.trenical.client.pagamento.Pagamento;
 import it.trenical.grpc.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 import it.trenical.grpc.Biglietto;
+import it.trenical.server.Biglietto.BPrimaClasse;
 
 public class ClientDashboardSwing extends JFrame {
     private static boolean registrato=false;
@@ -21,11 +24,9 @@ public class ClientDashboardSwing extends JFrame {
         setLocationRelativeTo(null);
 
         JTabbedPane tabs = new JTabbedPane();
-
-        tabs.addTab("Tratte", creaTabella("Tratta"));
-        tabs.addTab("Treni", creaTabella("Treno"));
         tabs.addTab("Biglietti", creaTabella("Biglietto"));
-        tabs.addTab("Io",creaTabella("Cliente"));
+        tabs.addTab("Tratte", creaTabella("Tratta"));
+        //tabs.addTab("Treni", creaTabella("Treno"));
         tabs.addTab("Notifiche",creaTabella("Notifica"));
 
 
@@ -53,7 +54,7 @@ public class ClientDashboardSwing extends JFrame {
                 GetAllTratteRequest request = GetAllTratteRequest.newBuilder().build();
                 GetAllTratteResponse response = trattaStub.getAllTratte(request);
                 model.setColumnIdentifiers(new String[]{
-                        "ID", "stazione_Partenza", "stazione_Arrivo", "data_Partenza", "data_Arrivo", "distanza", "durata_viaggio"
+                        "ID", "stazione_Partenza", "stazione_Arrivo", "data_Partenza", "data_Arrivo", "distanza", "durata_media"
                 });
                 for (TrattaStandard tratta : response.getTrattaList()) {
                     model.addRow(new Object[]{
@@ -128,6 +129,8 @@ public class ClientDashboardSwing extends JFrame {
                 splitPane.setResizeWeight(0.3);
                 JPanel buttonPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
                 JButton refreshButton = new JButton("Refresh "+tabellaNome);
+                JButton modificaBigliettoButton = new JButton("Modifica "+tabellaNome);
+                buttonPanel2.add(modificaBigliettoButton);
                 buttonPanel2.add(refreshButton);
                 // Colori personalizzati
                 Color sfondoPrincipale = panel.getBackground();
@@ -150,7 +153,7 @@ public class ClientDashboardSwing extends JFrame {
                 bigliettiPanel.setOpaque(true);
 
                 JTable bigliettiTable = new JTable(new DefaultTableModel(
-                        new Object[]{"ID", "Classe", "Carrozza", "Posto", "Prezzo"}, 0
+                        new Object[]{"ID", "Classe", "Carrozza", "Posto", "Prezzo", "Partenza", "Arrivo"}, 0
                 ));
                 JScrollPane bigliettiScroll = new JScrollPane(bigliettiTable);
                 bigliettiPanel.add(bigliettiScroll, BorderLayout.CENTER);
@@ -213,6 +216,8 @@ public class ClientDashboardSwing extends JFrame {
                     b.getCarrozza(),
                     b.getPosto(),
                     b.getPrezzo()
+                    //ottieniData(b,"Partenza"),
+                   // ottieniData(b,"Arrivo")
             });
         }
 
@@ -220,93 +225,96 @@ public class ClientDashboardSwing extends JFrame {
     }
 
 // rivedi la dimensione del pannello e il refresh
-    private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel) {
-        JPanel clientePanel  = new JPanel();
-        clientePanel.removeAll(); // pulizia per refresh
-        clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
-        clientePanel.setMaximumSize(new Dimension(400, 220));
-        clientePanel.setBackground(new Color(180, 180, 180));
+private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel) {
+    JPanel clientePanel  = new JPanel();
+    clientePanel.removeAll(); // pulizia per refresh
+    clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
+    clientePanel.setMaximumSize(new Dimension(400, 220));
+    //clientePanel.setBackground(new Color(180, 180, 180));
 
-        if (!registrato) {
-            clientePanel.add(new JLabel("Codice Fiscale:"));
-            JTextField codiceFiscaleField = new JTextField(20);
-            clientePanel.add(codiceFiscaleField);
+    if (!registrato) {
+        clientePanel.add(new JLabel("Codice Fiscale:"));
+        JTextField codiceFiscaleField = new JTextField(20);
+        clientePanel.add(codiceFiscaleField);
 
-            clientePanel.add(new JLabel("Nome:"));
-            JTextField nomeField = new JTextField(20);
-            clientePanel.add(nomeField);
+        clientePanel.add(new JLabel("Nome:"));
+        JTextField nomeField = new JTextField(20);
+        clientePanel.add(nomeField);
 
-            clientePanel.add(new JLabel("Cognome:"));
-            JTextField cognomeField = new JTextField(20);
-            clientePanel.add(cognomeField);
+        clientePanel.add(new JLabel("Cognome:"));
+        JTextField cognomeField = new JTextField(20);
+        clientePanel.add(cognomeField);
 
-//            clientePanel.add(new JLabel("Codice Cliente:"));
-//            JTextField codiceClienteField = new JTextField(20);
-//            clientePanel.add(codiceClienteField);
+        clientePanel.add(new JLabel("Età:"));
+        JTextField etaField = new JTextField(5);
+        clientePanel.add(etaField);
 
-            clientePanel.add(new JLabel("Età:"));
-            JTextField etaField = new JTextField(5);
-            clientePanel.add(etaField);
+        // ✅ Checkbox Cliente Fedeltà
+        clientePanel.add(new JLabel("Cliente fedeltà:"));
+        JCheckBox fedeltaBox = new JCheckBox();
+        clientePanel.add(fedeltaBox);
+
+        JButton submitButton = new JButton("Submit");
+        clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+        clientePanel.add(submitButton);
+        clientePanel.revalidate();
+
+        submitButton.addActionListener(e -> {
+            String cf = codiceFiscaleField.getText();
+            String nome = nomeField.getText();
+            String cognome = cognomeField.getText();
+            String etaStr = etaField.getText();
+            boolean isFedelta = fedeltaBox.isSelected();
+
+            System.out.println(cf + " " + nome + " " + cognome + " " + etaStr + " | Fedeltà: " + isFedelta);
+
+            if (cf.isEmpty() || nome.isEmpty() || cognome.isEmpty() || etaStr.isEmpty()) {
+                JOptionPane.showMessageDialog(clientePanel, "Completa tutti i campi prima di continuare.");
+            } else {
+                try {
+                    IDGeneratorServiceGrpc.IDGeneratorServiceBlockingStub idStub = IDGeneratorServiceGrpc.newBlockingStub(channel);
+                    GetGeneratedIDRequest requestID = GetGeneratedIDRequest.newBuilder()
+                            .setFidelizzato(isFedelta)
+                            .build();
+                    GetGeneratedIDResponse responseID = idStub.getGeneratedID(requestID);
+
+                    ClienteServiceGrpc.ClienteServiceBlockingStub clienteStub = ClienteServiceGrpc.newBlockingStub(channel);
+                    it.trenical.grpc.Cliente clienteGrpc = it.trenical.grpc.Cliente.newBuilder()
+                            .setCodiceFiscale(cf)
+                            .setNome(nome)
+                            .setCognome(cognome)
+                            .setCodiceCliente(responseID.getCodiceCliente())
+                            .setEta(Integer.parseInt(etaStr))
+                            .build();
 
 
-            JButton submitButton = new JButton("Submit");
-            clientePanel.add(new JLabel()); // spazio vuoto per allineamento
-            clientePanel.add(submitButton);
-            clientePanel.revalidate();
-            //clientePanel.repaint();
+                    AddClienteResponse response = clienteStub.addCliente(
+                            AddClienteRequest.newBuilder().setCliente(clienteGrpc).build()
+                    );
 
-            submitButton.addActionListener(e -> {
-                String cf = codiceFiscaleField.getText();
-                String nome = nomeField.getText();
-                String cognome = cognomeField.getText();
-                String etaStr = etaField.getText();
-                System.out.println(cf+" "+nome+" "+cognome+" "+etaStr);
-                if (cf.isEmpty() || nome.isEmpty() || cognome.isEmpty() || etaStr.isEmpty()) {
-                    JOptionPane.showMessageDialog(clientePanel, "Completa tutti i campi prima di continuare.");
-                } else {
-                    try {
-                        IDGeneratorServiceGrpc.IDGeneratorServiceBlockingStub idStub = IDGeneratorServiceGrpc.newBlockingStub(channel);
-                        GetGeneratedIDRequest requestID = GetGeneratedIDRequest.newBuilder().build();
-                        GetGeneratedIDResponse responseID = idStub.getGeneratedID(requestID);
-
-                        ClienteServiceGrpc.ClienteServiceBlockingStub clienteStub = ClienteServiceGrpc.newBlockingStub(channel);
-                        it.trenical.grpc.Cliente clienteGrpc = it.trenical.grpc.Cliente.newBuilder()
-                                .setCodiceFiscale(cf)
-                                .setNome(nome)
-                                .setCognome(cognome)
-                                .setCodiceCliente(responseID.getCodiceCliente())
-                                .setEta(Integer.parseInt(etaStr))
-                                .build();
-
-                        AddClienteResponse response = clienteStub.addCliente(
-                                AddClienteRequest.newBuilder().setCliente(clienteGrpc).build()
-                        );
-
-                        if (response.getSuccess()) {
-                            // aggiorna stato
-                            registrato = true;
-                            cliente = clienteGrpc;
-                            System.out.println(cliente);
-                            System.out.println(registrato);
-                            // refresh pannello
-
-                            clientePanel.revalidate();
-                            clientePanel.setVisible(false);
-                            panel.add(panelloClienteRegistrato( channel));
-                        } else {
-                            JOptionPane.showMessageDialog(clientePanel, "Errore: cliente non aggiunto.");
-                        }
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(clientePanel, "Errore: " + ex.getMessage());
-                        ex.printStackTrace();
+                    if (response.getSuccess()) {
+                        registrato = true;
+                        cliente = clienteGrpc;
+                        System.out.println(cliente);
+                        System.out.println(registrato);
+                        clientePanel.revalidate();
+                        clientePanel.setVisible(false);
+                        panel.add(panelloClienteRegistrato(channel));
+                    } else {
+                        JOptionPane.showMessageDialog(clientePanel, "Errore: cliente non aggiunto.");
                     }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(clientePanel, "Errore: " + ex.getMessage());
+                    ex.printStackTrace();
                 }
-            });
-
-        }
-        return clientePanel;
+            }
+        });
     }
-        private static JPanel panelloClienteRegistrato(ManagedChannel channel) {
+    return clientePanel;
+}
+
+
+    private static JPanel panelloClienteRegistrato(ManagedChannel channel) {
 
             JPanel clientePanel = new JPanel();
 
@@ -332,26 +340,6 @@ public class ClientDashboardSwing extends JFrame {
 
         return clientePanel;
         }
-        private static void acquista(Object id, ManagedChannel channel) {
-        IDGeneratorServiceGrpc.IDGeneratorServiceBlockingStub idStub = IDGeneratorServiceGrpc.newBlockingStub(channel);
-        GetGeneratedIDRequest requestID = GetGeneratedIDRequest.newBuilder().build();
-        GetGeneratedIDResponse responseID = idStub.getGeneratedID(requestID);
-            /// DEVI USARE LA CLASSE PAGAMENTO E SIMULARE LA TRANSAZIONE
-        it.trenical.grpc.BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = it.trenical.grpc.BigliettoServiceGrpc.newBlockingStub(channel);
-        it.trenical.grpc.Biglietto biglietto = it.trenical.grpc.Biglietto.newBuilder()
-
-                .setBigliettoID(responseID.getBigliettoID())
-                .setClasse("SecondaClasse")
-                .setTrenoID("1001")
-                .setCarrozza("A")
-                .setPosto("12A")
-                .setClienteID(responseID.getClienteID())
-                .addPriorita("Finestrino")
-                .setPrezzo(49)
-                .build();
-
-
-    }
     private static void acquistaBiglietto(Object id, ManagedChannel channel) {
         if (!registrato) {
             throw new IllegalStateException("Ti devi registrare per poter acquistare.");
@@ -402,17 +390,28 @@ public class ClientDashboardSwing extends JFrame {
 
         // Pannello inferiore con bottone
         JButton conferma = new JButton("Conferma Selezione");
-
         conferma.addActionListener(e -> {
             int selectedRow = treniTable.getSelectedRow();
             if (selectedRow != -1) {
-                String trenoID = model.getValueAt(selectedRow, 0).toString(); // recupera la prima colonna (ID)
-                JOptionPane.showMessageDialog(dialog, "Hai selezionato il treno ID: " + trenoID);
-                dialog.dispose(); // chiudi la finestra se vuoi
+                String trenoID = model.getValueAt(selectedRow, 0).toString();
+                GetTrenoRequest request = GetTrenoRequest.newBuilder()
+                        .setTrenoID(trenoID)
+                        .build();
+                Treno treno = trenoStub.getTreno(request);
+                if(treno.getPostiTot() < 0 ) {
+                    JOptionPane.showMessageDialog(dialog,
+                            "Il treno che hai selezionato \nID: " + treno.getTrenoID()
+                                    +" non ha piu posti disponibili");
+                    dialog.dispose();
+                } else {
+                    mostraMenuSceltaPosto(trenoID,channel);
+                    dialog.dispose();
+                }
             } else {
                 JOptionPane.showMessageDialog(dialog, "Seleziona una riga prima di confermare.");
             }
         });
+
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(conferma);
@@ -423,7 +422,164 @@ public class ClientDashboardSwing extends JFrame {
         dialog.setVisible(true);
     }
 
+    private static void mostraMenuSceltaPosto(String trenoID, ManagedChannel channel) {
+        JDialog dialog = new JDialog((Frame) null, "Seleziona Classe", true);
+        dialog.setSize(600, 300);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
 
+        // Stub per treno
+        TrenoServiceGrpc.TrenoServiceBlockingStub trenoStub = TrenoServiceGrpc.newBlockingStub(channel);
+        GetTrenoRequest request = GetTrenoRequest.newBuilder().setTrenoID(trenoID).build();
+        Treno treno = trenoStub.getTreno(request);
+
+        int postiPrima = treno.getPostiPrima();
+        int postiSeconda = treno.getPostiSeconda();
+        int postiTerza = treno.getPostiTerza();
+
+        String[] classiDisponibili;
+        if (postiPrima > 0 && postiSeconda > 0 && postiTerza > 0)
+            classiDisponibili = new String[]{"PrimaClasse", "SecondaClasse", "TerzaClasse"};
+        else if (postiPrima > 0 && postiSeconda > 0)
+            classiDisponibili = new String[]{"PrimaClasse", "SecondaClasse"};
+        else if (postiPrima > 0 && postiTerza > 0)
+            classiDisponibili = new String[]{"PrimaClasse", "TerzaClasse"};
+        else if (postiSeconda > 0 && postiTerza > 0)
+            classiDisponibili = new String[]{"SecondaClasse", "TerzaClasse"};
+        else if (postiPrima > 0)
+            classiDisponibili = new String[]{"PrimaClasse"};
+        else if (postiSeconda > 0)
+            classiDisponibili = new String[]{"SecondaClasse"};
+        else if (postiTerza > 0)
+            classiDisponibili = new String[]{"TerzaClasse"};
+        else
+            classiDisponibili = new String[0];
+
+        // Pannello centrale
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+
+        JLabel label = new JLabel("Scegli la classe:");
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JComboBox<String> comboBox = new JComboBox<>(classiDisponibili);
+        comboBox.setMaximumSize(new Dimension(200, 25));
+        comboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel prioritaLabel = new JLabel("Eventuali priorità/necessità:");
+        prioritaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JTextField prioritaField = new JTextField();
+        prioritaField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+        prioritaField.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        centerPanel.add(label);
+        centerPanel.add(comboBox);
+        centerPanel.add(Box.createVerticalStrut(15));
+        centerPanel.add(prioritaLabel);
+        centerPanel.add(prioritaField);
+
+        // Pulsanti
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton okButton = new JButton("OK");
+        JButton annullaButton = new JButton("Annulla");
+
+        okButton.addActionListener(e -> {
+            String scelta = comboBox.getSelectedItem().toString();
+            String priorita = prioritaField.getText().trim();
+
+            autorizzaPagamento(); // Metodo di autorizzazione
+
+            BigliettoServiceGrpc.BigliettoServiceBlockingStub stub = BigliettoServiceGrpc.newBlockingStub(channel);
+            CreaBigliettoRequest requestBiglietto = CreaBigliettoRequest.newBuilder()
+                    .addDati(scelta) // classe
+                    .addDati(trenoID)
+                    .addDati(cliente.getCodiceFiscale())
+                    .addDati(priorita)
+                    .build();
+
+            CreaBigliettoResponse response = stub.creaBiglietto(requestBiglietto);
+
+            if (response.getSuccess()) {
+                JOptionPane.showMessageDialog(dialog, "Biglietto creato con successo!");
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Errore nella creazione del biglietto.");
+            }
+
+            dialog.dispose();
+        });
+
+        annullaButton.addActionListener(e -> dialog.dispose());
+
+        buttonPanel.add(annullaButton);
+        buttonPanel.add(okButton);
+
+        dialog.add(centerPanel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+        dialog.setVisible(true);
+    }
+
+    private static void autorizzaPagamento() {
+        JDialog dialog = new JDialog((JFrame) null , "Autorizzazione Pagamento", true);
+        dialog.setSize(400, 300);
+        dialog.setLayout(new GridLayout(6, 2, 10, 5));
+        dialog.setLocationRelativeTo(null);
+
+        JTextField campoCarta = new JTextField();
+        JTextField campoCVV = new JTextField();
+        JTextField campoScadenza = new JTextField();
+        JTextField campoCircuito = new JTextField();
+        JTextField campoTitolare = new JTextField();
+
+        dialog.add(new JLabel("Codice Carta:"));
+        dialog.add(campoCarta);
+
+        dialog.add(new JLabel("CVV:"));
+        dialog.add(campoCVV);
+
+        dialog.add(new JLabel("Scadenza (MMYY):"));
+        dialog.add(campoScadenza);
+
+        dialog.add(new JLabel("Circuito (Visa/Mastercard):"));
+        dialog.add(campoCircuito);
+
+        dialog.add(new JLabel("Titolare:"));
+        dialog.add(campoTitolare);
+
+        JButton conferma = new JButton("Conferma");
+        JButton annulla = new JButton("Annulla");
+
+        conferma.addActionListener(e -> {
+            try {
+                int codiceCarta = Integer.parseInt(campoCarta.getText());
+                int cvv = Integer.parseInt(campoCVV.getText());
+                int scadenza = Integer.parseInt(campoScadenza.getText());
+                String circuito = campoCircuito.getText();
+                String titolare = campoTitolare.getText();
+
+                boolean validi = Pagamento.inserimentoDati(codiceCarta, cvv, scadenza, circuito, titolare);
+                if (validi) {
+                    JOptionPane.showMessageDialog(dialog, "Dati validi. Procedo al pagamento.");
+                    dialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Dati non validi. Riprova.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialog, "Inserisci solo numeri nei campi numerici.");
+            }
+        });
+
+        annulla.addActionListener(e -> dialog.dispose());
+
+        dialog.add(annulla);
+        dialog.add(conferma);
+
+        dialog.setVisible(true);
+    }
+    private static String ottieniData(Biglietto biglietto, String stat) {
+        return null;
+    }
     public static void main(String[] args) {
         //System.setProperty("sun.java2d.uiScale", "3.0");
         SwingUtilities.invokeLater(() -> {

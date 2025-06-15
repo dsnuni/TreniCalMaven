@@ -66,7 +66,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
     @Override
     public void setTreno(Treno tr) {
         String sql =
-                "INSERT INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza,postiTot, tempoPercorrenza)  " +
+                "INSERT OR REPLACE INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza,postiTot, tempoPercorrenza)  " +
                 "VALUES (?,?, ?, ?, ?, ?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);

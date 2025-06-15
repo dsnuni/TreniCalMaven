@@ -35,7 +35,7 @@ public class ApplicaPromozione {
             double prezzoNuovo =   (biglietto.getPrezzo() / 100) * percentuale;
             return prezzoNuovo;
         }
-        return 0007;
+        return biglietto.getPrezzo();
     }
 
     public static double Promozione(BSecondaClasse biglietto) {
@@ -62,7 +62,7 @@ public class ApplicaPromozione {
             double prezzoNuovo =   (biglietto.getPrezzo() / 100) * percentuale;
             return prezzoNuovo;
         }
-        return 0007;
+        return biglietto.getPrezzo();
     }
 
     public static double Promozione(BTerzaClasse biglietto) {
@@ -89,6 +89,6 @@ public class ApplicaPromozione {
             double prezzoNuovo =   (biglietto.getPrezzo() / 100) * percentuale;
             return prezzoNuovo;
         }
-        return 0007;
+        return biglietto.getPrezzo() ;
     }
 }

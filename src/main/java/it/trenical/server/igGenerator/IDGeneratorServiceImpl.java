@@ -10,7 +10,8 @@ public class IDGeneratorServiceImpl extends IDGeneratorServiceGrpc.IDGeneratorSe
     @Override
     public void getGeneratedID(GetGeneratedIDRequest request, StreamObserver<GetGeneratedIDResponse> responseObserver) {
         String clienteID = IdGenerator.generaClienteID();
-        String codiceCliente = IdGenerator.generaCodiceCliente(true);
+        boolean fidelizzato = request.getFidelizzato();
+        String codiceCliente = IdGenerator.generaCodiceCliente(fidelizzato);
         String bigliettoID = IdGenerator.generaBigliettoID();
         String trenoID = IdGenerator.generaTrenoID();
         String trattaID = IdGenerator.generaTrattaID();

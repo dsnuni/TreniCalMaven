@@ -140,4 +140,44 @@ public abstract class Biglietto {
     public int hashCode() {
         return Objects.hash(bigliettoID, titolareBiglietto, trenoBiglietto, carrozza, posto, priorità);
     }
+
+    public static Biglietto clonaConPrezzo(Biglietto originale, int nuovoPrezzo) {
+        if (originale instanceof BPrimaClasse) {
+            return new BPrimaClasse.Builder()
+                    .bigliettoID(originale.getBigliettoID())
+                    .titolareBiglietto(originale.getTitolareBiglietto())
+                    .trenoBiglietto(originale.getTrenoBiglietto())
+                    .carrozza(originale.getCarrozza())
+                    .posto(originale.getPosto())
+                    .priorità(originale.getPriorità())
+                    .prezzo(nuovoPrezzo)
+                    .implementazione(BigliettoDB.getInstance())
+                    .build();
+        } else if (originale instanceof BSecondaClasse) {
+            return new BSecondaClasse.Builder()
+                    .bigliettoID(originale.getBigliettoID())
+                    .titolareBiglietto(originale.getTitolareBiglietto())
+                    .trenoBiglietto(originale.getTrenoBiglietto())
+                    .carrozza(originale.getCarrozza())
+                    .posto(originale.getPosto())
+                    .priorità(originale.getPriorità())
+                    .prezzo(nuovoPrezzo)
+                    .implementazione(BigliettoDB.getInstance())
+                    .build();
+        } else if (originale instanceof BTerzaClasse) {
+            return new BTerzaClasse.Builder()
+                    .bigliettoID(originale.getBigliettoID())
+                    .titolareBiglietto(originale.getTitolareBiglietto())
+                    .trenoBiglietto(originale.getTrenoBiglietto())
+                    .carrozza(originale.getCarrozza())
+                    .posto(originale.getPosto())
+                    .priorità(originale.getPriorità())
+                    .prezzo(nuovoPrezzo)
+                    .implementazione(BigliettoDB.getInstance())
+                    .build();
+        }
+
+        return null;
+    }
+
 }

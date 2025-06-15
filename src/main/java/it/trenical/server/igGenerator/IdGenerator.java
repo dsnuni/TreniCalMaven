@@ -32,6 +32,7 @@ public class IdGenerator {
     public static String generaCodiceCliente(boolean fidelizzato){
         boolean flag = true;
         String id = " ";
+        System.out.println(fidelizzato);
         while(flag) {
             if(!fidelizzato) {
                 id = "TRCL-" + UUID.randomUUID().toString().substring(0, 8);

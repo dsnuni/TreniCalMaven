@@ -163,8 +163,18 @@ message GetBigliettiByFiltroRequest {
 message GetBigliettiByFiltroResponse {
   repeated Biglietto biglietti = 1;
 }
+
+message CreaBigliettoRequest {
+  repeated string dati = 1;
+}
+
+message CreaBigliettoResponse {
+  bool success = 1;
+}
 // ID Generator
-message GetGeneratedIDRequest {}
+message GetGeneratedIDRequest {
+  bool fidelizzato = 1;
+}
 
 message GetGeneratedIDResponse {
   string clienteID = 1;
@@ -194,6 +204,8 @@ service BigliettoService {
   rpc GetBiglietto(GetBigliettoRequest) returns (Biglietto);
   rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
   rpc GetBigliettiByFiltro (GetBigliettiByFiltroRequest) returns (GetBigliettiByFiltroResponse);
+  rpc CreaBiglietto(CreaBigliettoRequest) returns (CreaBigliettoResponse);
+
 
 }
 service TrattaService {

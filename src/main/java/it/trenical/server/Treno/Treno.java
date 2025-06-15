@@ -129,6 +129,24 @@ public abstract class Treno  {
     public int getTempoPercorrenza() {
         return tempoPercorrenza;
     }
+// setters posti
+
+
+    public void setPostiPrima(int postiPrima) {
+        this.postiPrima = postiPrima;
+    }
+
+    public void setPostiSeconda(int postiSeconda) {
+        this.postiSeconda = postiSeconda;
+    }
+
+    public void setPostiTerza(int postiTerza) {
+        this.postiTerza = postiTerza;
+    }
+
+    public void setPostiTot(int postiTot) {
+        this.postiTot = postiTot;
+    }
 
     @Override
     public String toString() {

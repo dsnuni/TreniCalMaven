@@ -3,6 +3,7 @@ package it.trenical.server.Biglietto;
 
 
 import it.trenical.server.Cliente.*;
+import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.*;
 import it.trenical.server.notifiche.Observable;
 
@@ -157,20 +158,52 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
             stmt.setString(1, valore);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Cliente cliente = ClienteFactory.getClienteByCodiceFiscale(rs.getString("cliente_id"));
-                Treno treno = TrenoFactory.getTrenoByID(rs.getString("treno_id"));
-                Biglietto b = new BPrimaClasse.Builder()
-                        .bigliettoID(rs.getString("id"))
-                        //.classe(rs.getString("classe"))
-                        .trenoBiglietto(treno)
-                        .carrozza(rs.getString("carrozza"))
-                        .posto(rs.getString("posto"))
-                        .titolareBiglietto(cliente)
-                        .priorità(List.of(rs.getString("priorita").split(",")))
-                        .prezzo(rs.getInt("prezzo"))
-                        .implementazione(this)
-                        .build();
-                biglietti.add(b);
+                Cliente cliente = getClienteByCodiceFiscale(rs.getString("cliente_id"));
+                Treno treno = getTrenoByID(rs.getString("treno_id"));
+                switch (rs.getString("classe")) {
+                    case "PrimaClasse":
+                             Biglietto b = new BPrimaClasse.Builder()
+                            .bigliettoID(rs.getString("id"))
+                            //.classe(rs.getString("classe"))
+                            .trenoBiglietto(treno)
+                            .carrozza(rs.getString("carrozza"))
+                            .posto(rs.getString("posto"))
+                            .titolareBiglietto(cliente)
+                            .priorità(List.of(rs.getString("priorita").split(",")))
+                            .prezzo(rs.getInt("prezzo"))
+                            .implementazione(this)
+                            .build();
+                    biglietti.add(b);
+                    break;
+                    case "SecondaClasse":
+                        Biglietto b2 = new BSecondaClasse.Builder()
+                                .bigliettoID(rs.getString("id"))
+                                .trenoBiglietto(treno)
+                                .carrozza(rs.getString("carrozza"))
+                                .posto(rs.getString("posto"))
+                                .titolareBiglietto(cliente)
+                                .priorità(List.of(rs.getString("priorita").split(",")))
+                                .prezzo(rs.getInt("prezzo"))
+                                .implementazione(this)
+                                .build();
+                        biglietti.add(b2);
+                        break;
+
+                    case "TerzaClasse":
+                        Biglietto b3 = new BTerzaClasse.Builder()
+                                .bigliettoID(rs.getString("id"))
+                                .trenoBiglietto(treno)
+                                .carrozza(rs.getString("carrozza"))
+                                .posto(rs.getString("posto"))
+                                .titolareBiglietto(cliente)
+                                .priorità(List.of(rs.getString("priorita").split(",")))
+                                .prezzo(rs.getInt("prezzo"))
+                                .implementazione(this)
+                                .build();
+                        biglietti.add(b3);
+                        break;
+
+                }
             }
         } catch (SQLException e) {
             System.err.println("Errore filtro biglietto: " + e.getMessage());
@@ -178,6 +211,141 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
         return biglietti;
     }
 
+    public List<Biglietto> getAllBiglietti() {
+        List<Biglietto> biglietti = new ArrayList<>();
+        String sql = "SELECT * FROM Biglietto";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String bigliettoID = rs.getString("id");
+                String classe = rs.getString("classe");
+                String trenoID = rs.getString("treno_id");
+                String carrozza = rs.getString("carrozza");
+                String posto = rs.getString("posto");
+                String clienteID = rs.getString("cliente_id");
+                String prioritaCSV = rs.getString("priorita");
+                int prezzo = rs.getInt("prezzo");
+
+                ClienteConcr cliente = (ClienteConcr) getClienteByCodiceFiscale(clienteID);
+                Treno treno = getTrenoByID(trenoID);
+                List<String> priorita = List.of(prioritaCSV.split(","));
+                Biglietto biglietto = null;
+
+                switch (classe) {
+                    case "PrimaClasse" -> biglietto = new BPrimaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
+
+                    case "SecondaClasse" ->  biglietto = new BSecondaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
+                    case "TerzaClasse" -> biglietto = new BTerzaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+                }
+
+                biglietti.add(biglietto);
+
+            }}catch (SQLException e) {
+            System.err.println("Errore filtro treno: " + e.getMessage());
+        }
+        return biglietti;
+    }
+
+    public List<Biglietto> getBigliettiByTrenoID(String trenoID) {
+        List<Biglietto> biglietti = new ArrayList<>();
+        String sql = "SELECT * FROM Biglietto WHERE treno_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, trenoID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String bigliettoID = rs.getString("id");
+                String classe = rs.getString("classe");
+                String carrozza = rs.getString("carrozza");
+                String posto = rs.getString("posto");
+                String clienteID = rs.getString("cliente_id");
+                String prioritaCSV = rs.getString("priorita");
+                int prezzo = rs.getInt("prezzo");
+
+                ClienteConcr cliente = (ClienteConcr) getClienteByCodiceFiscale(clienteID);
+                Treno treno = getTrenoByID(trenoID);
+                List<String> priorita = List.of(prioritaCSV.split(","));
+                Biglietto biglietto = null;
+
+                switch (classe) {
+                    case "PrimaClasse" -> biglietto = new BPrimaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
+                    case "SecondaClasse" -> biglietto = new BSecondaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+
+                    case "TerzaClasse" -> biglietto = new BTerzaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente)
+                            .trenoBiglietto(treno)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo)
+                            .implementazione(this)
+                            .build();
+                }
+
+                if (biglietto != null) {
+                    biglietti.add(biglietto);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore recupero biglietti per treno: " + e.getMessage());
+        }
+
+        return biglietti;
+    }
 
 
 }

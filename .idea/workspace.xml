@@ -4,29 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="fine gui amministratore con modifiche">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/testGetAllTreni.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/MainGetAllTreniServer.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="prima parte gui utente">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/CreatoreBiglietto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/ClienteClient.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/pagamento/Pagamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/pagamento/Pagamento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/Biglietto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaPrototype.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaPrototype.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoConcr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IDGeneratorServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/ApplicaPromozione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/ApplicaPromozione.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TrenoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TrenoTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +68,7 @@
     "Application.AdminDashboardSwing.executor": "Run",
     "Application.ClientDashboardSwing.executor": "Run",
     "Application.ClienteClient.executor": "Run",
+    "Application.CreatoreBiglietto.executor": "Run",
     "Application.GeneratorConcr.executor": "Run",
     "Application.IdGenerator.executor": "Run",
     "Application.Main.executor": "Run",
@@ -87,6 +80,7 @@
     "Application.testGetAllTreni.executor": "Run",
     "JUnit.BigliettoTest.executor": "Run",
     "JUnit.BigliettoTest.testClasseBigliettoDiversa.executor": "Run",
+    "JUnit.BigliettoTest.testGetAllBiglietti.executor": "Run",
     "JUnit.BigliettoTest.testPrioritaSerializzazione.executor": "Run",
     "JUnit.BigliettoTest.testRemoveCliente.executor": "Run",
     "JUnit.BigliettoTest.testSetAndGetBiglietto.executor": "Run",
@@ -136,7 +130,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientDashboardSwing">
+  <component name="RunManager" selected="JUnit.BigliettoTest.testGetAllBiglietti">
     <configuration name="AdminDashboardSwing" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.trenical.server.gui.AdminDashboardSwing" />
       <module name="TreniCal" />
@@ -163,6 +157,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CreatoreBiglietto" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.trenical.server.Biglietto.CreatoreBiglietto" />
+      <module name="TreniCal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.trenical.server.Biglietto.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TreniCalServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.trenical.server.TreniCalServer" />
       <module name="TreniCal" />
@@ -176,35 +183,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="testGetAllTreni" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="it.trenical.client.gui.testGetAllTreni" />
-      <module name="TreniCal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.trenical.client.gui.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TrenoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BigliettoTest.testGetAllBiglietti" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TreniCal" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TrenoTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="BigliettoTest" />
+      <option name="METHOD_NAME" value="testGetAllBiglietti" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BigliettoTest.testGetAllBiglietti" />
         <item itemvalue="Application.ClientDashboardSwing" />
-        <item itemvalue="Application.testGetAllTreni" />
-        <item itemvalue="Application.AdminDashboardSwing" />
         <item itemvalue="Application.TreniCalServer" />
-        <item itemvalue="JUnit.TrenoTest" />
+        <item itemvalue="Application.CreatoreBiglietto" />
+        <item itemvalue="Application.AdminDashboardSwing" />
       </list>
     </recent_temporary>
   </component>
@@ -247,7 +242,10 @@
       <workItem from="1749805749223" duration="15662000" />
       <workItem from="1749845220619" duration="7288000" />
       <workItem from="1749888192139" duration="1345000" />
-      <workItem from="1749891407987" duration="27250000" />
+      <workItem from="1749891407987" duration="27612000" />
+      <workItem from="1749976003839" duration="808000" />
+      <workItem from="1749980114410" duration="13102000" />
+      <workItem from="1749996668729" duration="15418000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -417,7 +415,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749822138327</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="prima parte gui utente">
+      <option name="closed" value="true" />
+      <created>1749927279410</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1749927279410</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -445,7 +451,8 @@
     <MESSAGE value="test rifatti" />
     <MESSAGE value="creazione package promozioni" />
     <MESSAGE value="fine gui amministratore con modifiche" />
-    <option name="LAST_COMMIT_MESSAGE" value="fine gui amministratore con modifiche" />
+    <MESSAGE value="prima parte gui utente" />
+    <option name="LAST_COMMIT_MESSAGE" value="prima parte gui utente" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

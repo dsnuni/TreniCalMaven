@@ -140,4 +140,19 @@ public class BigliettoTest {
         assertEquals("Z9", recuperato.getPosto());
         assertEquals(prezzo + 100, recuperato.getPrezzo());
     }
+
+    @Test
+    public void testGetAllBiglietti() {
+        BigliettoDB db = BigliettoDB.getInstance();
+        List<Biglietto> biglietti = db.getAllBiglietti();
+
+        assertNotNull(biglietti, "La lista dei biglietti non deve essere null");
+        System.out.println("Biglietti trovati: " + biglietti.size());
+
+        for (Biglietto b : biglietti) {
+            System.out.println("ID: " + b.getBigliettoID() +
+                    ", Classe: " + b.getClass().getSimpleName() +
+                    ", Prezzo: " + b.getPrezzo());
+        }
+    }
 }

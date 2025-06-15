@@ -2,6 +2,8 @@ package it.trenical.server.Biglietto;
 
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import it.trenical.grpc.CreaBigliettoRequest;
+import it.trenical.grpc.CreaBigliettoResponse;
 import it.trenical.grpc.GetBigliettiByFiltroRequest;
 import it.trenical.grpc.GetBigliettiByFiltroResponse;
 import it.trenical.server.Biglietto.*;
@@ -13,6 +15,7 @@ import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoImpl;
 import it.trenical.server.Treno.TrenoImplDB;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.BigliettoServiceImplBase {
@@ -168,5 +171,19 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
                     .asRuntimeException());
         }
     }
+
+    @Override
+    public void creaBiglietto(CreaBigliettoRequest request, StreamObserver<CreaBigliettoResponse> responseObserver) {
+        ArrayList<String> dati = new ArrayList<>(request.getDatiList());
+        boolean esito = CreatoreBiglietto.creaBiglietto(dati);
+
+        CreaBigliettoResponse response = CreaBigliettoResponse.newBuilder()
+                .setSuccess(esito)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
 
 }
