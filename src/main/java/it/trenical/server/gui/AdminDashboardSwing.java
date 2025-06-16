@@ -14,6 +14,7 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -47,14 +48,16 @@ public class AdminDashboardSwing extends JFrame {
         caricaDatiDaDB(tabellaNome, model);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addButton = new JButton("Add "+tabellaNome);
-        JButton removeButton = new JButton("Remove "+tabellaNome);
-        JButton refreshButton = new JButton("Refresh "+tabellaNome);
-        JButton filtri = new JButton("Filtri "+tabellaNome);
+        JButton addButton = new JButton("Aggiungi "+tabellaNome);
+        JButton removeButton = new JButton("Rimuovi "+tabellaNome);
+        JButton refreshButton = new JButton("Aggiorna "+tabellaNome);
+        JButton modifyButton = new JButton("Modifica "+tabellaNome);
+        JButton filtri = new JButton("Filtra "+tabellaNome);
 
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(refreshButton);
+        buttonPanel.add(modifyButton);
         buttonPanel.add(filtri);
 
         switch(tabellaNome) {
@@ -83,7 +86,121 @@ public class AdminDashboardSwing extends JFrame {
                 ((DefaultTableModel) table.getModel()).removeRow(row);
             }
         });
+        modifyButton.addActionListener(e -> { int row = table.getSelectedRow();
+            if (row != -1) {
+                int colCount = table.getColumnCount();
+                Object[] rowData = new Object[colCount];
 
+                for (int col = 0; col < colCount; col++) {
+                    rowData[col] = table.getValueAt(row, col);
+                }
+            switch(tabellaNome) {
+                case "Cliente":
+                    ClienteImpl cldb = ClienteImplDB.getInstance();
+
+                    String codiceFiscale = rowData[0].toString();
+                    String nome = rowData[1].toString();
+                    String cognome = rowData[2].toString();
+                    String codiceCliente = rowData[3].toString();
+                    int eta = Integer.parseInt(rowData[4].toString());
+                    Cliente cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+                    cldb.setCliente(cliente);
+                    break;
+                    case "Treno":
+                        TrenoImpl trdb = TrenoImplDB.getInstance();
+                        String trenoID = rowData[0].toString();
+                        String tipoTreno = rowData[1].toString();
+                        String trattaID = rowData[2].toString();
+                        int prezzo = Integer.parseInt(rowData[3].toString());
+                        int postiPrima = Integer.parseInt(rowData[4].toString());
+                        int postiSeconda = Integer.parseInt(rowData[5].toString());
+                        int postiTerza = Integer.parseInt(rowData[6].toString());
+                        int postiTot = Integer.parseInt(rowData[7].toString());
+
+                        TrattaStandard tratta = TrattaImplDB.getInstance().getTratta(trattaID);
+
+                        Treno treno = new TrenoConcr(trenoID, tipoTreno, tratta, prezzo,
+                                postiPrima, postiSeconda, postiTerza, postiTot);
+                        break;
+
+                case "Tratta" :
+                    TrattaImpl trtdb = TrattaImplDB.getInstance();
+                    String trattaID2 = rowData[0].toString();
+                    String stazionePartenza = rowData[1].toString();
+                    String stazioneArrivo = rowData[2].toString();
+                    String dataPartenza = rowData[3].toString();
+                    String dataArrivo = rowData[4].toString();
+                    int distanza = Integer.parseInt(rowData[5].toString());
+                    int durata = Integer.parseInt(rowData[6].toString());
+
+                    TrattaStandard tratta2 = new TrattaStandard(
+                            trattaID2, stazionePartenza, stazioneArrivo,
+                            dataPartenza, dataArrivo, distanza, durata
+                    );
+                    trtdb.setTratta(tratta2);
+                    break;
+
+                case "Promozione" :
+                    PromozioneImpl prdb = PromozioneImplDB.getInstance();
+                    String promozioneID = rowData[0].toString();
+                    String trenoID3 = rowData[1].toString();
+                    String trattaID3 = rowData[2].toString();
+                    String dataPartenza3 = rowData[3].toString();
+                    String dataFine = rowData[4].toString();
+                    boolean clientiFedelta = Boolean.parseBoolean(rowData[5].toString());
+                    int prezzoPartenza = Integer.parseInt(rowData[6].toString());
+                    double scontistica = Double.parseDouble(rowData[7].toString());
+
+                    // Recupero oggetti da DB (assumendo i metodi già esistenti)
+                    Treno treno3 = TrenoImplDB.getInstance().getTreno(trenoID3);
+                    TrattaPrototype tratta3 = TrattaImplDB.getInstance().getTratta(trattaID3);
+                    if (rowData.length < 8) {
+                        throw new IllegalArgumentException("Riga non valida, servono almeno 8 colonne");
+                    } else {
+                        // Costruzione dell'oggetto promozione con il Builder
+                        Promozione pr = new Promozione.PromozioneBuilder()
+                                .setPromozioneID(promozioneID)
+                                .setTreno(treno3)
+                                .setTratta(tratta3)
+                                .setDataPartenza(dataPartenza3)
+                                .setDataFine(dataFine)
+                                .setClientiFedelta(clientiFedelta)
+                                .setPrezzoPartenza(prezzoPartenza)
+                                .setScontistica(scontistica)
+                                .build();
+                        prdb.setPromozione(pr);
+                    }
+                    break;
+                case "Biglietto" :
+                    String bigliettoID = rowData[0].toString();
+                    String cfCliente = rowData[1].toString();
+                    String trenoID4 = rowData[2].toString();
+                    String carrozza = rowData[3].toString();
+                    String posto = rowData[4].toString();
+                    String prioritaStr = rowData[5].toString(); // es: "Finestrino,Silenzio"
+                    int prezzo4 = Integer.parseInt(rowData[6].toString());
+
+                    // Recupero da DB
+                    Cliente cliente4 = ClienteImplDB.getInstance().getCliente(cfCliente);
+                    Treno treno4 = TrenoImplDB.getInstance().getTreno(trenoID4);
+                    List<String> priorita = Arrays.asList(prioritaStr.split(","));
+                    BigliettoImpl bdb = BigliettoDB.getInstance();
+                    // Costruzione Biglietto Seconda Classe
+                    Biglietto b = new BSecondaClasse.Builder()
+                            .bigliettoID(bigliettoID)
+                            .titolareBiglietto(cliente4)
+                            .trenoBiglietto(treno4)
+                            .carrozza(carrozza)
+                            .posto(posto)
+                            .priorità(priorita)
+                            .prezzo(prezzo4)
+                            .implementazione(BigliettoDB.getInstance())
+                            .build();
+                    bdb.setBiglietto(b);
+                    break;
+            }
+            }
+        });
         refreshButton.addActionListener(e -> {
             DefaultTableModel nuovoModel = new DefaultTableModel();
             caricaDatiDaDB(tabellaNome, nuovoModel);
@@ -97,7 +214,7 @@ public class AdminDashboardSwing extends JFrame {
                     filtra(tabellaNome, opzioniC,model);
                     break;
                 case "Treno":
-                    String[] opzioniT = {"tipoTreno","trattaID","prezzo","postiPrima","postiSeconda","postiTerza","postiTot","tempoPercorrenza"};
+                    String[] opzioniT = {"trenoID","tipoTreno","trattaID","prezzo","postiPrima","postiSeconda","postiTerza","postiTot","tempoPercorrenza"};
                     filtra(tabellaNome, opzioniT,model);
                     break;
                 case "Biglietto":
@@ -109,7 +226,7 @@ public class AdminDashboardSwing extends JFrame {
                     filtra(tabellaNome, opzioneP,model);
                     break;
                 case "Tratta":
-                    String[] opzioneT = {"stazione_partenza", "stazione_arrivo", "data_partenza","data_arrivo", "distanza", "durata_viaggio"};
+                    String[] opzioneT = {"trattaID","stazione_partenza", "stazione_arrivo", "data_partenza","data_arrivo", "distanza", "durata_viaggio"};
                     filtra(tabellaNome, opzioneT,model);
                     break;
             }

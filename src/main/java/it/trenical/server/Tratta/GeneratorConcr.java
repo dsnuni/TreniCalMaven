@@ -200,12 +200,26 @@ public class GeneratorConcr implements Generator {
             return null;
         }
     }
+    /*
     private static String[] creaRangeDate(int giorni) {
         String[] date = new String[giorni + 1];
         LocalDate oggi = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         for (int i = 0; i <= giorni; i++) {
+            LocalDate nuovaData = oggi.plusDays(i);
+            date[i] = nuovaData.format(formatter);
+        }
+        return date;
+    }
+*/
+    private static String[] creaRangeDate(int giorni) {
+        int totaleGiorni = 2; // 3 giorni prima + oggi + giorni futuri
+        String[] date = new String[totaleGiorni];
+        LocalDate oggi = LocalDate.now().minusDays(10); // parte da 3 giorni fa
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        for (int i = 0; i < totaleGiorni; i++) {
             LocalDate nuovaData = oggi.plusDays(i);
             date[i] = nuovaData.format(formatter);
         }

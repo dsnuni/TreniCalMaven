@@ -21,7 +21,7 @@ public abstract class Treno  {
 
     public Treno(String trenoID, String tipoTrenoI, TrattaStandard tratta,
                  int prezzo, int postiPrima, int postiSeconda,int postiTerza, int postiTot) {
-        System.out.println("tratta passata: " + tratta);
+      //  System.out.println("tratta passata: " + tratta);
         this.trenoID = trenoID;
         this.tipoTreno = this.setTipoTreno(tipoTrenoI);
         this.tratta = tratta;
@@ -34,7 +34,7 @@ public abstract class Treno  {
 
     }
     private int setTempoPercorrenza() {
-        System.out.println("📌 Avvio calcolo tempo percorrenza");
+       // System.out.println("📌 Avvio calcolo tempo percorrenza");
 
         if (this.tratta == null) {
             System.err.println("❌ ERRORE: Tratta non inizializzata (null)");
@@ -46,8 +46,8 @@ public abstract class Treno  {
             throw new IllegalStateException("tipoTreno non inizializzato");
         }
 
-        System.out.println("✅ Tratta passata: " + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo()
-                + ", distanza: " + tratta.getDistanza() + " km");
+        //System.out.println("✅ Tratta passata: " + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo()
+          //      + ", distanza: " + tratta.getDistanza() + " km");
 
         double distanza = tratta.getDistanza();
         double velocita;
@@ -73,8 +73,8 @@ public abstract class Treno  {
         double tempo = distanza / velocita;
         int tempoArrotondato = (int) Math.ceil(tempo);
 
-        System.out.println("🛤 TipoTreno: " + tipoTreno + " → Velocità media: " + velocita + " km/h");
-        System.out.println("⏱ Tempo stimato (raw): " + tempo + " h → Arrotondato: " + tempoArrotondato + " h");
+        //System.out.println("🛤 TipoTreno: " + tipoTreno + " → Velocità media: " + velocita + " km/h");
+      //  System.out.println("⏱ Tempo stimato (raw): " + tempo + " h → Arrotondato: " + tempoArrotondato + " h");
 
         return tempoArrotondato;
 

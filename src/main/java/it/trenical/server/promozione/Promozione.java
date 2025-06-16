@@ -15,7 +15,7 @@ public class Promozione {
     private String dataPartenza;
     private String dataFine;
     private boolean clientiFedelta;
-    private static int prezzoPartenza;
+    private int prezzoPartenza;
     private double scontistica;
 
 
@@ -105,38 +105,6 @@ public class Promozione {
 
         return almenoUnoSettato && this.prezzoPartenza > 0 && this.scontistica > 0.0;
     }
-    //Applica
-    public boolean applica(Biglietto biglietto) {
-        TrenoImpl db = TrenoImplDB.getInstance();
-        double nuovoPrezzo = 0;
-            if (! verificaValidità()) {
-                System.out.println("Nessuna scontistica applicata");
-                return false;
 
-            } else {
-                if( biglietto.getPrezzo() < prezzoPartenza ) {
-                    if(biglietto.getTrenoBiglietto().equals(treno.getTrenoID())) {
-                        nuovoPrezzo = (biglietto.getPrezzo() /100 ) * scontistica;
-                    } else if( biglietto.getTrenoBiglietto().getTratta().getCodiceTratta().equals(tratta.getCodiceTratta()) ) {
-                        nuovoPrezzo = (biglietto.getPrezzo() /100 ) * scontistica;
-                    } else if (biglietto.getTrenoBiglietto().getTratta().getDataPartenza().equals(dataPartenza) &&
-                            biglietto.getTrenoBiglietto().getTratta().getDataArrivo().equals(tratta.getDataArrivo())) {
-                        nuovoPrezzo = (biglietto.getPrezzo() /100 ) * scontistica;
-                    } else if(clientiFedelta) {
-                        nuovoPrezzo = (biglietto.getPrezzo() /100 ) * scontistica;
-                    }
-
-                        }
-                }
-                    BPrimaClasse bpc = new BPrimaClasse.Builder()
-                            .bigliettoID(biglietto.getBigliettoID())
-                            .titolareBiglietto(biglietto.getTitolareBiglietto())
-                            .trenoBiglietto(biglietto.getTrenoBiglietto())
-                            .carrozza(biglietto.getCarrozza())
-                            .posto(biglietto.getCarrozza())
-                            .priorità(biglietto.getPriorità())
-                            .prezzo((int)nuovoPrezzo)
-                            .build();
-        return true;
     }
-}
+

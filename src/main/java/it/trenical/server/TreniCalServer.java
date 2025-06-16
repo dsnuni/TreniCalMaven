@@ -8,6 +8,7 @@ import it.trenical.server.Tratta.TrattaServiceImpl;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.Treno.TrenoServiceImpl;
 import it.trenical.server.igGenerator.IDGeneratorServiceImpl;
+import it.trenical.server.notifiche.NotificaServiceImpl;
 import it.trenical.server.notifiche.NotificheConcr;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class TreniCalServer {
                 .addService(new BigliettoServiceImpl())
                  .addService(new TrattaServiceImpl())
                 .addService(new IDGeneratorServiceImpl())
+                .addService(new NotificaServiceImpl())
                 .build();
 
         server.start();

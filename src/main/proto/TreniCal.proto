@@ -183,6 +183,20 @@ message GetGeneratedIDResponse {
   string trenoID = 4;
   string trattaID = 5;
 }
+// Notifica messages
+message Notifica {
+  string clienteID = 1;
+  string messaggio = 2;
+  string dataNotifica = 3; // formato gg/MM/yyyy HH:mm
+}
+
+message GetNotificheRequest {
+  string clienteID = 1;
+}
+
+message GetNotificheResponse {
+  repeated Notifica notifiche = 1;
+}
 
 // Services
 service ClienteService {
@@ -216,5 +230,8 @@ service TrattaService {
 }
 service IDGeneratorService {
   rpc GetGeneratedID(GetGeneratedIDRequest) returns (GetGeneratedIDResponse);
+}
+service NotificaService {
+  rpc GetNotifiche(GetNotificheRequest) returns (GetNotificheResponse);
 }
 
