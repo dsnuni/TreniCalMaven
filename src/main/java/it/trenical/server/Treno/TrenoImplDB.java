@@ -266,6 +266,39 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
     }
 
 
+    public static TrenoConcr getTrenoByRowIndex(int index) {
+        String DB_URL = "jdbc:sqlite:db/treniCal.db"; // aggiorna se serve
+        String sql = "SELECT * FROM Treno LIMIT 1 OFFSET ?";
+        TrattaImpl dbt =TrattaImplDB.getInstance();
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, index);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String trenoID = rs.getString("trenoID");
+                String tipoTreno = rs.getString("tipoTreno");
+                String trattaID = rs.getString("trattaID");
+                int prezzo = rs.getInt("prezzo");
+                int postiPrima = rs.getInt("postiPrima");
+                int postiSeconda = rs.getInt("postiSeconda");
+                int postiTerza = rs.getInt("postiTerza");
+                int postiTot = rs.getInt("postiTot");
+                int tempoPercorrenza = rs.getInt("tempoPercorrenza");
+
+                TrattaStandard tratta = dbt.getTratta(trattaID);
+                return new TrenoConcr(trenoID, tipoTreno, tratta, prezzo, postiPrima,
+                        postiSeconda, postiTerza, postiTot);
+            } else {
+                throw new IllegalArgumentException("Nessun treno alla riga: " + index);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }

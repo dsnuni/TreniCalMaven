@@ -136,6 +136,35 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
         return cliente;
     }
 
+    public static ClienteConcr getClienteByRowIndex(int index) {
+        String DB_URL = "jdbc:sqlite:db/treniCal.db"; // aggiorna se il path è diverso
+        String sql = "SELECT * FROM Cliente LIMIT 1 OFFSET ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, index);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String codiceFiscale = rs.getString("codiceFiscale");
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                String codiceCliente = rs.getString("codiceCliente");
+                int eta = rs.getInt("eta");
+
+                return new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+            } else {
+                throw new IllegalArgumentException("Nessun cliente alla riga: " + index);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
 }
 

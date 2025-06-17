@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="commit pre notifica">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaServiceImpl.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="commit  cambiamenti gui client, e remove di oggetti vecchi">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Generatore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/ApplicaPromozione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/ApplicaPromozione.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/Promozione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/Promozione.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/IdGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +63,7 @@
     "Application.ClienteClient.executor": "Run",
     "Application.CreatoreBiglietto.executor": "Run",
     "Application.GeneratorConcr.executor": "Run",
+    "Application.Generatore.executor": "Run",
     "Application.IdGenerator.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.MainGetAllTreniServer.executor": "Run",
@@ -167,6 +164,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Generatore" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.trenical.server.Generatore" />
+      <module name="TreniCal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.trenical.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TrenoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TreniCal" />
       <option name="PACKAGE_NAME" value="" />
@@ -176,23 +186,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TrenoTest.testGetAllTreno" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TreniCal" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TrenoTest" />
-      <option name="METHOD_NAME" value="testGetAllTreno" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.AnalizzatoreTratte" />
+        <item itemvalue="Application.Generatore" />
+        <item itemvalue="Application.AdminDashboardSwing" />
         <item itemvalue="JUnit.TrenoTest" />
         <item itemvalue="Application.GeneratorConcr" />
-        <item itemvalue="JUnit.TrenoTest.testGetAllTreno" />
-        <item itemvalue="Application.AnalizzatoreTratte" />
-        <item itemvalue="Application.AdminDashboardSwing" />
       </list>
     </recent_temporary>
   </component>
@@ -239,7 +239,9 @@
       <workItem from="1749976003839" duration="808000" />
       <workItem from="1749980114410" duration="13102000" />
       <workItem from="1749996668729" duration="16412000" />
-      <workItem from="1750063934492" duration="28444000" />
+      <workItem from="1750063934492" duration="28636000" />
+      <workItem from="1750105628312" duration="2370000" />
+      <workItem from="1750151932484" duration="7262000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -425,7 +427,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750014522556</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="commit  cambiamenti gui client, e remove di oggetti vecchi">
+      <option name="closed" value="true" />
+      <created>1750100661717</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1750100661717</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -455,7 +465,8 @@
     <MESSAGE value="fine gui amministratore con modifiche" />
     <MESSAGE value="prima parte gui utente" />
     <MESSAGE value="commit pre notifica" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit pre notifica" />
+    <MESSAGE value="commit  cambiamenti gui client, e remove di oggetti vecchi" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit  cambiamenti gui client, e remove di oggetti vecchi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
