@@ -16,6 +16,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 public class AdminDashboardSwing extends JFrame {
@@ -38,7 +39,6 @@ public class AdminDashboardSwing extends JFrame {
 
         add(tabs);
     }
-
     private JPanel creaTabella(String tabellaNome) {
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -116,11 +116,12 @@ public class AdminDashboardSwing extends JFrame {
                         int postiSeconda = Integer.parseInt(rowData[5].toString());
                         int postiTerza = Integer.parseInt(rowData[6].toString());
                         int postiTot = Integer.parseInt(rowData[7].toString());
-
+                        System.out.println(trenoID+" "+tipoTreno+" "+trattaID+" "+prezzo+" "+" "+postiPrima+" "+" "+postiSeconda+" "+postiTerza+" "+postiTot);
                         TrattaStandard tratta = TrattaImplDB.getInstance().getTratta(trattaID);
 
                         Treno treno = new TrenoConcr(trenoID, tipoTreno, tratta, prezzo,
                                 postiPrima, postiSeconda, postiTerza, postiTot);
+                        trdb.setTreno(treno);
                         break;
 
                 case "Tratta" :
@@ -151,6 +152,17 @@ public class AdminDashboardSwing extends JFrame {
                     int prezzoPartenza = Integer.parseInt(rowData[6].toString());
                     double scontistica = Double.parseDouble(rowData[7].toString());
 
+                    System.out.println("== Dati Promozione Selezionata ==");
+                    System.out.println("ID Promozione: " + promozioneID);
+                    System.out.println("ID Treno: " + trenoID3);
+                    System.out.println("ID Tratta: " + trattaID3);
+                    System.out.println("Data Partenza: " + dataPartenza3);
+                    System.out.println("Data Fine: " + dataFine);
+                    System.out.println("Clienti Fedeltà: " + clientiFedelta);
+                    System.out.println("Prezzo Partenza: " + prezzoPartenza);
+                    System.out.println("Scontistica: " + scontistica);
+                    System.out.println("==================================");
+
                     // Recupero oggetti da DB (assumendo i metodi già esistenti)
                     Treno treno3 = TrenoImplDB.getInstance().getTreno(trenoID3);
                     TrattaPrototype tratta3 = TrattaImplDB.getInstance().getTratta(trattaID3);
@@ -173,17 +185,54 @@ public class AdminDashboardSwing extends JFrame {
                     break;
                 case "Biglietto" :
                     String bigliettoID = rowData[0].toString();
-                    String cfCliente = rowData[1].toString();
+                    System.out.println("Biglietto ID: " + bigliettoID);
+
+                    String classe = rowData[1].toString();
+                    System.out.println("Classe: " + classe);
+
+                    String cfCliente = rowData[5].toString();
+                    System.out.println("Codice Fiscale Cliente: " + cfCliente);
+
                     String trenoID4 = rowData[2].toString();
+                    System.out.println("Treno ID: " + trenoID4);
+
                     String carrozza = rowData[3].toString();
+                    System.out.println("Carrozza: " + carrozza);
+
                     String posto = rowData[4].toString();
-                    String prioritaStr = rowData[5].toString(); // es: "Finestrino,Silenzio"
-                    int prezzo4 = Integer.parseInt(rowData[6].toString());
+                    System.out.println("Posto: " + posto);
+
+                    String prioritaStr = rowData[6].toString(); // es: "Finestrino,Silenzio"
+                    System.out.println("Priorità (stringa): " + prioritaStr);
+
+                    int prezzo4 = Integer.parseInt(rowData[7].toString());
+                    System.out.println("Prezzo: " + prezzo4);
+
+// Stampa riepilogativa
+                    System.out.println("== Riepilogo Biglietto ==");
+                    System.out.println("ID: " + bigliettoID + " | CF Cliente: " + cfCliente + " | Treno: " + trenoID4);
+                    System.out.println("Carrozza: " + carrozza + " | Posto: " + posto);
+                    System.out.println("Priorità: " + prioritaStr + " | Prezzo: " + prezzo4);
+                    System.out.println("==========================");
+
 
                     // Recupero da DB
                     Cliente cliente4 = ClienteImplDB.getInstance().getCliente(cfCliente);
                     Treno treno4 = TrenoImplDB.getInstance().getTreno(trenoID4);
                     List<String> priorita = Arrays.asList(prioritaStr.split(","));
+
+                    System.out.println("== Dati Biglietto Selezionato ==");
+                    System.out.println("ID Biglietto: " + bigliettoID);
+                    System.out.println("Codice Fiscale Cliente: " + cfCliente);
+                    System.out.println("ID Treno: " + trenoID4);
+                    System.out.println("Carrozza: " + carrozza);
+                    System.out.println("Posto: " + posto);
+                    System.out.println("Priorità: " + prioritaStr);
+                    System.out.println("Prezzo: " + prezzo4);
+                    System.out.println("-- Oggetti Recuperati --");
+                    System.out.println("Cliente: " + (cliente4 != null ? cliente4.toString() : "NON TROVATO"));
+                    System.out.println("Treno: " + (treno4 != null ? treno4.toString() : "NON TROVATO"));
+                    System.out.println("================================");
                     BigliettoImpl bdb = BigliettoDB.getInstance();
                     // Costruzione Biglietto Seconda Classe
                     Biglietto b = new BSecondaClasse.Builder()
@@ -211,33 +260,32 @@ public class AdminDashboardSwing extends JFrame {
             switch (tabellaNome) {
                 case "Cliente":
                     String[] opzioniC = {"nome", "cognome", "eta"};
-                    filtra(tabellaNome, opzioniC,model);
+                    filtra(tabellaNome, opzioniC, table);
                     break;
                 case "Treno":
-                    String[] opzioniT = {"trenoID","tipoTreno","trattaID","prezzo","postiPrima","postiSeconda","postiTerza","postiTot","tempoPercorrenza"};
-                    filtra(tabellaNome, opzioniT,model);
+                    String[] opzioniT = {"trenoID", "tipoTreno", "trattaID", "prezzo", "postiPrima", "postiSeconda", "postiTerza", "postiTot", "tempoPercorrenza"};
+                    filtra(tabellaNome, opzioniT, table);
                     break;
                 case "Biglietto":
-                    String[] opzioniB = {"classe","treno_id","carrozza","posto","cliente_id","prezzo"};
-                    filtra(tabellaNome, opzioniB,model);
+                    String[] opzioniB = {"classe", "treno_id", "carrozza", "posto", "cliente_id", "prezzo"};
+                    filtra(tabellaNome, opzioniB, table);
                     break;
                 case "Promozione":
-                    String[] opzioneP = {"trenoID","trattaID","dataPartenza","dataFine","clientiFedelta","prezzoPartenza","scontistica"};
-                    filtra(tabellaNome, opzioneP,model);
+                    String[] opzioniP = {"trenoID", "trattaID", "dataPartenza", "dataFine", "clientiFedelta", "prezzoPartenza", "scontistica"};
+                    filtra(tabellaNome, opzioniP, table);
                     break;
                 case "Tratta":
-                    String[] opzioneT = {"trattaID","stazione_partenza", "stazione_arrivo", "data_partenza","data_arrivo", "distanza", "durata_viaggio"};
-                    filtra(tabellaNome, opzioneT,model);
+                    String[] opzioniTr = {"trattaID", "stazione_partenza", "stazione_arrivo", "data_partenza", "data_arrivo", "distanza", "durata_viaggio"};
+                    filtra(tabellaNome, opzioniTr, table);
                     break;
             }
         });
+
         panel.add(buttonPanel, BorderLayout.NORTH);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
         return panel;
     }
-
-
-    private void filtra(String tabella, String[] opzioni, DefaultTableModel model) {
+    private void filtra(String tabella, String[] opzioni, JTable table) {
         JComboBox<String> comboBox = new JComboBox<>(opzioni);
 
         JPanel pannello = new JPanel();
@@ -245,7 +293,7 @@ public class AdminDashboardSwing extends JFrame {
         pannello.setPreferredSize(new Dimension(400, 120));
 
         JPanel rigaCombo = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        rigaCombo.add(new JLabel("Scegli un'opzione:"));
+        rigaCombo.add(new JLabel("Scegli una colonna:"));
         rigaCombo.add(comboBox);
 
         JPanel rigaFiltro = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -253,27 +301,26 @@ public class AdminDashboardSwing extends JFrame {
         JLabel filtroLabel = new JLabel("Filtro:");
         rigaFiltro.add(filtroLabel);
         rigaFiltro.add(field);
+
         pannello.add(rigaCombo);
         pannello.add(rigaFiltro);
 
         int result = JOptionPane.showConfirmDialog(
-                null, pannello, "Menu a tendina",
+                null, pannello, "Filtro",
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE
         );
-        System.out.println(result);
-        System.out.println(JOptionPane.OK_OPTION);
+
         if (result == JOptionPane.OK_OPTION) {
             String colonna = (String) comboBox.getSelectedItem();
-            System.out.println(colonna);
-            String valore = field.getText();
-            System.out.println(valore);
+            String valore = field.getText().trim();
 
-            //DefaultTableModel model = (DefaultTableModel) table.getModel();
-           // model.setRowCount(0);
+            if (valore.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Inserisci un valore valido per il filtro.");
+                return;
+            }
 
-            caricaDatiDaDB2(tabella,model,colonna,valore);
-
+            caricaDatiDaDB2(tabella, colonna, valore, table);
         }
     }
 
@@ -301,35 +348,45 @@ public class AdminDashboardSwing extends JFrame {
             System.err.println("Errore caricamento dati da tabella " + tabella + ": " + e.getMessage());
         }
     }
-    private void caricaDatiDaDB2(String tabella, DefaultTableModel model, String colonna, String valore) {
+    private void caricaDatiDaDB2(String tabella, String colonna, String valore, JTable table) {
         try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + tabella + " WHERE " + colonna + " = ?")) {
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM " + tabella + " WHERE " + colonna + " = ?")) {
 
             stmt.setString(1, valore);
-            try (ResultSet rs = stmt.executeQuery()) {
 
+            try (ResultSet rs = stmt.executeQuery()) {
                 ResultSetMetaData metaData = rs.getMetaData();
                 int colCount = metaData.getColumnCount();
 
-                // Pulisce il modello esistente
-                model.setRowCount(0);
-                model.setColumnCount(0);
-
+                Vector<String> columnNames = new Vector<>();
                 for (int i = 1; i <= colCount; i++) {
-                    model.addColumn(metaData.getColumnName(i));
+                    columnNames.add(metaData.getColumnName(i));
                 }
 
+                Vector<Vector<Object>> data = new Vector<>();
                 while (rs.next()) {
-                    Object[] rowData = new Object[colCount];
+                    Vector<Object> row = new Vector<>();
                     for (int i = 1; i <= colCount; i++) {
-                        rowData[i - 1] = rs.getObject(i);
+                        row.add(rs.getObject(i));
                     }
-                    model.addRow(rowData);
+                    data.add(row);
                 }
+
+                DefaultTableModel newModel = new DefaultTableModel(data, columnNames);
+                table.setModel(newModel);
+                SwingUtilities.invokeLater(() -> {
+                    table.revalidate();
+                    table.repaint();
+                });
+
             }
 
         } catch (SQLException e) {
-            System.err.println("Errore filtrando la tabella " + tabella + ": " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Errore nel caricamento dati dalla tabella " + tabella + ":\n" + e.getMessage(),
+                    "Errore SQL", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -352,7 +409,6 @@ public class AdminDashboardSwing extends JFrame {
 
         }
     }
-
     private void apriFinestraAdd(String tabella, int campi) {
 
         JFrame frame = new JFrame("Add new entry to " + tabella);
@@ -399,15 +455,6 @@ public class AdminDashboardSwing extends JFrame {
 
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            System.setProperty("sun.java2d.uiScale", "3.0");
-            new AdminDashboardSwing().setVisible(true);
-
-        });
-    }
-
     private JTextField[] assembla(JPanel inputPanel,JTextField[] fields, String tabella) {
         switch(tabella) {
             case "Cliente":
@@ -588,7 +635,6 @@ public class AdminDashboardSwing extends JFrame {
         }
         return null;
     }
-
     private TrattaPrototype creaTratta(String tabellaNome, JTextField[] fields) {
         if(tabellaNome.equals("Tratta")) {
             TrattaPrototype tratta = new TrattaStandard(
@@ -604,7 +650,6 @@ public class AdminDashboardSwing extends JFrame {
         }
         return null;
     }
-
     private Promozione creaPromozione(String tabellaNome, JTextField[] fields) {
         if(tabellaNome.equals("Promozione")) {
             Promozione pr =  new Promozione.PromozioneBuilder()
@@ -619,5 +664,13 @@ public class AdminDashboardSwing extends JFrame {
             return pr;
         }
         return null;
+    }
+    public static void main(String[] args) {
+      //  System.setProperty("sun.java2d.uiScale", "3.0");
+        SwingUtilities.invokeLater(() -> {
+         //   System.setProperty("sun.java2d.uiScale", "3.0");
+            new AdminDashboardSwing().setVisible(true);
+
+        });
     }
 }

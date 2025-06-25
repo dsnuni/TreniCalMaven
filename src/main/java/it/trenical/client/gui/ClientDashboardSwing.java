@@ -103,7 +103,7 @@ public class ClientDashboardSwing extends JFrame {
                 clientePanel.setBorder(BorderFactory.createTitledBorder("Dati Cliente"));
                 clientePanel.setBackground(sfondoScuro);
                 clientePanel.setOpaque(true);
-                clientePanel.add(pannelloCLiente(clientePanel,channel));
+                clientePanel.add(ingresso(clientePanel,channel));
 
                 // Pannello Biglietti
                 JPanel bigliettiPanel = new JPanel(new BorderLayout());
@@ -124,7 +124,7 @@ public class ClientDashboardSwing extends JFrame {
                 }
                 refreshButton.addActionListener(e -> {
                 DefaultTableModel nuovoModel = new DefaultTableModel(
-                        new Object[]{"Classe","treno_id", "Carrozza", "Posto","priorità", "Prezzo", "Partenza", "Arrivo"}, 0
+                        new Object[]{"Biglietto_id","Classe","treno_id", "Carrozza", "Posto","priorità", "Prezzo", "Partenza", "Arrivo"}, 0
                 );
                // creaNotifica(tabs,channel);
                 System.out.println("apri sta puttanazza");
@@ -141,7 +141,7 @@ public class ClientDashboardSwing extends JFrame {
                         return;
                     }
                     String bigliettoID = bigliettiTable.getValueAt(row, 0).toString();
-                    System.out.println("Modifica " + bigliettoID);
+                    System.out.println("Modifica UUU " + bigliettoID);
                     BigliettoServiceGrpc.BigliettoServiceBlockingStub stub = BigliettoServiceGrpc.newBlockingStub(channel);
                     GetBigliettoRequest request2 = GetBigliettoRequest.newBuilder()
                             .setBigliettoID(bigliettoID)
@@ -229,7 +229,7 @@ public class ClientDashboardSwing extends JFrame {
         for (it.trenical.grpc.Biglietto b : biglietti) {
             System.out.println(b);
             model.addRow(new Object[]{
-                   // b.getBigliettoID(),
+                    b.getBigliettoID(),
                     b.getClasse(),
                     b.getTrenoID(),
                     b.getCarrozza(),
@@ -242,6 +242,84 @@ public class ClientDashboardSwing extends JFrame {
         }
 
 
+    }
+    private static JPanel ingresso(JPanel panel, ManagedChannel channel) {
+        JPanel clientePanel  = new JPanel();
+        clientePanel.removeAll(); // pulizia per refresh
+        clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
+        clientePanel.setMaximumSize(new Dimension(400, 220));
+        //clientePanel.setBackground(new Color(180, 180, 180));
+        JButton accessButton = new JButton("Accedi");
+        JButton registratoButton = new JButton("Registrati");
+        clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+        clientePanel.add(registratoButton);
+        clientePanel.add(accessButton);
+        clientePanel.revalidate();
+
+        accessButton.addActionListener(e -> {
+            registrato = true;
+            panel.removeAll();
+            panel.add(pannelloAccesso(panel, channel));
+            panel.revalidate();
+            panel.repaint();
+        });
+        registratoButton.addActionListener(e -> {
+            panel.removeAll();
+            panel.add(pannelloCLiente(panel, channel));
+            panel.revalidate();
+            panel.repaint();
+        });
+        return clientePanel;
+    }
+    private static JPanel pannelloAccesso(JPanel panel, ManagedChannel channel) {
+        JPanel clientePanel  = new JPanel();
+        clientePanel.removeAll(); // pulizia per refresh
+        clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
+        clientePanel.setMaximumSize(new Dimension(400, 220));
+        //clientePanel.setBackground(new Color(180, 180, 180));
+
+        clientePanel.add(new JLabel("Codice Fiscale:"));
+        JTextField codiceFiscaleField = new JTextField(20);
+        clientePanel.add(codiceFiscaleField);
+
+        JButton submitButton = new JButton("Accedi");
+        clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+        clientePanel.add(submitButton);
+        clientePanel.revalidate();
+
+        submitButton.addActionListener(e -> {
+            String cf = codiceFiscaleField.getText();
+
+            ClienteServiceGrpc.ClienteServiceBlockingStub clienteStub = ClienteServiceGrpc.newBlockingStub(channel);
+            GetClienteRequest request = GetClienteRequest.newBuilder()
+                    .setCodiceFiscale(cf).build();
+            it.trenical.grpc.Cliente clienteGrpc = clienteStub.getCliente(request);
+            cliente = clienteGrpc;
+
+            clientePanel.removeAll(); // pulizia per refresh
+            clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
+            clientePanel.setMaximumSize(new Dimension(400, 220));
+            clientePanel.setBackground(new Color(180, 180, 180));
+
+
+            clientePanel.add(new JLabel("Codice Fiscale:"));
+            clientePanel.add(new JLabel(cliente.getCodiceFiscale()));
+
+            clientePanel.add(new JLabel("Nome:"));
+            clientePanel.add(new JLabel(cliente.getNome()));
+
+            clientePanel.add(new JLabel("Cognome:"));
+            clientePanel.add(new JLabel(cliente.getCognome()));
+
+            clientePanel.add(new JLabel("Codice Cliente:"));
+            clientePanel.add(new JLabel(cliente.getCodiceCliente()));
+
+            clientePanel.add(new JLabel("Età:"));
+            clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
+
+
+        });
+        return clientePanel;
     }
     private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel) {
     JPanel clientePanel  = new JPanel();
