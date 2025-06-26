@@ -71,10 +71,15 @@ public abstract class TrattaPrototype {
 
     @Override
     public String toString() {
-        return stazionePartenza + " → " + stazioneArrivo + " | " + dataPartenza + " → " +
-                dataArrivo + " | Durata: " +
-                tempoPercorrenza + "h"+ " | Distanza: " +
-                distanza;
+        return "TrattaPrototype{" +
+                "codiceTratta='" + codiceTratta + '\'' +
+                ", stazionePartenza='" + stazionePartenza + '\'' +
+                ", stazioneArrivo='" + stazioneArrivo + '\'' +
+                ", dataPartenza='" + dataPartenza + '\'' +
+                ", dataArrivo='" + dataArrivo + '\'' +
+                ", distanza=" + distanza +
+                ", tempoPercorrenza=" + tempoPercorrenza +
+                '}';
     }
 
     @Override

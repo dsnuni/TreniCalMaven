@@ -12,22 +12,24 @@ public class ClienteTest {
     private ClienteConcr cliente;
     private ClienteImplDB db;
     private final String codiceFiscale = "CF123TEST";
-    private final String codiceCliente = "CL123";
+    private final String codiceCliente = "CL12123";
     private final String nome = "Mario";
     private final String cognome = "Rossi";
+    private final int età =23;
 
     @BeforeEach
     public void setup() {
-        db = new ClienteImplDB();
-        cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente);
+        db = ClienteImplDB.getInstance();
+        cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,età);
         db.removeCliente(codiceFiscale); // pulizia preventiva
     }
 
     @Test
     public void testSetAndGetCliente() {
         db.setCliente(cliente);
+        System.out.println("Setto"+cliente);
         Cliente recuperato = db.getCliente(codiceFiscale);
-
+        System.out.println("Getto"+recuperato);
         assertNotNull(recuperato);
         assertEquals(codiceFiscale, recuperato.getCodiceFiscale());
         assertEquals(nome, recuperato.getNome());

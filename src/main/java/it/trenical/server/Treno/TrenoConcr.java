@@ -1,34 +1,26 @@
 package it.trenical.server.Treno;
 
 import it.trenical.server.Tratta.TrattaPrototype;
+import it.trenical.server.Tratta.TrattaStandard;
 
 public class TrenoConcr  extends Treno{
-    private TrenoImpl trenoImpl;
 
-    public TrenoConcr(TrenoImpl trenoImpl){
-        super();
-        this.trenoImpl = trenoImpl;
-    }
-
-    public TrenoConcr(int trenoID, String tipoTreno, TrattaPrototype tratta) {
-        super(trenoID,tipoTreno,tratta);
+    public TrenoConcr(String trenoID, String tipoTreno, TrattaStandard tratta, int prezzo, int postiPrima, int postiSeconda, int postiTerza, int postiTot) {
+        super(trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
     }
 
     @Override
     public Treno getTreno() {
-        return trenoImpl.getTreno(this.getTrenoID());
+        return this;
     }
 
     @Override
     public void setTreno() {
-        trenoImpl.setTreno(this);
+
     }
 
     @Override
     public boolean remove() {
-        if(trenoImpl.removeTreno(this.getTrenoID())) {
-            return true;
-        }
         return false;
     }
 

@@ -1,10 +1,18 @@
 package it.trenical.server.Tratta;
 
+import it.trenical.server.Treno.Treno;
+import it.trenical.server.Treno.TrenoConcr;
+import it.trenical.server.Treno.TrenoImplDB;
+import it.trenical.server.igGenerator.IdGenerator;
+import it.trenical.server.notifiche.NotificheConcr;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Random;
+
+import static it.trenical.server.igGenerator.IdGenerator.dividiPosti;
 
 
 public class GeneratorConcr implements Generator {
@@ -45,6 +53,7 @@ public class GeneratorConcr implements Generator {
 
     private final Random random = new Random();
     private final TrattaPrototype ts;
+    private TrattaImpl db = TrattaImplDB.getInstance();
     String codiceTratta = null;
     String stazPartenza = null;
     String stazArrivo = null;
@@ -61,11 +70,12 @@ public class GeneratorConcr implements Generator {
     }
 
     @Override
-    public TrattaPrototype genera() {
+    public void genera() {
         TrattaStandard nuovaTratta = (TrattaStandard) ts.clone();
-
-        int cittaPartenza = setCittaPartenza();
-        int cittaArrivo = setCittaArrivo(cittaPartenza);
+        nuovaTratta.setCodiceTratta(IdGenerator.generaTrattaID());
+        int intCittaPartenza = setCittaPartenza();
+        String cittaPartenza = cittaItaliane[intCittaPartenza];
+        String cittaArrivo = cittaItaliane[setCittaArrivo(intCittaPartenza)];
         setDistanza(cittaPartenza, cittaArrivo);
         int tempoPerc = tempoPercorrenza();
         setDPartenza();
@@ -82,7 +92,8 @@ public class GeneratorConcr implements Generator {
         nuovaTratta.setTempoPercorrenza(tempoPerc);
         nuovaTratta.setDistanza(distanza);
 
-        return nuovaTratta;
+        db.setTratta(nuovaTratta);
+
     }
 
 
@@ -105,10 +116,35 @@ public class GeneratorConcr implements Generator {
         return cittaArrivo;
     }
 
-    private int setDistanza(int cittaPartenza, int cittaArrivo) {
-        int distanza = Math.abs((cittaArrivo - cittaPartenza) * 40);
+    private int setDistanza(String cittaPartenza, String cittaArrivo) {
+        String cittaPEnum = cittaPartenza.trim().toUpperCase().replace(" ", "_").replace("'", "_");
+        String cittaAEnum = cittaArrivo.trim().toUpperCase().replace(" ", "_").replace("'", "_");
+
+        CittaCoordinate cittaP = CittaCoordinate.valueOf(cittaPEnum);
+        CittaCoordinate cittaA = CittaCoordinate.valueOf(cittaAEnum);
+
+         int distanza = (int) calcolaDistanzaKm(cittaP.getLatitudine(),cittaP.getLongitudine(),cittaA.getLatitudine(),cittaA.getLongitudine());
         this.distanza = distanza;
         return distanza;
+    }
+    public static double calcolaDistanzaKm(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Raggio della Terra in chilometri
+
+        double lat1Rad = Math.toRadians(lat1);
+        double lon1Rad = Math.toRadians(lon1);
+        double lat2Rad = Math.toRadians(lat2);
+        double lon2Rad = Math.toRadians(lon2);
+
+        double dLat = lat2Rad - lat1Rad;
+        double dLon = lon2Rad - lon1Rad;
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(lat1Rad) * Math.cos(lat2Rad)
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // distanza in chilometri
     }
 
     private void setDPartenza() {
@@ -135,8 +171,8 @@ public class GeneratorConcr implements Generator {
     }
 
     private int tempoPercorrenza() {
-        this.tempoPercorrenza=distanza/40;
-        return (distanza/ 40); // in ore
+        this.tempoPercorrenza=distanza/180;
+        return (distanza/ 180); //  tempo di percorrenza medio in ore
     }
 
     public static boolean verificaOra(String orarioPartenza, int durataOre) {
@@ -164,6 +200,7 @@ public class GeneratorConcr implements Generator {
             return null;
         }
     }
+    /*
     private static String[] creaRangeDate(int giorni) {
         String[] date = new String[giorni + 1];
         LocalDate oggi = LocalDate.now();
@@ -175,16 +212,47 @@ public class GeneratorConcr implements Generator {
         }
         return date;
     }
+*/
+    private static String[] creaRangeDate(int giorni) {
+        int totaleGiorni = 10; // 3 giorni prima + oggi + giorni futuri
+        String[] date = new String[totaleGiorni];
+        LocalDate oggi = LocalDate.now().minusDays(5); // parte da 3 giorni fa
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-
-        public static void main(String[] args) {
-            TrattaPrototype prototipoBase = new TrattaStandard();
-            Generator generatore = new GeneratorConcr(prototipoBase);
-
-            for (int i = 0; i < 5; i++) {
-                TrattaPrototype tratta = generatore.genera();
-                System.out.println(tratta);
-            }
+        for (int i = 0; i < totaleGiorni; i++) {
+            LocalDate nuovaData = oggi.plusDays(i);
+            date[i] = nuovaData.format(formatter);
         }
+        return date;
+    }
+
+    public static void main(String[] args) {
+        TrattaStandard prototipoBase = new TrattaStandard();
+        Generator generatore = new GeneratorConcr(prototipoBase);
+        TrenoImplDB dbt= TrenoImplDB.getInstance();
+        TrattaImplDB dbt2 = TrattaImplDB.getInstance();
+        dbt2.addObserver(new NotificheConcr());
+        dbt.addObserver(new NotificheConcr());
+        for (int i = 0; i < 5; i++) {
+            generatore.genera();
+        }
+        int numTratteTotali = dbt2.countTratte();
+        if (numTratteTotali == 0) {
+            System.out.println("Nessuna tratta disponibile.");
+            return;
+        }
+        Random random = new Random();
+        for (int i = 0; i < 5; i++) {
+            int numTratta = random.nextInt(numTratteTotali);
+
+            TrenoConcr tr = new TrenoConcr(
+                    IdGenerator.generaTrenoID(),
+                    IdGenerator.generaTipoTreno(),
+                    dbt2.getTrattaByIndex(numTratta),
+                    0, 0, 0, 0, 110
+            );
+            dbt.setTreno(dividiPosti(tr));
+        }
+    }
 
 }

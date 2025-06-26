@@ -1,0 +1,237 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "it.trenical.grpc";
+option java_outer_classname = "TreniCalProto";
+
+package trenical;
+
+// Cliente messages
+message Cliente {
+  string codiceFiscale = 1;
+  string nome = 2;
+  string cognome = 3;
+  string codiceCliente = 4;
+  int32 eta = 5;
+}
+
+message AddClienteRequest {
+  Cliente cliente = 1;
+}
+
+message AddClienteResponse {
+  bool success = 1;
+}
+
+message GetClienteRequest {
+  string codiceFiscale = 1;
+}
+
+message RemoveClienteRequest {
+  string codiceFiscale = 1;
+}
+
+message RemoveClienteResponse {
+  bool success = 1;
+}
+
+// Tratta messages
+message TrattaStandard {
+  string codiceTratta = 1;
+  string stazionePartenza = 2;
+  string stazioneArrivo = 3;
+  string dataPartenza = 4;
+  string dataArrivo = 5;
+  int32 distanza = 6;
+  int32 tempoPercorrenza = 7;
+}
+
+
+message AddTrattaRequest {
+  TrattaStandard tratta = 1;
+}
+
+message AddTrattaResponse {
+  bool success = 1;
+}
+
+message GetTrattaRequest {
+  string codiceTratta = 1;
+}
+
+message RemoveTrattaRequest {
+  string codiceTratta = 1;
+}
+
+message RemoveTrattaResponse {
+  bool success = 1;
+}
+message GetAllTratteRequest {
+
+}
+
+message GetAllTratteResponse {
+  repeated TrattaStandard tratta = 1;
+}
+
+// Treno messages
+message Treno {
+  string trenoID = 1;
+  string tipoTreno = 2;
+  string trattaID = 3;
+  int32 prezzo = 4;
+  int32 postiPrima = 5;
+  int32 postiSeconda = 6;
+  int32 postiTerza = 7;
+  int32 postiTot = 8;
+  int32 tempoPercorrenza = 9;
+}
+
+message AddTrenoRequest {
+  Treno treno = 1;
+}
+
+message AddTrenoResponse {
+  bool success = 1;
+}
+
+message GetTrenoRequest {
+  string trenoID = 1;
+}
+
+message RemoveTrenoRequest {
+  string trenoID = 1;
+}
+
+message RemoveTrenoResponse {
+  bool success = 1;
+}
+
+message GetAllTreniRequest {
+
+}
+
+message GetAllTreniResponse {
+  repeated Treno treni = 1;
+}
+
+message GetTreniByTrattaIDRequest {
+  string trattaID = 1;
+}
+
+message GetTreniByTrattaIDResponse {
+  repeated Treno treni = 1;
+}
+
+// Biglietto messages
+message Biglietto {
+  string bigliettoID = 1;
+  string classe = 2;
+  string trenoID = 3;
+  string carrozza = 4;
+  string posto = 5;
+  string clienteID = 6;
+  repeated string priorita = 7;
+  int32 prezzo = 8;
+}
+
+message AddBigliettoRequest {
+  Biglietto biglietto = 1;
+}
+
+message AddBigliettoResponse {
+  bool success = 1;
+}
+
+message GetBigliettoRequest {
+  string bigliettoID = 1;
+}
+
+message RemoveBigliettoRequest {
+  string bigliettoID = 1;
+}
+
+message RemoveBigliettoResponse {
+  bool success = 1;
+}
+
+message GetBigliettiByFiltroRequest {
+  string colonna = 1;
+  string valore = 2;
+}
+
+message GetBigliettiByFiltroResponse {
+  repeated Biglietto biglietti = 1;
+}
+
+message CreaBigliettoRequest {
+  repeated string dati = 1;
+}
+
+message CreaBigliettoResponse {
+  bool success = 1;
+}
+// ID Generator
+message GetGeneratedIDRequest {
+  bool fidelizzato = 1;
+}
+
+message GetGeneratedIDResponse {
+  string clienteID = 1;
+  string codiceCliente = 2;
+  string bigliettoID = 3;
+  string trenoID = 4;
+  string trattaID = 5;
+}
+// Notifica messages
+message Notifica {
+  string clienteID = 1;
+  string messaggio = 2;
+  string dataNotifica = 3; // formato gg/MM/yyyy HH:mm
+}
+
+message GetNotificheRequest {
+  string clienteID = 1;
+}
+
+message GetNotificheResponse {
+  repeated Notifica notifiche = 1;
+}
+
+// Services
+service ClienteService {
+  rpc AddCliente(AddClienteRequest) returns (AddClienteResponse);
+  rpc GetCliente(GetClienteRequest) returns (Cliente);
+  rpc RemoveCliente(RemoveClienteRequest) returns (RemoveClienteResponse);
+}
+
+service TrenoService {
+  rpc AddTreno(AddTrenoRequest) returns (AddTrenoResponse);
+  rpc GetTreno(GetTrenoRequest) returns (Treno);
+  rpc RemoveTreno(RemoveTrenoRequest) returns (RemoveTrenoResponse);
+  rpc GetAllTreni(GetAllTreniRequest) returns (GetAllTreniResponse);
+  rpc GetTreniByTrattaID(GetTreniByTrattaIDRequest) returns (GetTreniByTrattaIDResponse);
+}
+
+service BigliettoService {
+  rpc AddBiglietto(AddBigliettoRequest) returns (AddBigliettoResponse);
+  rpc GetBiglietto(GetBigliettoRequest) returns (Biglietto);
+  rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
+  rpc GetBigliettiByFiltro (GetBigliettiByFiltroRequest) returns (GetBigliettiByFiltroResponse);
+  rpc CreaBiglietto(CreaBigliettoRequest) returns (CreaBigliettoResponse);
+
+
+}
+service TrattaService {
+  rpc AddTratta(AddTrattaRequest) returns (AddTrattaResponse);
+  rpc GetTratta(GetTrattaRequest) returns (TrattaStandard);
+  rpc RemoveTratta(RemoveTrattaRequest) returns (RemoveTrattaResponse);
+  rpc GetAllTratte(GetAllTratteRequest) returns (GetAllTratteResponse);
+}
+service IDGeneratorService {
+  rpc GetGeneratedID(GetGeneratedIDRequest) returns (GetGeneratedIDResponse);
+}
+service NotificaService {
+  rpc GetNotifiche(GetNotificheRequest) returns (GetNotificheResponse);
+}
+

@@ -3,84 +3,86 @@
 import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrenoTest {
 
+    private TrenoImpl db;
+    private TrenoConcr treno;
+    private TrattaStandard tratta;
 
-    static class TestableTrenoConcr extends TrenoConcr {
-        TestableTrenoConcr(int trenoID, String tipoTreno, TrattaPrototype tratta, TrenoImpl impl) {
-            super(impl);
-            try {
-                Field idF = Treno.class.getDeclaredField("trenoID");
-                idF.setAccessible(true);
-                idF.setInt(this, trenoID);
-                Field typeF = Treno.class.getDeclaredField("tipoTreno");
-                typeF.setAccessible(true);
-                typeF.set(this, tipoTreno);
-                Field trattaF = Treno.class.getDeclaredField("tratta");
-                trattaF.setAccessible(true);
-                trattaF.set(this, tratta);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+    @BeforeEach
+    public void setup() {
+        db = TrenoImplDB.getInstance();
+        db.removeTreno("T123");
+        tratta = new TrattaStandard("TRT-8c3eae47", "Terni", "Bressanone", "12-06-2025 10:00", "12-06-2025 12:00 ", 468, 2);
+        treno = new TrenoConcr("T123", "FrecciaRossa", tratta, 100, 10, 40, 50, 100);
+    }
+
+    @Test
+    public void testSetAndGetTreno() {
+        db = TrenoImplDB.getInstance();
+        assertNotNull(TrenoImplDB.getInstance(), "Il Singleton non è stato istanziato correttamente");
+        db.setTreno(treno);
+        Treno t = db.getTreno("T123");
+            System.out.println(t.toString());
+          assertNotNull(t);
+          assertEquals("T123", t.getTrenoID());
+          assertEquals("FrecciaRossa", t.getTipoTreno());
+          assertEquals("Terni", t.getTratta().getStazionePartenza());
+    }
+
+    @Test
+    public void testRemoveTreno() {
+        db.setTreno(treno);
+        assertTrue(db.removeTreno("T123"));
+        assertNull(db.getTreno("T123"));
+    }
+
+    @Test
+    public void testGetAllTreno() {
+        TrenoImpl db = TrenoImplDB.getInstance();
+        List<Treno> treni = db.getAllTreno();
+
+        assertNotNull(treni, "La lista dei treni non dovrebbe essere null");
+
+        System.out.println("Numero treni trovati: " + treni.size());
+        for (Treno t : treni) {
+            assertNotNull(t.getTrenoID(), "Ogni treno deve avere un ID");
+            assertNotNull(t.getTipoTreno(), "Ogni treno deve avere un tipo");
+            assertNotNull(t.getTratta(), "Ogni treno deve avere una tratta");
+            assertTrue(t.getPostiTot() >= 0, "Posti totali devono essere >= 0");
+
+            System.out.println("Treno: " + t.getTrenoID() +
+                    ", Tipo: " + t.getTipoTreno() +
+                    ", Tratta: " + t.getTratta().getCodiceTratta());
         }
     }
 
     @Test
-    void testSetAndGetTreno() {
-        TrenoImpl impl = new TrenoImplDB();
-        TrattaPrototype tratta = new TrattaStandard("T1", "A", "B", "dp", "da", 100, 2);
-        TestableTrenoConcr treno = new TestableTrenoConcr(1, "Freccia", tratta, impl);
-        treno.setTreno();
-        Treno result = treno.getTreno();
-        System.out.println("testSetAndGetTreno -> " + result);
+    public void testGetTrenoByID() {
+        TrenoImplDB db = TrenoImplDB.getInstance();
+        Treno treno = new TrenoConcr(
+                "TRNTEST123",
+                "FrecciaRossa",
+                new TrattaStandard("TRT-8c3eae47", "Roma", "Milano", "2025-06-15", "2025-06-15", 600, 2),
+                100,
+                50, 80, 100,
+                230
+        );
+
+        db.setTreno(treno);
+        Treno result = db.getTreno("TRNTEST123");
         assertNotNull(result);
-        assertEquals(1, result.getTrenoID());
-        assertEquals("Freccia", result.getTipoTreno());
-        assertEquals(tratta, result.getTratta());
-        TrenoImplDB.removeAll();
+        assertEquals("TRNTEST123", result.getTrenoID());
+        assertEquals("FrecciaRossa", result.getTipoTreno());
+        assertEquals(100, result.getPrezzo());
     }
 
-    @Test
-    void testRemoveTreno() {
-        TrenoImpl impl = new TrenoImplDB();
-        TrattaPrototype tratta = new TrattaStandard("T1", "A", "B", "dp", "da", 100, 2);
-        TestableTrenoConcr treno = new TestableTrenoConcr(2, "Regionale", tratta, impl);
-        treno.setTreno();
-        boolean removed = treno.remove();
-        System.out.println("testRemoveTreno -> " + removed);
-        assertTrue(removed);
-        assertNull(impl.getTreno(2));
-    }
-
-    @Test
-    void testTrenoFactoryGetTrenoByID() {
-        TrenoImpl impl = new TrenoImplDB();
-        TrenoFactory factory = new TrenoFactory(impl);
-        TrattaPrototype tratta = new TrattaStandard("T1", "A", "B", "dp", "da", 100, 2);
-        TestableTrenoConcr treno = new TestableTrenoConcr(42, "AltaVelocita", tratta, impl);
-        treno.setTreno();
-        Treno result = factory.getTrenoByID("42");
-        System.out.println("testTrenoFactoryGetTrenoByID -> " + result);
-        assertNotNull(result);
-        assertEquals(42, result.getTrenoID());
-    }
-
-    @Test
-    void testTrenoGetters() {
-        TrenoImpl impl = new TrenoImplDB();
-        TrattaPrototype tratta = new TrattaStandard("T2", "X", "Y", "dp2", "da2", 80, 3);
-        TestableTrenoConcr treno = new TestableTrenoConcr(5, "Regional", tratta, impl);
-        System.out.println("testTrenoGetters -> " + treno.getTrenoID() + "," + treno.getTipoTreno());
-        assertEquals(5, treno.getTrenoID());
-        assertEquals("Regional", treno.getTipoTreno());
-        assertEquals(tratta, treno.getTratta());
-    }
 }

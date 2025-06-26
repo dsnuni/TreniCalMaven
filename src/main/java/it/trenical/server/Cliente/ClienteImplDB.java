@@ -1,10 +1,23 @@
 package it.trenical.server.Cliente;
+import it.trenical.server.notifiche.Observable;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ClienteImplDB implements ClienteImpl {
-
-
+public class ClienteImplDB extends Observable implements ClienteImpl {
     private static final String DB_URL = "jdbc:sqlite:db/treniCal.db";
+    private static final ClienteImplDB instance = new ClienteImplDB();
+    public static ClienteImplDB getInstance() {
+        return instance;
+    }
+
+    private ClienteImplDB() {
+        if (instance != null) {
+            throw new RuntimeException("Usa getInstance() per ottenere l'istanza di TrattaImplDB");
+        }
+    }
+
 
     @Override
     public void setCliente(Cliente cliente) {
@@ -21,7 +34,7 @@ public class ClienteImplDB implements ClienteImpl {
             stmt.setInt(5, cliente.getEtà());
 
             stmt.executeUpdate();
-
+            notifyObservers("Aggiunto Cliente con ID: " + cliente.getCodiceFiscale());
         } catch (SQLException e) {
             System.err.println("Errore inserimento cliente: " + e.getMessage());
         }
@@ -44,7 +57,7 @@ public class ClienteImplDB implements ClienteImpl {
                 String codiceCliente = rs.getString("codiceCliente");
                 int eta = rs.getInt("eta");
 
-                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente); // o CSecondaClasse, etc.
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,eta); // o CSecondaClasse, etc.
                 (cliente).setEtà(eta);
             }
 
@@ -80,5 +93,78 @@ public class ClienteImplDB implements ClienteImpl {
         }
     }
 
+    public List<Cliente> getByFiltro(String colonna, String valore) {
+        List<Cliente> clienti = new ArrayList<>();
+        String sql = "SELECT * FROM Cliente WHERE " + colonna + " = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, valore);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                clienti.add(new ClienteConcr(
+                        rs.getString("codiceFiscale"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getString("codiceCliente"),
+                        rs.getInt("eta")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore filtro cliente: " + e.getMessage());
+        }
+        return clienti;
     }
+
+    public Cliente getClienteByCodiceCLiente(String codiceCliente) {
+        Cliente cliente = null;
+        String sql = "SELECT * FROM Cliente WHERE codiceCliente = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, codiceCliente);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String codiceFiscale = rs.getString("codiceFiscale");
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                int eta = rs.getInt("eta");
+
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore filtro cliente: " + e.getMessage());
+        }
+        return cliente;
+    }
+
+    public static ClienteConcr getClienteByRowIndex(int index) {
+        String DB_URL = "jdbc:sqlite:db/treniCal.db"; // aggiorna se il path è diverso
+        String sql = "SELECT * FROM Cliente LIMIT 1 OFFSET ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, index);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String codiceFiscale = rs.getString("codiceFiscale");
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                String codiceCliente = rs.getString("codiceCliente");
+                int eta = rs.getInt("eta");
+
+                return new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+            } else {
+                throw new IllegalArgumentException("Nessun cliente alla riga: " + index);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+}
 
