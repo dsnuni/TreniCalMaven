@@ -7,11 +7,13 @@ import it.trenical.server.Cliente.ClienteServiceImpl;
 import it.trenical.server.Tratta.TrattaServiceImpl;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.Treno.TrenoServiceImpl;
+import it.trenical.server.gui.AdminDashboardSwing;
 import it.trenical.server.igGenerator.IDGeneratorServiceImpl;
 import it.trenical.server.notifiche.AnalizzatoreTratte;
 import it.trenical.server.notifiche.NotificaServiceImpl;
 import it.trenical.server.notifiche.NotificheConcr;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class TreniCalServer {
@@ -21,7 +23,10 @@ public class TreniCalServer {
         Generatore.genera(50,30,100,70);
         TrenoImplDB trenoDB = TrenoImplDB.getInstance();
         trenoDB.addObserver(new NotificheConcr());
-
+        SwingUtilities.invokeLater(() -> {
+            System.setProperty("sun.java2d.uiScale", "2.0");
+            new AdminDashboardSwing().setVisible(true);
+        });
         Server server = ServerBuilder.forPort(50051)
                 .addService(new ClienteServiceImpl())
                 .addService(new TrenoServiceImpl())

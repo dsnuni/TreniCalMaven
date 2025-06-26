@@ -100,6 +100,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
 
             stmt.setString(1, trenoID);
             int righe = stmt.executeUpdate();
+
             return righe > 0;
 
         } catch (SQLException e) {

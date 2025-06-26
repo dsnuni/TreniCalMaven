@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="genratore e remove">
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="risoluzione bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,12 +149,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GeneratorConcr" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="it.trenical.server.Tratta.GeneratorConcr" />
+    <configuration name="Generatore" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.trenical.server.Generatore" />
       <module name="TreniCal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="it.trenical.server.Tratta.*" />
+          <option name="PATTERN" value="it.trenical.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -162,8 +162,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Generatore" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="it.trenical.server.Generatore" />
+    <configuration name="TreniCalServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.trenical.server.TreniCalServer" />
       <module name="TreniCal" />
       <extension name="coverage">
         <pattern>
@@ -186,11 +186,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TreniCalServer" />
         <item itemvalue="Application.AdminDashboardSwing" />
         <item itemvalue="Application.AnalizzatoreTratte" />
         <item itemvalue="Application.Generatore" />
         <item itemvalue="JUnit.TrenoTest" />
-        <item itemvalue="Application.GeneratorConcr" />
       </list>
     </recent_temporary>
   </component>
@@ -242,7 +242,8 @@
       <workItem from="1750151932484" duration="7302000" />
       <workItem from="1750746792093" duration="1090000" />
       <workItem from="1750757390317" duration="274000" />
-      <workItem from="1750857386630" duration="10622000" />
+      <workItem from="1750857386630" duration="12815000" />
+      <workItem from="1750948806266" duration="3038000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -444,14 +445,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750165458343</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="risoluzione bug">
+      <option name="closed" value="true" />
+      <created>1750868527900</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1750868527900</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tutte le classi importate con successo nessun erorre di compilazione o di import" />
     <MESSAGE value="database collegato, provo il testing in locale con main di prova per verificare il funzionamento lato server" />
     <MESSAGE value="prova da terminale" />
     <MESSAGE value="aggiunte le dipendenze di Junit" />
@@ -476,7 +484,8 @@
     <MESSAGE value="commit pre notifica" />
     <MESSAGE value="commit  cambiamenti gui client, e remove di oggetti vecchi" />
     <MESSAGE value="genratore e remove" />
-    <option name="LAST_COMMIT_MESSAGE" value="genratore e remove" />
+    <MESSAGE value="risoluzione bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="risoluzione bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

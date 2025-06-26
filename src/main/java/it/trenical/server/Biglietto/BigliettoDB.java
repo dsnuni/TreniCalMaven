@@ -347,6 +347,28 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
         return biglietti;
     }
 
+    public List<String> getDateByBiglietto( String bigliettoID) {
+        List<String> date = new ArrayList<>();
+        List<Biglietto> biglietti = new ArrayList<>();
+        String sql = "SELECT * FROM Biglietto WHERE id = ?";
 
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, bigliettoID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                String trenoID = rs.getString("treno_id");
+                int prezzo = rs.getInt("prezzo");
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore recupero biglietti per treno: " + e.getMessage());
+        }
+
+        return date;
+    }
 }
 
