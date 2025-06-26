@@ -1,0 +1,149 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"5e2b5f30-b4a1-4e43-97b3-084d6831942b\" name=\"Changes\" comment=\"secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE\">\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/BigliettoTest.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BPrimaClasse.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BPrimaClasse.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BSecondaClasse.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BSecondaClasse.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BTerzaClasse.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BTerzaClasse.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/Cliente.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/Cliente.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {}\n}</component>\n  <component name=\"GithubPullRequestsUISettings\">{\n  &quot;selectedUrlAndAccountId&quot;: {\n    &quot;url&quot;: &quot;https://github.com/dsnuni/TreniCalMaven.git&quot;,\n    &quot;accountId&quot;: &quot;10a28b93-2bc1-48de-9ed6-1cecdc984580&quot;\n  }\n}</component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 5\n}</component>\n  <component name=\"ProjectId\" id=\"2y55NNRrwrbeiRnaMCHrevIlVkp\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Application.GeneratorConcr.executor\": \"Run\",\n    \"Application.Prova.executor\": \"Run\",\n    \"JUnit.BigliettoTest.executor\": \"Run\",\n    \"JUnit.BigliettoTest.testClasseBigliettoDiversa.executor\": \"Run\",\n    \"JUnit.BigliettoTest.testPrioritaSerializzazione.executor\": \"Run\",\n    \"JUnit.BigliettoTest.testRemoveCliente.executor\": \"Run\",\n    \"JUnit.BigliettoTest.testSetAndGetBiglietto.executor\": \"Run\",\n    \"JUnit.BigliettoTest.testSetAndGetCliente.executor\": \"Run\",\n    \"JUnit.BigliettoTest.testSovrascritturaBiglietto.executor\": \"Run\",\n    \"JUnit.ClienteTest.executor\": \"Run\",\n    \"JUnit.ClienteTest.testClienteFactoryGetClienteByCodiceFiscale.executor\": \"Run\",\n    \"JUnit.ClienteTest.testRemoveCliente.executor\": \"Run\",\n    \"JUnit.ClienteTest.testSetAndGetCliente.executor\": \"Run\",\n    \"JUnit.TrenoTest.executor\": \"Run\",\n    \"JUnit.TrenoTest.testRemoveTreno.executor\": \"Run\",\n    \"JUnit.TrenoTest.testSetAndGetTreno.executor\": \"Run\",\n    \"JUnit.TrenoTest.testTrenoGetters.executor\": \"Run\",\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.git.unshallow\": \"true\",\n    \"git-widget-placeholder\": \"master\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"onboarding.tips.debug.path\": \"/home/federico/IdeaProjects/TreniCal/src/main/java/it/trenical/Main.java\",\n    \"project.structure.last.edited\": \"Modules\",\n    \"project.structure.proportion\": \"0.0\",\n    \"project.structure.side.proportion\": \"0.0\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  },\n  \"keyToStringList\": {\n    \"DatabaseDriversLRU\": [\n      \"mysql\",\n      \"sqlite\"\n    ]\n  }\n}]]></component>\n  <component name=\"RecentsManager\">\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"BigliettoTest.testClasseBigliettoDiversa\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"TreniCal\" />\n      <option name=\"PACKAGE_NAME\" value=\"\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"BigliettoTest\" />\n      <option name=\"METHOD_NAME\" value=\"testClasseBigliettoDiversa\" />\n      <option name=\"TEST_OBJECT\" value=\"method\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"BigliettoTest.testPrioritaSerializzazione\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"TreniCal\" />\n      <option name=\"PACKAGE_NAME\" value=\"\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"BigliettoTest\" />\n      <option name=\"METHOD_NAME\" value=\"testPrioritaSerializzazione\" />\n      <option name=\"TEST_OBJECT\" value=\"method\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"BigliettoTest.testSetAndGetBiglietto\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"TreniCal\" />\n      <option name=\"PACKAGE_NAME\" value=\"\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"BigliettoTest\" />\n      <option name=\"METHOD_NAME\" value=\"testSetAndGetBiglietto\" />\n      <option name=\"TEST_OBJECT\" value=\"method\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"BigliettoTest.testSovrascritturaBiglietto\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"TreniCal\" />\n      <option name=\"PACKAGE_NAME\" value=\"\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"BigliettoTest\" />\n      <option name=\"METHOD_NAME\" value=\"testSovrascritturaBiglietto\" />\n      <option name=\"TEST_OBJECT\" value=\"method\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"TrenoTest.testSetAndGetTreno\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"TreniCal\" />\n      <option name=\"PACKAGE_NAME\" value=\"\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"TrenoTest\" />\n      <option name=\"METHOD_NAME\" value=\"testSetAndGetTreno\" />\n      <option name=\"TEST_OBJECT\" value=\"method\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"JUnit.BigliettoTest.testPrioritaSerializzazione\" />\n        <item itemvalue=\"JUnit.TrenoTest.testSetAndGetTreno\" />\n        <item itemvalue=\"JUnit.BigliettoTest.testSetAndGetBiglietto\" />\n        <item itemvalue=\"JUnit.BigliettoTest.testSovrascritturaBiglietto\" />\n        <item itemvalue=\"JUnit.BigliettoTest.testClasseBigliettoDiversa\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121\" />\n        <option value=\"bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"5e2b5f30-b4a1-4e43-97b3-084d6831942b\" name=\"Changes\" comment=\"\" />\n      <created>1749111555076</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1749111555076</updated>\n      <workItem from=\"1749111556240\" duration=\"1126000\" />\n      <workItem from=\"1749112690585\" duration=\"3955000\" />\n      <workItem from=\"1749125769546\" duration=\"16639000\" />\n      <workItem from=\"1749193954250\" duration=\"5901000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"tutte le classi importate con successo nessun erorre di compilazione o di import\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1749113468124</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1749113468124</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"database collegato, provo il testing in locale con main di prova per verificare il funzionamento lato server\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1749115981399</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1749115981399</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"prova da terminale\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1749116609001</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1749116609001</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"aggiunte le dipendenze di Junit\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1749127757233</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1749127757233</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"primo test Junit su modulo Treno effettuato, FUNZIONANTE\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1749134981827</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1749134981827</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1749137868799</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1749137868799</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"7\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"tutte le classi importate con successo nessun erorre di compilazione o di import\" />\n    <MESSAGE value=\"database collegato, provo il testing in locale con main di prova per verificare il funzionamento lato server\" />\n    <MESSAGE value=\"prova da terminale\" />\n    <MESSAGE value=\"aggiunte le dipendenze di Junit\" />\n    <MESSAGE value=\"primo test Junit su modulo Treno effettuato, FUNZIONANTE\" />\n    <MESSAGE value=\"secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 98c8ecf5dc288a96523ac684f0b6429edad05296)
++++ b/.idea/workspace.xml	(date 1750952500979)
+@@ -4,19 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE">
+-      <change afterPath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BPrimaClasse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BPrimaClasse.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BSecondaClasse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BSecondaClasse.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BTerzaClasse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BTerzaClasse.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/Cliente.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteFactory.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/Treno.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoFactory.java" afterDir="false" />
+-    </list>
++    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -30,6 +18,11 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="provaBuilder" />
++      </map>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="GitHubPullRequestSearchHistory">{
+@@ -49,53 +42,53 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.GeneratorConcr.executor": "Run",
+-    "Application.Prova.executor": "Run",
+-    "JUnit.BigliettoTest.executor": "Run",
+-    "JUnit.BigliettoTest.testClasseBigliettoDiversa.executor": "Run",
+-    "JUnit.BigliettoTest.testPrioritaSerializzazione.executor": "Run",
+-    "JUnit.BigliettoTest.testRemoveCliente.executor": "Run",
+-    "JUnit.BigliettoTest.testSetAndGetBiglietto.executor": "Run",
+-    "JUnit.BigliettoTest.testSetAndGetCliente.executor": "Run",
+-    "JUnit.BigliettoTest.testSovrascritturaBiglietto.executor": "Run",
+-    "JUnit.ClienteTest.executor": "Run",
+-    "JUnit.ClienteTest.testClienteFactoryGetClienteByCodiceFiscale.executor": "Run",
+-    "JUnit.ClienteTest.testRemoveCliente.executor": "Run",
+-    "JUnit.ClienteTest.testSetAndGetCliente.executor": "Run",
+-    "JUnit.TrenoTest.executor": "Run",
+-    "JUnit.TrenoTest.testRemoveTreno.executor": "Run",
+-    "JUnit.TrenoTest.testSetAndGetTreno.executor": "Run",
+-    "JUnit.TrenoTest.testTrenoGetters.executor": "Run",
+-    "ModuleVcsDetector.initialDetectionPerformed": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "master",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "onboarding.tips.debug.path": "/home/federico/IdeaProjects/TreniCal/src/main/java/it/trenical/Main.java",
+-    "project.structure.last.edited": "Modules",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.0",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.GeneratorConcr.executor&quot;: &quot;Run&quot;,
++    &quot;Application.Prova.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.testClasseBigliettoDiversa.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.testPrioritaSerializzazione.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.testRemoveCliente.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.testSetAndGetBiglietto.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.testSetAndGetCliente.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.BigliettoTest.testSovrascritturaBiglietto.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ClienteTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ClienteTest.testClienteFactoryGetClienteByCodiceFiscale.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ClienteTest.testRemoveCliente.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ClienteTest.testSetAndGetCliente.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.TrenoTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.TrenoTest.testRemoveTreno.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.TrenoTest.testSetAndGetTreno.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.TrenoTest.testTrenoGetters.executor&quot;: &quot;Run&quot;,
++    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;onboarding.tips.debug.path&quot;: &quot;/home/federico/IdeaProjects/TreniCal/src/main/java/it/trenical/Main.java&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   },
+-  "keyToStringList": {
+-    "DatabaseDriversLRU": [
+-      "mysql",
+-      "sqlite"
++  &quot;keyToStringList&quot;: {
++    &quot;DatabaseDriversLRU&quot;: [
++      &quot;mysql&quot;,
++      &quot;sqlite&quot;
+     ]
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="$PROJECT_DIR$" />
+     </key>
+   </component>
+-  <component name="RunManager">
++  <component name="RunManager" selected="JUnit.BigliettoTest.testClasseBigliettoDiversa">
+     <configuration name="BigliettoTest.testClasseBigliettoDiversa" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+       <module name="TreniCal" />
+       <option name="PACKAGE_NAME" value="" />
+@@ -148,10 +141,10 @@
+     </configuration>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="JUnit.BigliettoTest.testPrioritaSerializzazione" />
+         <item itemvalue="JUnit.TrenoTest.testSetAndGetTreno" />
++        <item itemvalue="JUnit.BigliettoTest.testSovrascritturaBiglietto" />
+         <item itemvalue="JUnit.BigliettoTest.testSetAndGetBiglietto" />
+-        <item itemvalue="JUnit.BigliettoTest.testSovrascritturaBiglietto" />
++        <item itemvalue="JUnit.BigliettoTest.testPrioritaSerializzazione" />
+         <item itemvalue="JUnit.BigliettoTest.testClasseBigliettoDiversa" />
+       </list>
+     </recent_temporary>

@@ -300,5 +300,33 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         }
     }
 
+    public List<String> removeTrenoByTrattaID(String trattaID) {
+        List<String> treniEliminati = new ArrayList<>();
+        String sql = "SELECT trenoID FROM Treno WHERE trattaID = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, trattaID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String trenoID = rs.getString("trenoID");
+
+                // Usa il metodo esistente per eliminare il treno
+                boolean successo = removeTreno(trenoID);
+                if (successo) {
+                    treniEliminati.add(trenoID);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante la rimozione dei treni per trattaID " + trattaID + ": " + e.getMessage());
+        }
+
+        return treniEliminati;
+    }
+
+
 
 }

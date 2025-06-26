@@ -82,7 +82,34 @@ public class AdminDashboardSwing extends JFrame {
         removeButton.addActionListener(e -> {int row = table.getSelectedRow();
             if (row != -1) {
                 Object id = table.getValueAt(row, 0);
-                rimuoviDaDB(tabellaNome, id);
+                switch (tabellaNome) {
+                    case "Treno":
+                        BigliettoDB bdb = BigliettoDB.getInstance();
+                        rimuoviDaDB(tabellaNome, id);
+                        bdb.removeBigliettoByTrenoID(id.toString());
+                        break;
+                    case "Tratta":
+                        String tr = id.toString();
+                        System.out.println("Calcolo treno");
+                        //aspetta();
+                        TrenoImplDB tdb = TrenoImplDB.getInstance();
+                        List<Treno> treni = tdb.getTrenoByTrattaID(tr);
+                        System.out.println(treni.toString());
+                        for(Treno trenoID : treni) {
+                            tdb.removeTreno(trenoID.getTrenoID());
+                            System.out.println("Rimuovo: "+trenoID.toString());
+                        }
+                        for(Treno trenoID : treni) {
+                            BigliettoDB bdb2 = BigliettoDB.getInstance();
+                            bdb2.removeBigliettoByTrenoID(trenoID.getTrenoID());
+                        }
+                        rimuoviDaDB(tabellaNome, id);
+                        break;
+                   default:
+                       rimuoviDaDB(tabellaNome, id);
+
+
+                }
                 ((DefaultTableModel) table.getModel()).removeRow(row);
             }
         });
@@ -389,7 +416,6 @@ public class AdminDashboardSwing extends JFrame {
                     "Errore SQL", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     private void rimuoviDaDB(String tabella, Object id) {
 
         switch (tabella) {
@@ -404,6 +430,14 @@ public class AdminDashboardSwing extends JFrame {
             case "Biglietto":
                 BigliettoImpl bigliettodb = BigliettoDB.getInstance();
                 bigliettodb.removeBiglietto(id.toString());
+                break;
+            case "Tratta" :
+                TrattaImpl tratta = TrattaImplDB.getInstance();
+                tratta.removeTratta(id.toString());
+                break;
+            case "Promozione":
+                PromozioneImpl promozione = PromozioneImplDB.getInstance();
+                promozione.removePromozione(id.toString());
                 break;
 
 
@@ -664,6 +698,17 @@ public class AdminDashboardSwing extends JFrame {
             return pr;
         }
         return null;
+    }
+    public void aspetta() {
+        boolean attesaCompleta = false;
+        long inizio = System.currentTimeMillis();
+
+        while (!attesaCompleta) {
+            long ora = System.currentTimeMillis();
+            if (ora - inizio >= 100) { // 10 millisecondi passati
+                attesaCompleta = true;
+            }
+        }
     }
     public static void main(String[] args) {
       //  System.setProperty("sun.java2d.uiScale", "3.0");

@@ -347,6 +347,22 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
         return biglietti;
     }
 
+    public void removeBigliettoByTrenoID(String trenoID) {
+        String sql = "DELETE FROM Biglietto WHERE treno_id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            stmt.setString(1, trenoID);
+            int count = stmt.executeUpdate();
+
+            System.out.println("Rimossi " + count + " biglietti per il treno ID: " + trenoID);
+            if (count > 0) {
+                notifyObservers("Rimossi " + count + " biglietti associati al treno " + trenoID);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore nella rimozione dei biglietti per treno " + trenoID + ": " + e.getMessage());
+        }
+    }
 }
 
