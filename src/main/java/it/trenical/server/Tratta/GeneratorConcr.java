@@ -1,10 +1,8 @@
 package it.trenical.server.Tratta;
 
-import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.igGenerator.IdGenerator;
-import it.trenical.server.notifiche.NotificheConcr;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -231,8 +229,8 @@ public class GeneratorConcr implements Generator {
         Generator generatore = new GeneratorConcr(prototipoBase);
         TrenoImplDB dbt= TrenoImplDB.getInstance();
         TrattaImplDB dbt2 = TrattaImplDB.getInstance();
-        dbt2.addObserver(new NotificheConcr());
-        dbt.addObserver(new NotificheConcr());
+      //  dbt2.addObserver(new NotificheConcr());
+    //    dbt.addObserver(new NotificheConcr());
         for (int i = 0; i < 5; i++) {
             generatore.genera();
         }

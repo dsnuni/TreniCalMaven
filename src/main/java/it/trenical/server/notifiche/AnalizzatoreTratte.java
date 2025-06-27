@@ -37,7 +37,31 @@ public class AnalizzatoreTratte {
 
     public void controllaTratte() {
         rimuoviTratteObsolete();
-       // estraiInformazioniTratte();
+        estraiInformazioniTratte();
+    }
+    public void estraiInformazioniTratte() {
+        TrattaImplDB trdb= TrattaImplDB.getInstance();
+        List<TrattaStandard> trt = trdb.getAllTratte();
+        for( TrattaStandard tr : trt ) {
+            String dataPartenza = tr.getDataPartenza();
+            if(isOggi(dataPartenza) ) {
+                System.out.println(tr.getCodiceTratta()+" È in scadenza");
+                TrenoImplDB trndb= TrenoImplDB.getInstance();
+                List<Treno> treniInPartenza = trndb.getTrenoByTrattaID(tr.getCodiceTratta());
+                for(Treno trn : treniInPartenza ) {
+                    System.out.println(trn.getTrenoID()+" sta per partire");
+                    BigliettoDB bigliettoDB = BigliettoDB.getInstance();
+                    List<Biglietto> listaClienti = bigliettoDB.getBigliettiByTrenoID(trn.getTrenoID());
+                    for(Biglietto biglietto : listaClienti ) {
+                        System.out.println("Il cliente "+biglietto.getTitolareBiglietto().getCodiceFiscale()+" deve affrettarsi a raggiungere il treno "+ trn.getTrenoID());
+                        Notifica nt = new Notifica(biglietto.getTitolareBiglietto().getCodiceFiscale(), trn.getTrenoID(),tr.getDataPartenza(),tr.getDataArrivo(),0, biglietto.getBigliettoID());
+                        NotificaDB ndb = NotificaDB.getInstance();
+                        ndb.setNotifica(nt);
+                    }
+                }
+            }
+
+        }
     }
     public void rimuoviTratteObsolete() {
         TrattaImplDB trattaDB = TrattaImplDB.getInstance();
@@ -146,11 +170,12 @@ public class AnalizzatoreTratte {
 
         public static void main(String[] args) {
             System.out.println("Avvio pulizia delle tratte obsolete...");
-            Generatore.genera(50,30,100,70);
+         //   Generatore.genera(50,30,100,70);
             // Istanza della classe contenente il metodo
             // Supponiamo che la classe si chiami GestorePulizia (modifica se diversa)
             AnalizzatoreTratte pulitore = new AnalizzatoreTratte();
-            pulitore.rimuoviTratteObsolete();
+            //pulitore.rimuoviTratteObsolete();
+            pulitore.controllaTratte();
 
             System.out.println("Pulizia completata.");
         }

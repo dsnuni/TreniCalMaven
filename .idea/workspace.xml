@@ -4,12 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="risoluzione bug">
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="risoluzione bug funz rimuovi">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Notifica.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6138fca0-f240-42f7-a81c-aaf53657764d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6138fca0-f240-42f7-a81c-aaf53657764d.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/BigliettoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/treniCal.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/treniCal.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/GeneratorConcr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/AnalizzatoreTratte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/AnalizzatoreTratte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificheConcr.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +42,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="provaBuilder" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -43,17 +50,17 @@
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {}
 }</component>
-  <component name="GitHubPullRequestState"><![CDATA[{
-  "prStates": [
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
     {
-      "id": {
-        "id": "PR_kwDOO2ekls6cQcuu",
-        "number": 3
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOO2ekls6cQcuu&quot;,
+        &quot;number&quot;: 3
       },
-      "lastSeen": 1750952633746
+      &quot;lastSeen&quot;: 1750952633746
     }
   ]
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/dsnuni/TreniCalMaven.git&quot;,
@@ -116,7 +123,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Notifica",
     "last_opened_file_path": "/home/federico/javafx-sdk-24.0.1",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -205,9 +212,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.AdminDashboardSwing" />
-        <item itemvalue="Application.TreniCalServer" />
         <item itemvalue="Application.AnalizzatoreTratte" />
+        <item itemvalue="Application.TreniCalServer" />
+        <item itemvalue="Application.AdminDashboardSwing" />
         <item itemvalue="Application.Generatore" />
         <item itemvalue="JUnit.TrenoTest" />
       </list>
@@ -263,6 +270,7 @@
       <workItem from="1750757390317" duration="274000" />
       <workItem from="1750857386630" duration="12815000" />
       <workItem from="1750948806266" duration="3038000" />
+      <workItem from="1751014618971" duration="17534000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -472,14 +480,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750868527900</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="risoluzione bug funz rimuovi">
+      <option name="closed" value="true" />
+      <created>1750962876583</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1750962876583</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="database collegato, provo il testing in locale con main di prova per verificare il funzionamento lato server" />
     <MESSAGE value="prova da terminale" />
     <MESSAGE value="aggiunte le dipendenze di Junit" />
     <MESSAGE value="primo test Junit su modulo Treno effettuato, FUNZIONANTE" />
@@ -504,7 +519,8 @@
     <MESSAGE value="commit  cambiamenti gui client, e remove di oggetti vecchi" />
     <MESSAGE value="genratore e remove" />
     <MESSAGE value="risoluzione bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="risoluzione bug" />
+    <MESSAGE value="risoluzione bug funz rimuovi" />
+    <option name="LAST_COMMIT_MESSAGE" value="risoluzione bug funz rimuovi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -512,7 +528,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/it/trenical/client/Main.java</url>
           <line>8</line>
-          <properties class="it.trenical.client.Main">
+          <properties class="it.trenical.client.Main" method="main">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
