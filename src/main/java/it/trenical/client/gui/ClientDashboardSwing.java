@@ -29,8 +29,7 @@ public class ClientDashboardSwing extends JFrame {
         tabs.addTab("Biglietti", creaTabella("Biglietto",tabs));
         tabs.addTab("Tratte", creaTabella("Tratta", tabs));
         //tabs.addTab("Treni", creaTabella("Treno"));
-        tabs.addTab("Notifiche",
-                new JPanel(new GridLayout(1, 2)));
+       // tabs.addTab("Notifiche",new JPanel(new GridLayout(1, 2)));
 
 
         add(tabs);
@@ -103,7 +102,7 @@ public class ClientDashboardSwing extends JFrame {
                 clientePanel.setBorder(BorderFactory.createTitledBorder("Dati Cliente"));
                 clientePanel.setBackground(sfondoScuro);
                 clientePanel.setOpaque(true);
-                clientePanel.add(ingresso(clientePanel,channel));
+                clientePanel.add(ingresso(clientePanel,channel,tabs));
 
                 // Pannello Biglietti
                 JPanel bigliettiPanel = new JPanel(new BorderLayout());
@@ -169,15 +168,19 @@ public class ClientDashboardSwing extends JFrame {
 
                 bigliettiPanel.add(buttonPanel2, BorderLayout.NORTH);
                 break;
+            case "Notifica" :
+                ;
+                break;
 
         }
         return panel;
     }
 
-    private static void creaNotifica(JTabbedPane tabs,ManagedChannel channel) {
-        if(registrato) {
-            JPanel panel = new JPanel();
-            System.out.println("Notifiche"+registrato);
+    private static void creaNotifica(JTabbedPane tabs, ManagedChannel channel) {
+        if (registrato && cliente != null) {
+            JPanel panel = new JPanel(new BorderLayout());
+            System.out.println("Notifiche " + registrato);
+
             JPanel notificaPanel = new JPanel(new BorderLayout());
             notificaPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             notificaPanel.setBackground(new Color(240, 240, 255)); // colore azzurrino chiaro
@@ -186,34 +189,43 @@ public class ClientDashboardSwing extends JFrame {
             titolo.setFont(new Font("Arial", Font.BOLD, 16));
             titolo.setHorizontalAlignment(SwingConstants.CENTER);
             notificaPanel.add(titolo, BorderLayout.NORTH);
-
+            System.out.println("Suca c1");
             // Colonne tabella
-            String[] colonne = { "Data", "Messaggio" };
+            String[] colonne = { "Partenza", "Messaggio" };
             DefaultTableModel notificaModel = new DefaultTableModel(colonne, 0);
             JTable notificaTable = new JTable(notificaModel);
             JScrollPane notificaScroll = new JScrollPane(notificaTable);
             notificaPanel.add(notificaScroll, BorderLayout.CENTER);
 
-            // gRPC: carica le notifiche per cliente
-            if (registrato && cliente != null) {
+            try {
+                // gRPC: carica le notifiche per cliente
                 NotificaServiceGrpc.NotificaServiceBlockingStub notificaStub =
                         NotificaServiceGrpc.newBlockingStub(channel);
 
-                GetNotificheRequest req = GetNotificheRequest.newBuilder()
-                        .setClienteID(cliente.getCodiceFiscale())
+                GetNotificaRequest req = GetNotificaRequest.newBuilder()
+                        .setCliente(cliente.getCodiceFiscale())
                         .build();
 
-                GetNotificheResponse resp = notificaStub.getNotifiche(req);
-
+                GetNotificaResponse resp = notificaStub.getNotifica(req);
+                System.out.println("Suca c2");
                 for (Notifica n : resp.getNotificheList()) {
-                    notificaModel.addRow(new Object[]{ n.getDataNotifica(), n.getMessaggio() });
+                    if (n.getCliente().equals(cliente.getCodiceFiscale())) {
+                        String messaggio = "Caro " + cliente.getNome() +
+                                ", ricordati che il tuo treno " + n.getTreno() +
+                                " partirà fra meno di un’ora.";
+                        System.out.println(messaggio);
+                        notificaModel.addRow(new Object[]{n.getPartenza(), messaggio});
+                    }
                 }
+            } catch (Exception e) {
+                System.err.println("Errore nel caricamento notifiche: " + e.getMessage());
             }
 
             panel.add(notificaPanel, BorderLayout.CENTER);
-            tabs.add(panel);
-    }
+            tabs.addTab("Notifiche", panel);
         }
+    }
+
     private static void caricaDatiDaDB(DefaultTableModel model,  ManagedChannel channel) {
 
         BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
@@ -243,7 +255,7 @@ public class ClientDashboardSwing extends JFrame {
 
 
     }
-    private static JPanel ingresso(JPanel panel, ManagedChannel channel) {
+    private static JPanel ingresso(JPanel panel, ManagedChannel channel,JTabbedPane tabs) {
         JPanel clientePanel  = new JPanel();
         clientePanel.removeAll(); // pulizia per refresh
         clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
@@ -259,7 +271,7 @@ public class ClientDashboardSwing extends JFrame {
         accessButton.addActionListener(e -> {
             registrato = true;
             panel.removeAll();
-            panel.add(pannelloAccesso(panel, channel));
+            panel.add(pannelloAccesso(tabs, channel));
             panel.revalidate();
             panel.repaint();
         });
@@ -271,7 +283,7 @@ public class ClientDashboardSwing extends JFrame {
         });
         return clientePanel;
     }
-    private static JPanel pannelloAccesso(JPanel panel, ManagedChannel channel) {
+    private static JPanel pannelloAccesso(JTabbedPane tabs, ManagedChannel channel) {
         JPanel clientePanel  = new JPanel();
         clientePanel.removeAll(); // pulizia per refresh
         clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
@@ -295,7 +307,7 @@ public class ClientDashboardSwing extends JFrame {
                     .setCodiceFiscale(cf).build();
             it.trenical.grpc.Cliente clienteGrpc = clienteStub.getCliente(request);
             cliente = clienteGrpc;
-
+            creaNotifica(tabs, channel);
             clientePanel.removeAll(); // pulizia per refresh
             clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
             clientePanel.setMaximumSize(new Dimension(400, 220));

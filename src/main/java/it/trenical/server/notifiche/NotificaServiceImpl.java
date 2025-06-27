@@ -1,40 +1,51 @@
 package it.trenical.server.notifiche;
 
-
 import io.grpc.stub.StreamObserver;
-import it.trenical.grpc.*;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import it.trenical.grpc.GetNotificaRequest;
+import it.trenical.grpc.GetNotificaResponse;
+import it.trenical.grpc.Notifica;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificaServiceImpl extends NotificaServiceGrpc.NotificaServiceImplBase {
+public class NotificaServiceImpl extends it.trenical.grpc.NotificaServiceGrpc.NotificaServiceImplBase {
 
-    @Override
-    public void getNotifiche(GetNotificheRequest request, StreamObserver<GetNotificheResponse> responseObserver) {
-        String clienteID = request.getClienteID();
-        List<Notifica> notificheList = estraiNotifichePerCliente(clienteID);
+    public void getNotifica(GetNotificaRequest request, StreamObserver<GetNotificaResponse> responseObserver) {
+        try {
+            String codiceFiscale = request.getCliente();
 
-        GetNotificheResponse.Builder responseBuilder = GetNotificheResponse.newBuilder();
-        responseBuilder.addAllNotifiche(notificheList);
+            NotificaDB db = NotificaDB.getInstance();
+            List<it.trenical.server.notifiche.Notifica> listaNotifiche = db.getNotifica(codiceFiscale); // questa restituisce già grpc.Notifica
 
-        responseObserver.onNext(responseBuilder.build());
-        responseObserver.onCompleted();
+            GetNotificaResponse.Builder response = GetNotificaResponse.newBuilder();
+
+            if (listaNotifiche != null) {
+                for (it.trenical.server.notifiche.Notifica notifica : listaNotifiche) {
+                    Notifica converted = convertiJavaInProto(notifica);
+                    response.addNotifiche(converted);
+                    System.out.println("Notifica aggiunta: " + converted);
+                }
+            }
+
+            responseObserver.onNext(response.build());
+            responseObserver.onCompleted();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseObserver.onError(io.grpc.Status.INTERNAL
+                    .withDescription("Errore interno in getNotifica()")
+                    .withCause(e)
+                    .asRuntimeException());
+        }
     }
 
-    private List<Notifica> estraiNotifichePerCliente(String clienteID) {
-        // 🔁 Simulazione: questo andrà sostituito con il tuo vero sistema notifiche
-        List<Notifica> notifiche = new ArrayList<>();
-
-        Notifica notifica = Notifica.newBuilder()
-                .setClienteID(clienteID)
-                .setMessaggio("Il tuo treno partirà tra meno di 1 ora!")
-                .setDataNotifica(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+    private Notifica convertiJavaInProto(it.trenical.server.notifiche.Notifica n) {
+        return it.trenical.grpc.Notifica.newBuilder()
+                .setCliente(n.getCliente())
+                .setTreno(n.getTreno())
+                .setPartenza(n.getPartenza())
+                .setArrivo(n.getArrivo())
+                .setTempo(n.getTempo())
                 .build();
-
-        notifiche.add(notifica);
-        return notifiche;
     }
 }
-
