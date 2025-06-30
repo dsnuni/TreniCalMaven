@@ -131,6 +131,8 @@ public class AdminDashboardSwing extends JFrame {
                     String codiceCliente = rowData[3].toString();
                     int eta = Integer.parseInt(rowData[4].toString());
                     Cliente cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+                    Cliente vecchiaString = cldb.getCliente(codiceFiscale);
+                    //confronto parametri
                     cldb.setCliente(cliente);
                     break;
                     case "Treno":
@@ -148,6 +150,7 @@ public class AdminDashboardSwing extends JFrame {
 
                         Treno treno = new TrenoConcr(trenoID, tipoTreno, tratta, prezzo,
                                 postiPrima, postiSeconda, postiTerza, postiTot);
+                        Treno tr = trdb.getTreno(trenoID);
                         trdb.setTreno(treno);
                         break;
 

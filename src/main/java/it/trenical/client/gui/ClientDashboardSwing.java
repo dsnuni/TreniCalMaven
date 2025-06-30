@@ -35,7 +35,7 @@ public class ClientDashboardSwing extends JFrame {
         add(tabs);
     }
 
-    JPanel creaTabella(String tabellaNome, JTabbedPane tabs) {
+    private static JPanel creaTabella(String tabellaNome, JTabbedPane tabs) {
         JPanel panel = new JPanel(new BorderLayout());
         DefaultTableModel model = new DefaultTableModel();
         JTable table = new JTable(model);
@@ -175,7 +175,6 @@ public class ClientDashboardSwing extends JFrame {
         }
         return panel;
     }
-
     private static void creaNotifica(JTabbedPane tabs, ManagedChannel channel) {
         if (registrato && cliente != null) {
             JPanel panel = new JPanel(new BorderLayout());
@@ -225,7 +224,6 @@ public class ClientDashboardSwing extends JFrame {
             tabs.addTab("Notifiche", panel);
         }
     }
-
     private static void caricaDatiDaDB(DefaultTableModel model,  ManagedChannel channel) {
 
         BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
