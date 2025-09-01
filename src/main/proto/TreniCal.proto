@@ -46,7 +46,6 @@ message TrattaStandard {
   int32 tempoPercorrenza = 7;
 }
 
-
 message AddTrattaRequest {
   TrattaStandard tratta = 1;
 }
@@ -66,6 +65,7 @@ message RemoveTrattaRequest {
 message RemoveTrattaResponse {
   bool success = 1;
 }
+
 message GetAllTratteRequest {
 
 }
@@ -170,7 +170,15 @@ message CreaBigliettoRequest {
 
 message CreaBigliettoResponse {
   bool success = 1;
+  string bigliettoID = 2;
+  int32 prezzoOriginale = 3;
+  int32 prezzoFinale = 4;
+  double percentualeSconto = 5;
+  string tipoPromozione = 6;
+  string messaggioPromozione = 7;
 }
+
+
 // ID Generator
 message GetGeneratedIDRequest {
   bool fidelizzato = 1;
@@ -183,6 +191,7 @@ message GetGeneratedIDResponse {
   string trenoID = 4;
   string trattaID = 5;
 }
+
 // Notifica messages
 message Notifica {
   string cliente = 1;
@@ -199,8 +208,6 @@ message GetNotificaRequest {
 message GetNotificaResponse {
   repeated Notifica notifiche = 1;
 }
-
-
 
 // Services
 service ClienteService {
@@ -223,19 +230,19 @@ service BigliettoService {
   rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
   rpc GetBigliettiByFiltro (GetBigliettiByFiltroRequest) returns (GetBigliettiByFiltroResponse);
   rpc CreaBiglietto(CreaBigliettoRequest) returns (CreaBigliettoResponse);
-
-
 }
+
 service TrattaService {
   rpc AddTratta(AddTrattaRequest) returns (AddTrattaResponse);
   rpc GetTratta(GetTrattaRequest) returns (TrattaStandard);
   rpc RemoveTratta(RemoveTrattaRequest) returns (RemoveTrattaResponse);
   rpc GetAllTratte(GetAllTratteRequest) returns (GetAllTratteResponse);
 }
+
 service IDGeneratorService {
   rpc GetGeneratedID(GetGeneratedIDRequest) returns (GetGeneratedIDResponse);
 }
+
 service NotificaService {
   rpc GetNotifica(GetNotificaRequest) returns (GetNotificaResponse);
 }
-

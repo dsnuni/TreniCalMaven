@@ -7,12 +7,9 @@ import it.trenical.grpc.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import it.trenical.grpc.Biglietto;
-import it.trenical.server.Biglietto.BPrimaClasse;
 
 public class ClientDashboardSwing extends JFrame {
     private static boolean registrato=false;
@@ -28,6 +25,8 @@ public class ClientDashboardSwing extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Biglietti", creaTabella("Biglietto",tabs));
         tabs.addTab("Tratte", creaTabella("Tratta", tabs));
+       // tabs.addTab("Info", creaTabella("Info", tabs));
+
         //tabs.addTab("Treni", creaTabella("Treno"));
        // tabs.addTab("Notifiche",new JPanel(new GridLayout(1, 2)));
 
@@ -46,6 +45,7 @@ public class ClientDashboardSwing extends JFrame {
                 .build();
 
         switch (tabellaNome) {
+
             case "Tratta":
                 JPanel buttonPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
                 JButton buyButton2 = new JButton("Acquista Treno");
@@ -175,7 +175,6 @@ public class ClientDashboardSwing extends JFrame {
         }
         return panel;
     }
-
     private static void creaNotifica(JTabbedPane tabs, ManagedChannel channel) {
         if (registrato && cliente != null) {
             JPanel panel = new JPanel(new BorderLayout());
@@ -225,7 +224,6 @@ public class ClientDashboardSwing extends JFrame {
             tabs.addTab("Notifiche", panel);
         }
     }
-
     private static void caricaDatiDaDB(DefaultTableModel model,  ManagedChannel channel) {
 
         BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
@@ -308,6 +306,7 @@ public class ClientDashboardSwing extends JFrame {
             it.trenical.grpc.Cliente clienteGrpc = clienteStub.getCliente(request);
             cliente = clienteGrpc;
             creaNotifica(tabs, channel);
+            finestraInfo(channel, tabs);
             clientePanel.removeAll(); // pulizia per refresh
             clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
             clientePanel.setMaximumSize(new Dimension(400, 220));
@@ -604,12 +603,14 @@ public class ClientDashboardSwing extends JFrame {
                         .build();
 
                 CreaBigliettoResponse response = stub.creaBiglietto(requestBiglietto);
+                if (response.getSuccess()) {
+                    int prezzoFinale = response.getPrezzoFinale();
+
                 try {
-                    mostraFinestraPagamento(0);
+                    mostraFinestraPagamento(prezzoFinale);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-                if (response.getSuccess()) {
 
                     JOptionPane.showMessageDialog(dialog, "Biglietto creato con successo!");
                 } else {
@@ -653,6 +654,210 @@ public class ClientDashboardSwing extends JFrame {
         dialog.add(centerPanel, BorderLayout.CENTER);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
         dialog.setVisible(true);
+        dialog.dispose();
+    }
+    public static void finestraInfo(ManagedChannel channel, JTabbedPane tabs) {
+        JPanel panel = new JPanel(new BorderLayout());
+        System.out.println("INfo " + registrato);
+        if (cliente != null) {
+            // Recupera i biglietti del cliente
+            BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
+            GetBigliettiByFiltroRequest requestA = GetBigliettiByFiltroRequest.newBuilder()
+                    .setColonna("cliente_id")
+                    .setValore(cliente.getCodiceFiscale())
+                    .build();
+            GetBigliettiByFiltroResponse responseA = bigliettoStub.getBigliettiByFiltro(requestA);
+            List<Biglietto> biglietti = responseA.getBigliettiList();
+
+            // Crea il pannello principale per le informazioni complete
+            JPanel infoPanel = new JPanel(new BorderLayout());
+            infoPanel.setBorder(BorderFactory.createTitledBorder("Informazioni Complete Biglietti"));
+
+            // ComboBox per selezionare il biglietto
+            JPanel selectionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            selectionPanel.add(new JLabel("Seleziona Biglietto:"));
+            JComboBox<String> comboBiglietti = new JComboBox<>();
+            comboBiglietti.setPreferredSize(new Dimension(300, 25));
+            selectionPanel.add(comboBiglietti);
+
+            // Tabella per mostrare le informazioni complete
+            String[] colonne = {"Campo", "Valore"};
+            DefaultTableModel infoModel = new DefaultTableModel(colonne, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Tabella in sola lettura
+                }
+            };
+            JTable infoTable = new JTable(infoModel);
+
+            // Personalizzazione della tabella (stesso stile del resto del codice)
+            infoTable.setRowHeight(25);
+            infoTable.setFont(new Font("Arial", Font.PLAIN, 12));
+            infoTable.setGridColor(new Color(200, 200, 200));
+            infoTable.setSelectionBackground(new Color(173, 216, 230));
+            infoTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+            infoTable.getTableHeader().setBackground(new Color(70, 130, 180));
+            infoTable.getTableHeader().setForeground(Color.WHITE);
+
+            // Larghezza delle colonne
+            infoTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+            infoTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+
+            JScrollPane scrollPan2e = new JScrollPane(infoTable);
+
+            // Popola la ComboBox con i biglietti
+            comboBiglietti.removeAllItems();
+            if (biglietti.isEmpty()) {
+                comboBiglietti.addItem("Nessun biglietto trovato");
+                comboBiglietti.setEnabled(false);
+            } else {
+                for (Biglietto b : biglietti) {
+                    String displayText = "Biglietto " + b.getBigliettoID() + " - Treno " + b.getTrenoID();
+                    comboBiglietti.addItem(displayText);
+                }
+                comboBiglietti.setEnabled(true);
+            }
+
+            // ActionListener per la selezione del biglietto
+            comboBiglietti.addActionListener(e -> {
+                int selectedIndex = comboBiglietti.getSelectedIndex();
+                if (selectedIndex >= 0 && selectedIndex < biglietti.size()) {
+                    Biglietto bigliettoSelezionato = biglietti.get(selectedIndex);
+
+                    // Pulisci la tabella
+                    infoModel.setRowCount(0);
+
+                    try {
+                        // ========== INFORMAZIONI BIGLIETTO ==========
+                        infoModel.addRow(new Object[]{"═══ DATI BIGLIETTO ═══", ""});
+                        infoModel.addRow(new Object[]{"ID Biglietto", bigliettoSelezionato.getBigliettoID()});
+                        infoModel.addRow(new Object[]{"Classe", bigliettoSelezionato.getClasse()});
+                        infoModel.addRow(new Object[]{"Carrozza", bigliettoSelezionato.getCarrozza()});
+                        infoModel.addRow(new Object[]{"Posto", bigliettoSelezionato.getPosto()});
+                        infoModel.addRow(new Object[]{"Prezzo", "€ " + bigliettoSelezionato.getPrezzo()});
+                        infoModel.addRow(new Object[]{"Priorità",
+                                bigliettoSelezionato.getPrioritaList().isEmpty() ?
+                                        "Nessuna" : bigliettoSelezionato.getPrioritaList().toString()});
+
+                        // ========== RECUPERA E MOSTRA DATI TRENO ==========
+                        TrenoServiceGrpc.TrenoServiceBlockingStub trenoStub = TrenoServiceGrpc.newBlockingStub(channel);
+                        GetTrenoRequest trenoRequest = GetTrenoRequest.newBuilder()
+                                .setTrenoID(bigliettoSelezionato.getTrenoID())
+                                .build();
+                        it.trenical.grpc.Treno treno = trenoStub.getTreno(trenoRequest);
+
+                        infoModel.addRow(new Object[]{"", ""}); // Riga vuota per separare
+                        infoModel.addRow(new Object[]{"═══ DATI TRENO ═══", ""});
+                        infoModel.addRow(new Object[]{"ID Treno", treno.getTrenoID()});
+                        infoModel.addRow(new Object[]{"Tipo Treno", treno.getTipoTreno()});
+                        infoModel.addRow(new Object[]{"Prezzo Base", "€ " + treno.getPrezzo()});
+                        infoModel.addRow(new Object[]{"Posti Prima Classe", treno.getPostiPrima()});
+                        infoModel.addRow(new Object[]{"Posti Seconda Classe", treno.getPostiSeconda()});
+                        infoModel.addRow(new Object[]{"Posti Terza Classe", treno.getPostiTerza()});
+                        infoModel.addRow(new Object[]{"Posti Totali", treno.getPostiTot()});
+                        infoModel.addRow(new Object[]{"ID Tratta Associata", treno.getTrattaID()});
+
+                        // ========== RECUPERA E MOSTRA DATI TRATTA ==========
+                        TrattaServiceGrpc.TrattaServiceBlockingStub trattaStub = TrattaServiceGrpc.newBlockingStub(channel);
+                        GetTrattaRequest trattaRequest = GetTrattaRequest.newBuilder()
+                                .setCodiceTratta(treno.getTrattaID())
+                                .build();
+                        it.trenical.grpc.TrattaStandard tratta = trattaStub.getTratta(trattaRequest);
+
+                        infoModel.addRow(new Object[]{"", ""}); // Riga vuota per separare
+                        infoModel.addRow(new Object[]{"═══ DATI TRATTA ═══", ""});
+                        infoModel.addRow(new Object[]{"ID Tratta", tratta.getCodiceTratta()});
+                        infoModel.addRow(new Object[]{"Stazione Partenza", tratta.getStazionePartenza()});
+                        infoModel.addRow(new Object[]{"Stazione Arrivo", tratta.getStazioneArrivo()});
+                        infoModel.addRow(new Object[]{"Data Partenza", tratta.getDataPartenza()});
+                        infoModel.addRow(new Object[]{"Data Arrivo", tratta.getDataArrivo()});
+                        infoModel.addRow(new Object[]{"Distanza", tratta.getDistanza() + " km"});
+                        infoModel.addRow(new Object[]{"Durata Media", tratta.getTempoPercorrenza() + " min"});
+
+                        System.out.println("Informazioni complete caricate per biglietto: " + bigliettoSelezionato.getBigliettoID());
+
+                    } catch (Exception ex) {
+                        System.err.println("Errore nel recupero delle informazioni: " + ex.getMessage());
+                        infoModel.addRow(new Object[]{"ERRORE", "Impossibile recuperare tutte le informazioni"});
+                        infoModel.addRow(new Object[]{"Dettagli errore", ex.getMessage()});
+                    }
+                }
+            });
+
+            // Seleziona automaticamente il primo biglietto se disponibile
+            if (comboBiglietti.getItemCount() > 0 && !comboBiglietti.getItemAt(0).equals("Nessun biglietto trovato")) {
+                comboBiglietti.setSelectedIndex(0);
+            }
+
+            // Pannello bottoni per azioni aggiuntive
+            JPanel buttonPanel = new JPanel(new FlowLayout());
+            JButton refreshButton = new JButton("Aggiorna");
+            JButton exportButton = new JButton("Esporta Info");
+            JButton printButton = new JButton("Stampa");
+
+            // Stile bottoni (coerente con il resto del codice)
+            Color buttonColor = new Color(70, 130, 180);
+            refreshButton.setBackground(buttonColor);
+            exportButton.setBackground(buttonColor);
+            printButton.setBackground(buttonColor);
+            refreshButton.setForeground(Color.WHITE);
+            exportButton.setForeground(Color.WHITE);
+            printButton.setForeground(Color.WHITE);
+
+            buttonPanel.add(refreshButton);
+            buttonPanel.add(exportButton);
+            buttonPanel.add(printButton);
+
+            // Event listeners per i bottoni
+            refreshButton.addActionListener(e -> {
+                // Ricarica i biglietti e aggiorna la ComboBox
+                int currentIndex = comboBiglietti.getSelectedIndex();
+                if (currentIndex >= 0) {
+                    comboBiglietti.setSelectedIndex(currentIndex); // Trigger reload
+                }
+                JOptionPane.showMessageDialog(infoPanel, "Informazioni aggiornate!", "Info", JOptionPane.INFORMATION_MESSAGE);
+            });
+
+            exportButton.addActionListener(e -> {
+                // Simula esportazione delle informazioni
+                StringBuilder export = new StringBuilder();
+                for (int i = 0; i < infoModel.getRowCount(); i++) {
+                    export.append(infoModel.getValueAt(i, 0)).append(": ")
+                            .append(infoModel.getValueAt(i, 1)).append("\n");
+                }
+
+                JTextArea textArea = new JTextArea(export.toString());
+                textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+                textArea.setEditable(false);
+                JScrollPane scroll = new JScrollPane(textArea);
+                scroll.setPreferredSize(new Dimension(500, 400));
+
+                JOptionPane.showMessageDialog(infoPanel, scroll, "Informazioni Esportate", JOptionPane.INFORMATION_MESSAGE);
+            });
+
+            printButton.addActionListener(e -> {
+                JOptionPane.showMessageDialog(infoPanel,
+                        "Funzione di stampa simulata!\nInformazioni pronte per la stampa.",
+                        "Stampa", JOptionPane.INFORMATION_MESSAGE);
+            });
+
+            // Assembla il pannello principale
+            infoPanel.add(selectionPanel, BorderLayout.NORTH);
+            infoPanel.add(scrollPan2e, BorderLayout.CENTER);
+            infoPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+            panel = infoPanel;
+
+        } else {
+            // Se il cliente non è loggato, mostra messaggio
+            JPanel noClientPanel = new JPanel(new GridBagLayout());
+            JLabel noClientLabel = new JLabel("Effettua il login per visualizzare le informazioni dei tuoi biglietti");
+            noClientLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            noClientLabel.setForeground(Color.GRAY);
+            noClientPanel.add(noClientLabel);
+            panel = noClientPanel;
+        }
+        tabs.addTab("Info", panel);
     }
     public static void mostraCambioBiglietto(String scelta, String priorita,String trenoID, ManagedChannel channel,boolean flag, int diff) {
         JDialog dialog = new JDialog( (JFrame) null, "Modifica Biglietto", true);

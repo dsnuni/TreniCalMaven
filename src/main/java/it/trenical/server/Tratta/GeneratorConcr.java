@@ -214,7 +214,7 @@ public class GeneratorConcr implements Generator {
     private static String[] creaRangeDate(int giorni) {
         int totaleGiorni = 10; // 3 giorni prima + oggi + giorni futuri
         String[] date = new String[totaleGiorni];
-        LocalDate oggi = LocalDate.now().minusDays(5); // parte da 3 giorni fa
+        LocalDate oggi = LocalDate.now().minusDays(0); // parte da 3 giorni fa
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         for (int i = 0; i < totaleGiorni; i++) {

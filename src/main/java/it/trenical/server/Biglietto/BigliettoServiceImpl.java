@@ -175,14 +175,21 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
     @Override
     public void creaBiglietto(CreaBigliettoRequest request, StreamObserver<CreaBigliettoResponse> responseObserver) {
         ArrayList<String> dati = new ArrayList<>(request.getDatiList());
-        boolean esito = CreatoreBiglietto.creaBiglietto(dati);
+        String esito = CreatoreBiglietto.creaBiglietto(dati);
+        if (esito != null) {
+            Biglietto biglietto = BigliettoDB.getInstance().getBiglietto(esito);
+            int prezzoFinale = biglietto.getPrezzo();
 
-        CreaBigliettoResponse response = CreaBigliettoResponse.newBuilder()
-                .setSuccess(esito)
-                .build();
+            CreaBigliettoResponse response = CreaBigliettoResponse.newBuilder()
+                    .setSuccess(true)
+                    .setBigliettoID(esito)
+                    .setPrezzoFinale(prezzoFinale)
+                    .build();
 
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
     }
 
 
