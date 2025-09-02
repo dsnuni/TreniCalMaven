@@ -23,7 +23,8 @@ public class NotificaDB {
         return instance;
     }
     public void setNotifica(Notifica nt) {
-        String sql = "INSERT OR REPLACE INTO Notifica (cliente, treno, partenza, arrivo, tempo, biglietto) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT OR REPLACE INTO Notifica (cliente, treno, partenza, arrivo, tempo, biglietto, stato, posto, binario, log) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -34,6 +35,10 @@ public class NotificaDB {
             stmt.setString(4, nt.getArrivo());
             stmt.setInt(5, nt.getTempo());
             stmt.setString(6, nt.getBiglietto());
+            stmt.setString(7, nt.getStato());        // NUOVO
+            stmt.setString(8, nt.getPosto());        // NUOVO
+            stmt.setInt(9, nt.getBinario());         // NUOVO
+            stmt.setString(10, nt.getLog());         // NUOVO
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -59,7 +64,11 @@ public class NotificaDB {
                         rs.getString("partenza"),
                         rs.getString("arrivo"),
                         rs.getInt("tempo"),
-                        rs.getString("biglietto") // solo se esiste la colonna "biglietto"
+                        rs.getString("biglietto"),
+                        rs.getString("stato"),        // NUOVO
+                        rs.getString("posto"),        // NUOVO
+                        rs.getInt("binario"),         // NUOVO
+                        rs.getString("log")           // NUOVO
                 );
                 notifiche.add(notifica);
             }
@@ -70,7 +79,6 @@ public class NotificaDB {
 
         return notifiche;
     }
-
 
     public void removeNotifica(Treno tr) {
         String sql = "DELETE FROM Notifica WHERE treno = ?";

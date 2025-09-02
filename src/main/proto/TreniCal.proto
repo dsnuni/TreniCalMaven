@@ -199,6 +199,11 @@ message Notifica {
   string partenza = 3;
   string arrivo = 4;
   int32 tempo = 5;
+  string biglietto = 6;
+  string stato = 7;
+  string posto = 8;
+  int32 binario = 9;
+  string log = 10;
 }
 
 message GetNotificaRequest {

@@ -4,23 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="aggiunta di funzioni per la visualizzazione di dati">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/LogObserver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaObserverTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Subject.java" afterDir="false" />
+    <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="fine prima parte lavori di notfiche">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6138fca0-f240-42f7-a81c-aaf53657764d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6138fca0-f240-42f7-a81c-aaf53657764d.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/treniCal.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/treniCal.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/PannelloDueTabelle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/TabellaBigliettiTreno.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/testGetAllTreni.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Notifica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Prova.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Biglietto/BigliettoDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Cliente/ClienteImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/LogObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/LogObserver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Tratta/TrattaImplDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/Treno/TrenoImplDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/AnalizzatoreTratte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/AnalizzatoreTratte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Notifica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Notifica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Observable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Observable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Observer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Observer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Subject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/Subject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/TreniCal.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +130,7 @@
     "Maven.TreniCalGrpc [validate].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "ModificheFinali",
     "kotlin-language-version-configured": "true",
@@ -142,6 +144,7 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.stickyLines",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -286,7 +289,7 @@
       <workItem from="1755715133056" duration="636000" />
       <workItem from="1756715466769" duration="8910000" />
       <workItem from="1756740507064" duration="5954000" />
-      <workItem from="1756801989539" duration="12339000" />
+      <workItem from="1756801989539" duration="20747000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -512,14 +515,21 @@
       <option name="project" value="LOCAL" />
       <updated>1756744168977</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="fine prima parte lavori di notfiche">
+      <option name="closed" value="true" />
+      <created>1756825353458</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1756825353458</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="aggiunte le dipendenze di Junit" />
     <MESSAGE value="primo test Junit su modulo Treno effettuato, FUNZIONANTE" />
     <MESSAGE value="secondo test Junit su modulo Cliente  effettuato, FUNZIONANTE" />
     <MESSAGE value="terzo test Junit su modulo Biglietto  effettuato, FUNZIONANTE, procediamo alla creazione di grpc" />
@@ -544,7 +554,8 @@
     <MESSAGE value="risoluzione bug" />
     <MESSAGE value="risoluzione bug funz rimuovi" />
     <MESSAGE value="aggiunta di funzioni per la visualizzazione di dati" />
-    <option name="LAST_COMMIT_MESSAGE" value="aggiunta di funzioni per la visualizzazione di dati" />
+    <MESSAGE value="fine prima parte lavori di notfiche" />
+    <option name="LAST_COMMIT_MESSAGE" value="fine prima parte lavori di notfiche" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -17,7 +17,7 @@ public abstract class Observable implements Subject {
     }
 
     @Override
-    public void notifyObservers(String message) {
+    public void notifyObservers(String[] message) {
         for (Observer observer : observers) {
             observer.update(message);
         }

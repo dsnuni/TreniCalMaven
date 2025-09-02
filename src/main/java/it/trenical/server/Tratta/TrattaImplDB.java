@@ -69,13 +69,18 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             stmt.setInt(7, tratta.getTempoPercorrenza());
 
             stmt.executeUpdate();
-            if (isUpdate) {
-                notifyObservers("MODIFICATA tratta: " + tratta.getCodiceTratta() +
-                        " (" + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo() + ")");
-            } else {
-                notifyObservers("AGGIUNTA tratta: " + tratta.getCodiceTratta() +
-                        " (" + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo() + ")");
-            }
+            String[] notificationData = {
+                    isUpdate ? "MODIFICATA" : "AGGIUNTA",
+                    tratta.getCodiceTratta(),
+                    null,
+                    tratta.getDataPartenza(),
+                    tratta.getDataArrivo(),
+                    null,
+                    null,
+                    String.valueOf(tratta.getTempoPercorrenza()),
+            };
+
+            notifyObservers(notificationData);
         } catch (SQLException e) {
             System.err.println("Errore inserimento cliente: " + e.getMessage());
         }
@@ -124,20 +129,6 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
 
 
     @Override
-    /*/
-    public boolean removeTratta(String trattaID) {
-        String sql = "DELETE FROM Tratta WHERE trattaID = ?";
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, trattaID);
-            int righe = stmt.executeUpdate();
-            return righe > 0;
-        } catch (SQLException e) {
-            System.err.println("Errore rimozione treno: " + e.getMessage());
-            return false;
-        }
-    }/*/
-
     public boolean removeTratta(String trattaID) {
         // Prima recupera i dati per la notifica
         TrattaStandard trattaDaRimuovere = getTratta(trattaID);
@@ -150,10 +141,18 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             int righe = stmt.executeUpdate();
 
             if (righe > 0 && trattaDaRimuovere != null) {
+                String[] notificationData = {
+                        "RIMOSSA",
+                        trattaID,
+                        null,
+                        trattaDaRimuovere.getDataPartenza(),
+                        trattaDaRimuovere.getDataArrivo(),
+                        null,
+                        null,
+                        null
+                };
 
-                notifyObservers("RIMOSSA tratta: " + trattaID +
-                        " (" + trattaDaRimuovere.getStazionePartenza() +
-                        " → " + trattaDaRimuovere.getStazioneArrivo() + ")");
+                notifyObservers(notificationData);
                 return true;
             }
 
@@ -161,7 +160,6 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
 
         } catch (SQLException e) {
             System.err.println("Errore rimozione tratta: " + e.getMessage());
-            notifyObservers("ERRORE nella rimozione tratta: " + trattaID);
             return false;
         }
     }

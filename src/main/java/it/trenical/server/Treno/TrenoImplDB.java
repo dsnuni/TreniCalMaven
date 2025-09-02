@@ -89,18 +89,20 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
 
             // NOTIFICA GLI OBSERVER
             if (isUpdate) {
-                notifyObservers("MODIFICATO treno: " + tr.getTrenoID() +
-                        " (" + tr.getTipoTreno() + " su tratta " + tratta.getCodiceTratta() +
-                        ", prezzo: €" + tr.getPrezzo() + ")");
-            } else {
-                notifyObservers("AGGIUNTO treno: " + tr.getTrenoID() +
-                        " (" + tr.getTipoTreno() + " su tratta " + tratta.getCodiceTratta() +
-                        ", prezzo: €" + tr.getPrezzo() + ", posti: " + tr.getPostiTot() + ")");
+                String[] notificationData = {
+                        isUpdate ? "MODIFICATO" : "AGGIUNTO",
+                        tr.getTrenoID(),
+                        null,
+                        tratta.getDataPartenza(),
+                        tratta.getDataArrivo(),
+                        null,
+                        null,
+                        String.valueOf(tr.getTempoPercorrenza())
+                };
             }
-
         } catch (SQLException e) {
             System.err.println("Errore salvataggio treno: " + e.getMessage());
-            notifyObservers("ERRORE nell'inserimento treno: " + tr.getTrenoID() + " - " + e.getMessage());
+
         }
     }
 
@@ -116,18 +118,26 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             int righe = stmt.executeUpdate();
 
             if (righe > 0 && trenoDaRimuovere != null) {
-                // NOTIFICA GLI OBSERVER
-                notifyObservers("RIMOSSO treno: " + trenoID +
-                        " (" + trenoDaRimuovere.getTipoTreno() +
-                        " su tratta " + trenoDaRimuovere.getTratta().getCodiceTratta() + ")");
+                // NOTIFICA GLI OBSERVER CON ARRAY
+                TrattaStandard tratta = trenoDaRimuovere.getTratta();
+                String[] notificationData = {
+                        "RIMOSSA",
+                        trenoDaRimuovere.getTrenoID(),
+                        null,
+                        tratta.getDataPartenza(),
+                        tratta.getDataArrivo(),
+                        null,
+                        null,
+                        null
+                };
+
+                notifyObservers(notificationData);
                 return true;
             }
-
             return false;
 
         } catch (SQLException e) {
             System.err.println("Errore rimozione treno: " + e.getMessage());
-            notifyObservers("ERRORE nella rimozione treno: " + trenoID + " - " + e.getMessage());
             return false;
         }
 

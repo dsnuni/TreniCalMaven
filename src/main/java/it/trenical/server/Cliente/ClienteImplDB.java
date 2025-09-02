@@ -34,7 +34,6 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
             stmt.setInt(5, cliente.getEtà());
 
             stmt.executeUpdate();
-            notifyObservers("Aggiunto Cliente con ID: " + cliente.getCodiceFiscale());
         } catch (SQLException e) {
             System.err.println("Errore inserimento cliente: " + e.getMessage());
         }
