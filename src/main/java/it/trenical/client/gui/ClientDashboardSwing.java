@@ -93,22 +93,23 @@ public class ClientDashboardSwing extends JFrame {
                 buttonPanel2.add(refreshButton);
                 // Colori personalizzati
                 Color sfondoPrincipale = panel.getBackground();
-                Color sfondoPannelli = new Color(200, 200, 200); // grigio chiaro per il pannello principale
-                Color sfondoScuro = new Color(180, 180, 180);    // un po' più scuro per i pannelli interni
+
+                Color sfondoPannelli = new Color(255, 255, 255); // grigio chiaro per il pannello principale
+                Color sfondoScuro = new Color(255, 255, 255);    // un po' più scuro per i pannelli interni
 
                 // Pannello Cliente
                 JPanel clientePanel = new JPanel();
                 clientePanel.setLayout(new GridLayout(5, 2, 5, 5));
                 clientePanel.setBorder(BorderFactory.createTitledBorder("Dati Cliente"));
                 clientePanel.setBackground(sfondoScuro);
-                clientePanel.setOpaque(true);
+                clientePanel.setOpaque(false);
                 clientePanel.add(ingresso(clientePanel,channel,tabs));
 
                 // Pannello Biglietti
                 JPanel bigliettiPanel = new JPanel(new BorderLayout());
                 bigliettiPanel.setBorder(BorderFactory.createTitledBorder("Biglietti del Cliente"));
                 bigliettiPanel.setBackground(sfondoScuro);
-                bigliettiPanel.setOpaque(true);
+                bigliettiPanel.setOpaque(false);
 
                 JTable bigliettiTable = new JTable(new DefaultTableModel(
                         new Object[]{"ID", "Classe", "Treno", "Carrozza", "Posto", "Prezzo", "Partenza", "Arrivo"}, 0
@@ -168,9 +169,6 @@ public class ClientDashboardSwing extends JFrame {
 
                 bigliettiPanel.add(buttonPanel2, BorderLayout.NORTH);
                 break;
-            case "Notifica" :
-                ;
-                break;
 
         }
         return panel;
@@ -182,13 +180,13 @@ public class ClientDashboardSwing extends JFrame {
 
             JPanel notificaPanel = new JPanel(new BorderLayout());
             notificaPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            notificaPanel.setBackground(new Color(240, 240, 255)); // colore azzurrino chiaro
+            notificaPanel.setBackground(new Color(255, 255, 255)); // colore azzurrino chiaro
 
             JLabel titolo = new JLabel("Notifiche Ricevute");
             titolo.setFont(new Font("Arial", Font.BOLD, 16));
             titolo.setHorizontalAlignment(SwingConstants.CENTER);
             notificaPanel.add(titolo, BorderLayout.NORTH);
-            System.out.println("Suca c1");
+
             // Colonne tabella
             String[] colonne = { "Partenza", "Messaggio" };
             DefaultTableModel notificaModel = new DefaultTableModel(colonne, 0);
@@ -206,13 +204,12 @@ public class ClientDashboardSwing extends JFrame {
                         .build();
 
                 GetNotificaResponse resp = notificaStub.getNotifica(req);
-                System.out.println("Suca c2");
+
                 for (Notifica n : resp.getNotificheList()) {
                     if (n.getCliente().equals(cliente.getCodiceFiscale())) {
-                        String messaggio = "Caro " + cliente.getNome() +
-                                ", ricordati che il tuo treno " + n.getTreno() +
+                        String messaggio = "Gentile " + cliente.getNome() +
+                                ", ti ricordiamo che il tuo treno " + n.getTreno() +
                                 " partirà fra meno di un’ora.";
-                        System.out.println(messaggio);
                         notificaModel.addRow(new Object[]{n.getPartenza(), messaggio});
                     }
                 }
@@ -286,7 +283,7 @@ public class ClientDashboardSwing extends JFrame {
         clientePanel.removeAll(); // pulizia per refresh
         clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
         clientePanel.setMaximumSize(new Dimension(400, 220));
-        //clientePanel.setBackground(new Color(180, 180, 180));
+        //clientePanel.setBackground(new Color(255, 255, 255));
 
         clientePanel.add(new JLabel("Codice Fiscale:"));
         JTextField codiceFiscaleField = new JTextField(20);
@@ -305,12 +302,12 @@ public class ClientDashboardSwing extends JFrame {
                     .setCodiceFiscale(cf).build();
             it.trenical.grpc.Cliente clienteGrpc = clienteStub.getCliente(request);
             cliente = clienteGrpc;
-            creaNotifica(tabs, channel);
             finestraInfo(channel, tabs);
+            creaNotifica(tabs, channel);
             clientePanel.removeAll(); // pulizia per refresh
             clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
             clientePanel.setMaximumSize(new Dimension(400, 220));
-            clientePanel.setBackground(new Color(180, 180, 180));
+           // clientePanel.setBackground(new Color(180, 180, 180));
 
 
             clientePanel.add(new JLabel("Codice Fiscale:"));
@@ -406,7 +403,7 @@ public class ClientDashboardSwing extends JFrame {
                         System.out.println(registrato);
                         clientePanel.revalidate();
                         clientePanel.setVisible(false);
-                        panel.add(panelloClienteRegistrato(channel));
+                        panel.add(panelloClienteRegistrato(channel, panel));
                     } else {
                         JOptionPane.showMessageDialog(clientePanel, "Errore: cliente non aggiunto.");
                     }
@@ -419,14 +416,12 @@ public class ClientDashboardSwing extends JFrame {
     }
     return clientePanel;
 }
-    private static JPanel panelloClienteRegistrato(ManagedChannel channel) {
-
-            JPanel clientePanel = new JPanel();
+    private static JPanel panelloClienteRegistrato(ManagedChannel channel, JPanel clientePanel) {
 
             clientePanel.removeAll(); // pulizia per refresh
             clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
             clientePanel.setMaximumSize(new Dimension(400, 220));
-            clientePanel.setBackground(new Color(180, 180, 180));
+
 
             clientePanel.add(new JLabel("Codice Fiscale:"));
             clientePanel.add(new JLabel(cliente.getCodiceFiscale()));
@@ -696,8 +691,8 @@ public class ClientDashboardSwing extends JFrame {
             infoTable.setGridColor(new Color(200, 200, 200));
             infoTable.setSelectionBackground(new Color(173, 216, 230));
             infoTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-            infoTable.getTableHeader().setBackground(new Color(70, 130, 180));
-            infoTable.getTableHeader().setForeground(Color.WHITE);
+            infoTable.getTableHeader().setBackground(new Color(184, 212, 240));
+            infoTable.getTableHeader().setForeground(Color.BLACK);
 
             // Larghezza delle colonne
             infoTable.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -789,63 +784,9 @@ public class ClientDashboardSwing extends JFrame {
                 comboBiglietti.setSelectedIndex(0);
             }
 
-            // Pannello bottoni per azioni aggiuntive
-            JPanel buttonPanel = new JPanel(new FlowLayout());
-            JButton refreshButton = new JButton("Aggiorna");
-            JButton exportButton = new JButton("Esporta Info");
-            JButton printButton = new JButton("Stampa");
-
-            // Stile bottoni (coerente con il resto del codice)
-            Color buttonColor = new Color(70, 130, 180);
-            refreshButton.setBackground(buttonColor);
-            exportButton.setBackground(buttonColor);
-            printButton.setBackground(buttonColor);
-            refreshButton.setForeground(Color.WHITE);
-            exportButton.setForeground(Color.WHITE);
-            printButton.setForeground(Color.WHITE);
-
-            buttonPanel.add(refreshButton);
-            buttonPanel.add(exportButton);
-            buttonPanel.add(printButton);
-
-            // Event listeners per i bottoni
-            refreshButton.addActionListener(e -> {
-                // Ricarica i biglietti e aggiorna la ComboBox
-                int currentIndex = comboBiglietti.getSelectedIndex();
-                if (currentIndex >= 0) {
-                    comboBiglietti.setSelectedIndex(currentIndex); // Trigger reload
-                }
-                JOptionPane.showMessageDialog(infoPanel, "Informazioni aggiornate!", "Info", JOptionPane.INFORMATION_MESSAGE);
-            });
-
-            exportButton.addActionListener(e -> {
-                // Simula esportazione delle informazioni
-                StringBuilder export = new StringBuilder();
-                for (int i = 0; i < infoModel.getRowCount(); i++) {
-                    export.append(infoModel.getValueAt(i, 0)).append(": ")
-                            .append(infoModel.getValueAt(i, 1)).append("\n");
-                }
-
-                JTextArea textArea = new JTextArea(export.toString());
-                textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-                textArea.setEditable(false);
-                JScrollPane scroll = new JScrollPane(textArea);
-                scroll.setPreferredSize(new Dimension(500, 400));
-
-                JOptionPane.showMessageDialog(infoPanel, scroll, "Informazioni Esportate", JOptionPane.INFORMATION_MESSAGE);
-            });
-
-            printButton.addActionListener(e -> {
-                JOptionPane.showMessageDialog(infoPanel,
-                        "Funzione di stampa simulata!\nInformazioni pronte per la stampa.",
-                        "Stampa", JOptionPane.INFORMATION_MESSAGE);
-            });
-
             // Assembla il pannello principale
             infoPanel.add(selectionPanel, BorderLayout.NORTH);
             infoPanel.add(scrollPan2e, BorderLayout.CENTER);
-            infoPanel.add(buttonPanel, BorderLayout.SOUTH);
-
             panel = infoPanel;
 
         } else {

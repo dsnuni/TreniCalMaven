@@ -23,7 +23,8 @@ public class TreniCalServer {
 
         AnalizzatoreTratte pulitore = new AnalizzatoreTratte();
         pulitore.rimuoviTratteObsolete();
-        Generatore.genera(50,30,100,70);
+        pulitore.avviaControlloPeriodico();
+        //Generatore.genera(50,30,100,70);
         TrenoImplDB trenoDB = TrenoImplDB.getInstance();
        // trenoDB.addObserver(new NotificheConcr());
        // System.setProperty("sun.java2d.uiScale", "3.0");

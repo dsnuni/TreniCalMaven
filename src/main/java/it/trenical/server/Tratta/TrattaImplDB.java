@@ -54,6 +54,8 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
     public void setTratta(TrattaPrototype tratta) {
         String sql = "INSERT OR REPLACE INTO Tratta (trattaID, stazione_partenza,stazione_arrivo,data_partenza,data_arrivo,distanza,durata_viaggio) " +
                 "VALUES (?, ?, ?, ?, ?,?,?)";
+        TrattaStandard esistente = getTratta(tratta.getCodiceTratta());
+        boolean isUpdate = (esistente != null);
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -67,7 +69,13 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             stmt.setInt(7, tratta.getTempoPercorrenza());
 
             stmt.executeUpdate();
-            notifyObservers("Aggiunta tratta con ID: " + tratta.getCodiceTratta());
+            if (isUpdate) {
+                notifyObservers("MODIFICATA tratta: " + tratta.getCodiceTratta() +
+                        " (" + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo() + ")");
+            } else {
+                notifyObservers("AGGIUNTA tratta: " + tratta.getCodiceTratta() +
+                        " (" + tratta.getStazionePartenza() + " → " + tratta.getStazioneArrivo() + ")");
+            }
         } catch (SQLException e) {
             System.err.println("Errore inserimento cliente: " + e.getMessage());
         }
@@ -116,6 +124,7 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
 
 
     @Override
+    /*/
     public boolean removeTratta(String trattaID) {
         String sql = "DELETE FROM Tratta WHERE trattaID = ?";
         try (Connection conn = DriverManager.getConnection(url);
@@ -125,6 +134,34 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             return righe > 0;
         } catch (SQLException e) {
             System.err.println("Errore rimozione treno: " + e.getMessage());
+            return false;
+        }
+    }/*/
+
+    public boolean removeTratta(String trattaID) {
+        // Prima recupera i dati per la notifica
+        TrattaStandard trattaDaRimuovere = getTratta(trattaID);
+
+        String sql = "DELETE FROM Tratta WHERE trattaID = ?";
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, trattaID);
+            int righe = stmt.executeUpdate();
+
+            if (righe > 0 && trattaDaRimuovere != null) {
+
+                notifyObservers("RIMOSSA tratta: " + trattaID +
+                        " (" + trattaDaRimuovere.getStazionePartenza() +
+                        " → " + trattaDaRimuovere.getStazioneArrivo() + ")");
+                return true;
+            }
+
+            return false;
+
+        } catch (SQLException e) {
+            System.err.println("Errore rimozione tratta: " + e.getMessage());
+            notifyObservers("ERRORE nella rimozione tratta: " + trattaID);
             return false;
         }
     }

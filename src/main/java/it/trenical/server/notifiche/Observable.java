@@ -3,16 +3,23 @@ package it.trenical.server.notifiche;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Observable {
-    private final List<Observer> observers = new ArrayList<>();
+public abstract class Observable implements Subject {
+    private List<Observer> observers = new ArrayList<>();
 
-    public void addObserver(Observer o) {
-        observers.add(o);
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
     }
 
-    public void notifyObservers(String messaggio) {
-        for (Observer o : observers) {
-            o.update(messaggio);
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
         }
     }
 }

@@ -65,15 +65,16 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
 
     @Override
     public void setTreno(Treno tr) {
-        String sql =
-                "INSERT OR REPLACE INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza,postiTot, tempoPercorrenza)  " +
+        Treno esistente = getTreno(tr.getTrenoID());
+        boolean isUpdate = (esistente != null);
+
+        String sql = "INSERT OR REPLACE INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza, postiTot, tempoPercorrenza) " +
                 "VALUES (?,?, ?, ?, ?, ?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             TrattaStandard tratta = tr.getTratta();
-
             stmt.setString(1, tr.getTrenoID());
             stmt.setString(2, tr.getTipoTreno());
             stmt.setString(3, tratta.getCodiceTratta());
@@ -81,29 +82,52 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             stmt.setInt(5, tr.getPostiPrima());
             stmt.setInt(6, tr.getPostiSeconda());
             stmt.setInt(7, tr.getPostiTerza());
-            stmt.setInt(8,tr.getPostiTot());
+            stmt.setInt(8, tr.getPostiTot());
             stmt.setInt(9, tr.getTempoPercorrenza());
 
-            notifyObservers("Aggiunto treno con ID: " + tr.getTrenoID());
             stmt.executeUpdate();
+
+            // NOTIFICA GLI OBSERVER
+            if (isUpdate) {
+                notifyObservers("MODIFICATO treno: " + tr.getTrenoID() +
+                        " (" + tr.getTipoTreno() + " su tratta " + tratta.getCodiceTratta() +
+                        ", prezzo: €" + tr.getPrezzo() + ")");
+            } else {
+                notifyObservers("AGGIUNTO treno: " + tr.getTrenoID() +
+                        " (" + tr.getTipoTreno() + " su tratta " + tratta.getCodiceTratta() +
+                        ", prezzo: €" + tr.getPrezzo() + ", posti: " + tr.getPostiTot() + ")");
+            }
 
         } catch (SQLException e) {
             System.err.println("Errore salvataggio treno: " + e.getMessage());
+            notifyObservers("ERRORE nell'inserimento treno: " + tr.getTrenoID() + " - " + e.getMessage());
         }
     }
 
     @Override
     public boolean removeTreno(String trenoID) {
+        Treno trenoDaRimuovere = getTreno(trenoID);
+
         String sql = "DELETE FROM Treno WHERE trenoID = ?";
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, trenoID);
             int righe = stmt.executeUpdate();
-            return righe > 0;
+
+            if (righe > 0 && trenoDaRimuovere != null) {
+                // NOTIFICA GLI OBSERVER
+                notifyObservers("RIMOSSO treno: " + trenoID +
+                        " (" + trenoDaRimuovere.getTipoTreno() +
+                        " su tratta " + trenoDaRimuovere.getTratta().getCodiceTratta() + ")");
+                return true;
+            }
+
+            return false;
 
         } catch (SQLException e) {
             System.err.println("Errore rimozione treno: " + e.getMessage());
+            notifyObservers("ERRORE nella rimozione treno: " + trenoID + " - " + e.getMessage());
             return false;
         }
 

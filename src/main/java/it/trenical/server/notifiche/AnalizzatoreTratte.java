@@ -36,7 +36,8 @@ public class AnalizzatoreTratte {
     }
 
     public void controllaTratte() {
-        rimuoviTratteObsolete();
+        //rimuoviTratteObsolete();
+        System.out.println("Avvio l'estrazione di informazioni!!!");
         estraiInformazioniTratte();
     }
     public void estraiInformazioniTratte() {
@@ -63,6 +64,9 @@ public class AnalizzatoreTratte {
 
         }
     }
+    public void gestoreModifiche() {
+
+    }
     public void rimuoviTratteObsolete() {
         TrattaImplDB trattaDB = TrattaImplDB.getInstance();
         TrenoImplDB trenoDB = TrenoImplDB.getInstance();
@@ -72,7 +76,7 @@ public class AnalizzatoreTratte {
         List<String> treniDaRimuovere = new ArrayList<>();
         System.out.println("ciao");
        // System.out.println("OU" + trattaDB.getAllTratte().size());
-        // 1. Rimuovi tratte passate e memorizza gli ID
+
         for (TrattaStandard tratta : trattaDB.getAllTratte()) {
             // System.out.println(tratta);
             String trattaID = tratta.getCodiceTratta();
@@ -87,7 +91,7 @@ public class AnalizzatoreTratte {
 
             }
         }System.out.println(tratteObsolete);
-        // 2. Rimuovi treni associati alle tratte obsolete e memorizza ID treno
+
         for (Treno treno : trenoDB.getAllTreno()) {
             System.out.println(treno.getTratta());
             if (tratteObsolete.contains(treno.getTratta().getCodiceTratta())) {
@@ -97,7 +101,7 @@ public class AnalizzatoreTratte {
         }
         System.out.println("Rimuovere " + treniDaRimuovere.size());
 
-        // 3. Rimuovi biglietti associati ai treni rimossi
+
         for (Biglietto biglietto : bigliettoDB.getAllBiglietti()) {
             String trenoID = biglietto.getTrenoBiglietto().getTrenoID();
             if (treniDaRimuovere.contains(trenoID)) {
