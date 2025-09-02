@@ -117,19 +117,14 @@ public class ClientDashboardSwing extends JFrame {
                 JScrollPane bigliettiScroll = new JScrollPane(bigliettiTable);
                 bigliettiPanel.add(bigliettiScroll, BorderLayout.CENTER);
                 if(registrato) {
-
                     caricaDatiDaDB(model,channel);
-
-
                 }
                 refreshButton.addActionListener(e -> {
                 DefaultTableModel nuovoModel = new DefaultTableModel(
                         new Object[]{"Biglietto_id","Classe","treno_id", "Carrozza", "Posto","priorità", "Prezzo", "Partenza", "Arrivo"}, 0
                 );
-               // creaNotifica(tabs,channel);
-                System.out.println("apri sta puttanazza");
-                caricaDatiDaDB(nuovoModel, channel); // carica i dati nel modello corretto
-                bigliettiTable.setModel(nuovoModel); // aggiorna la tabella
+                caricaDatiDaDB(nuovoModel, channel);
+                bigliettiTable.setModel(nuovoModel);
             });
 
                 modificaBigliettoButton.addActionListener(e -> {
@@ -177,7 +172,10 @@ public class ClientDashboardSwing extends JFrame {
         if (registrato && cliente != null) {
             JPanel panel = new JPanel(new BorderLayout());
             System.out.println("Notifiche " + registrato);
-
+            JPanel buttonPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JButton ricaricaButton = new JButton("Ricarica");
+            buttonPanel3.add(ricaricaButton);
+            panel.add(buttonPanel3, BorderLayout.NORTH);
             JPanel notificaPanel = new JPanel(new BorderLayout());
             notificaPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             notificaPanel.setBackground(new Color(255, 255, 255)); // colore azzurrino chiaro
@@ -191,10 +189,13 @@ public class ClientDashboardSwing extends JFrame {
             String[] colonne = { "Partenza", "Messaggio" };
             DefaultTableModel notificaModel = new DefaultTableModel(colonne, 0);
             JTable notificaTable = new JTable(notificaModel);
+            notificaTable.setRowHeight(40);
             JScrollPane notificaScroll = new JScrollPane(notificaTable);
             notificaPanel.add(notificaScroll, BorderLayout.CENTER);
 
+            ricaricaButton.addActionListener(e -> {
             try {
+                notificaModel.setRowCount(0);
                 // gRPC: carica le notifiche per cliente
                 NotificaServiceGrpc.NotificaServiceBlockingStub notificaStub =
                         NotificaServiceGrpc.newBlockingStub(channel);
@@ -204,19 +205,33 @@ public class ClientDashboardSwing extends JFrame {
                         .build();
 
                 GetNotificaResponse resp = notificaStub.getNotifica(req);
-
                 for (Notifica n : resp.getNotificheList()) {
                     if (n.getCliente().equals(cliente.getCodiceFiscale())) {
-                        String messaggio = "Gentile " + cliente.getNome() +
-                                ", ti ricordiamo che il tuo treno " + n.getTreno() +
-                                " partirà fra meno di un’ora.";
-                        notificaModel.addRow(new Object[]{n.getPartenza(), messaggio});
+
+                    if(n.getStato().equals("RIMOSSA")) {
+                        String messaggioRim = "Gentile "+n.getCliente()+
+                                " ci dispiace infrmorla che il suo treno "+n.getTreno()+" è stato cancellato";
+                        notificaModel.addRow(new Object[]{n.getLog(), messaggioRim});
+
+                    } else if(n.getStato().equals("MODIFICATO")) {
+                        String messaggioMod = "Gentile "+n.getCliente()+
+                                " le comunichiamo che ci sono stati alcuni cambiamenti con la sua prenotazione "+n.getBiglietto()+
+                                " per il treno "+n.getTreno()+ " delle ore "+n.getPartenza()+
+                                " la invitiamo a consultare la sezione info";
+                        notificaModel.addRow(new Object[]{n.getLog(), messaggioMod});
+
+                    } else if(n.getStato().equals("IMMEDIATO")) {
+                        String messaggioImm = "Gentile "+n.getCliente()+
+                                " le ricordiamo che il suo treno "+n.getTreno()+" delle ore "+n.getPartenza() +
+                                " partirà fra meno di un ora";
+                        notificaModel.addRow(new Object[]{n.getLog(), messaggioImm});
+                    }
+
                     }
                 }
-            } catch (Exception e) {
-                System.err.println("Errore nel caricamento notifiche: " + e.getMessage());
-            }
-
+            } catch (Exception e2) {
+                System.err.println("Errore nel caricamento notifiche: " + e2.getMessage());
+            } });
             panel.add(notificaPanel, BorderLayout.CENTER);
             tabs.addTab("Notifiche", panel);
         }

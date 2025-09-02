@@ -55,7 +55,10 @@ public class AnalizzatoreTratte {
                     List<Biglietto> listaClienti = bigliettoDB.getBigliettiByTrenoID(trn.getTrenoID());
                     for(Biglietto biglietto : listaClienti ) {
                         System.out.println("Il cliente "+biglietto.getTitolareBiglietto().getCodiceFiscale()+" deve affrettarsi a raggiungere il treno "+ trn.getTrenoID());
-                        Notifica nt = new Notifica(biglietto.getTitolareBiglietto().getCodiceFiscale(), trn.getTrenoID(),tr.getDataPartenza(),tr.getDataArrivo(),0, biglietto.getBigliettoID(),null,null,0,null);
+                        Notifica nt = new Notifica(biglietto.getTitolareBiglietto().getCodiceFiscale(),
+                                trn.getTrenoID(),tr.getDataPartenza(),tr.getDataArrivo(),
+                                0, biglietto.getBigliettoID(),
+                                "IMMINENTE",null,0,null);
                         NotificaDB ndb = NotificaDB.getInstance();
                         ndb.setNotifica(nt);
                     }

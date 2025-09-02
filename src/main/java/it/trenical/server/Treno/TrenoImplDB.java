@@ -99,6 +99,7 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                         null,
                         String.valueOf(tr.getTempoPercorrenza())
                 };
+                notifyObservers(notificationData);
             }
         } catch (SQLException e) {
             System.err.println("Errore salvataggio treno: " + e.getMessage());
