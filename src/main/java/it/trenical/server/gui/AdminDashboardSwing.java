@@ -286,7 +286,7 @@ public class AdminDashboardSwing extends JFrame {
         filtri.addActionListener(e -> {
             switch (tabellaNome) {
                 case "Cliente":
-                    String[] opzioniC = {"nome", "cognome", "eta"};
+                    String[] opzioniC = {"codiceFiscale","nome", "cognome","codiceCliente","eta"};
                     filtra(tabellaNome, opzioniC, table);
                     break;
                 case "Treno":
@@ -699,11 +699,12 @@ public class AdminDashboardSwing extends JFrame {
         return null;
     }
     public static void main(String[] args) {
+        /*/
        // System.setProperty("sun.java2d.uiScale", "3.0");
-        SwingUtilities.invokeLater(() -> {
+        //SwingUtilities.invokeLater(() -> {
          //   System.setProperty("sun.java2d.uiScale", "3.0");
             new AdminDashboardSwing().setVisible(true);
 
-        });
+        });/*/
     }
 }

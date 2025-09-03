@@ -5,6 +5,8 @@ import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.notifiche.Observable;
 
 import java.sql.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,8 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
     public static TrattaImplDB getInstance() {
         return instance;
     }
-
+    LocalTime adesso = LocalTime.now();
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
     private TrattaImplDB() {
         if (instance != null) {
             throw new RuntimeException("Usa getInstance() per ottenere l'istanza di TrattaImplDB");
@@ -39,9 +42,10 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
                 int distanza = rs.getInt("distanza");
                 int durata_viaggio = rs.getInt("durata_viaggio");
 
-
+                System.out.println("Tratta appena visitata "+trattaID+" LOG <"+adesso.format(formatter)+">");
                tratta = new TrattaStandard(trattaID,stazione_partenza,stazione_arrivo,data_partenza,data_arrivo,distanza,durata_viaggio);
             }
+          //  System.out.println("la tratta è : "+tratta.toString());
 
         } catch (SQLException e) {
             System.err.println("Errore recupero cliente: " + e.getMessage());
@@ -52,10 +56,12 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
 
     @Override
     public void setTratta(TrattaPrototype tratta) {
-        String sql = "INSERT OR REPLACE INTO Tratta (trattaID, stazione_partenza,stazione_arrivo,data_partenza,data_arrivo,distanza,durata_viaggio) " +
-                "VALUES (?, ?, ?, ?, ?,?,?)";
+
         TrattaStandard esistente = getTratta(tratta.getCodiceTratta());
         boolean isUpdate = (esistente != null);
+
+        String sql = "INSERT OR REPLACE INTO Tratta (trattaID, stazione_partenza,stazione_arrivo,data_partenza,data_arrivo,distanza,durata_viaggio) " +
+                "VALUES (?, ?, ?, ?, ?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -69,6 +75,11 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             stmt.setInt(7, tratta.getTempoPercorrenza());
 
             stmt.executeUpdate();
+            if(isUpdate){
+                System.out.println("Tratta appena modificata "+tratta.getCodiceTratta()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
+            } else {
+                System.out.println("Tratta appena aggiunta "+tratta.getCodiceTratta()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
+            }
             String[] notificationData = {
                     isUpdate ? "MODIFICATA" : "AGGIUNTA",
                     tratta.getCodiceTratta(),
@@ -141,15 +152,16 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
             int righe = stmt.executeUpdate();
 
             if (righe > 0 && trattaDaRimuovere != null) {
+                System.out.println("Tratta appena rimossa "+trattaID+" LOG <"+adesso.format(formatter)+">");
                 String[] notificationData = {
                         "RIMOSSA",
                         trattaID,
-                        null,
+                        " ",
                         trattaDaRimuovere.getDataPartenza(),
                         trattaDaRimuovere.getDataArrivo(),
-                        null,
-                        null,
-                        null
+                        " ",
+                        " ",
+                        " "
                 };
 
                 notifyObservers(notificationData);

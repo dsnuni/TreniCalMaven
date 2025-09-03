@@ -94,7 +94,12 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
 
     public List<Cliente> getByFiltro(String colonna, String valore) {
         List<Cliente> clienti = new ArrayList<>();
-        String sql = "SELECT * FROM Cliente WHERE " + colonna + " = ?";
+        String sql;
+        if (colonna == null && valore== null) {
+            sql = "SELECT * FROM Cliente";
+        } else {
+            sql = "SELECT * FROM Cliente WHERE " + colonna + " = ?";
+        }
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, valore);

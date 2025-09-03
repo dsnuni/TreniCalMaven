@@ -317,8 +317,8 @@ public class ClientDashboardSwing extends JFrame {
                     .setCodiceFiscale(cf).build();
             it.trenical.grpc.Cliente clienteGrpc = clienteStub.getCliente(request);
             cliente = clienteGrpc;
-            finestraInfo(channel, tabs);
-            creaNotifica(tabs, channel);
+            System.out.println("Il cliente che ha appena fatto l'accesso "+cliente);
+
             clientePanel.removeAll(); // pulizia per refresh
             clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
             clientePanel.setMaximumSize(new Dimension(400, 220));
@@ -340,7 +340,8 @@ public class ClientDashboardSwing extends JFrame {
             clientePanel.add(new JLabel("Età:"));
             clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
 
-
+            finestraInfo(channel, tabs);
+            creaNotifica(tabs, channel);
         });
         return clientePanel;
     }

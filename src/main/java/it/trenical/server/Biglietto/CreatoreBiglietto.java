@@ -90,7 +90,7 @@ public class CreatoreBiglietto {
                     break;
             }
 
-            db.setTreno(treno);
+            //db.setTreno(treno);
             BigliettoDB.getInstance().setBiglietto(promosso);
             return bigliettoID;
 

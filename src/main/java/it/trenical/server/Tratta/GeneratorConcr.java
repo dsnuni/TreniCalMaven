@@ -48,7 +48,8 @@ public class GeneratorConcr implements Generator {
     };
 
     String[] orari = {"00:00", "02:00", "04:00", "06:00", "08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00"};
-
+    LocalTime adesso = LocalTime.now();
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
     private final Random random = new Random();
     private final TrattaPrototype ts;
     private TrattaImpl db = TrattaImplDB.getInstance();
@@ -89,7 +90,7 @@ public class GeneratorConcr implements Generator {
         nuovaTratta.setDataArrivo(dataA);
         nuovaTratta.setTempoPercorrenza(tempoPerc);
         nuovaTratta.setDistanza(distanza);
-
+        System.out.print("Tratta appena generata "+nuovaTratta.getCodiceTratta()+ "LOG <"+adesso.format(formatter)+">");
         db.setTratta(nuovaTratta);
 
     }

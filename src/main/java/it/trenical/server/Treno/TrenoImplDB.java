@@ -6,6 +6,8 @@ import it.trenical.server.notifiche.Observable;
 
 
 import java.sql.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,8 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
     public static TrenoImplDB getInstance() {
         return instance;
     }
-
+    LocalTime adesso = LocalTime.now();
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
 
     private TrattaImpl db = TrattaImplDB.getInstance();
 
@@ -49,11 +52,11 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
                // int tempoPercorrenza = rs.getInt("tempoPercorrenza");
-
+                System.out.println("Treno appena visitato"+trenoID+" LOG <"+adesso.format(formatter)+">");
                 TrattaStandard tratta =  db.getTratta(trattaID);
 
                 t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
-
+               // System.out.println("il treno è : "+t.toString());
             }
 
         } catch (SQLException e) {
@@ -67,7 +70,6 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
     public void setTreno(Treno tr) {
         Treno esistente = getTreno(tr.getTrenoID());
         boolean isUpdate = (esistente != null);
-
         String sql = "INSERT OR REPLACE INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza, postiTot, tempoPercorrenza) " +
                 "VALUES (?,?, ?, ?, ?, ?,?,?,?)";
 
@@ -86,9 +88,13 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             stmt.setInt(9, tr.getTempoPercorrenza());
 
             stmt.executeUpdate();
-
+            if(isUpdate){
+                System.out.println("Treno appena modificato "+tr.getTrenoID()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
+            } else {
+                System.out.println("Treno appena aggiunto "+tr.getTrenoID()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
+            }
             // NOTIFICA GLI OBSERVER
-            if (isUpdate) {
+
                 String[] notificationData = {
                         isUpdate ? "MODIFICATO" : "AGGIUNTO",
                         tr.getTrenoID(),
@@ -100,7 +106,6 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                         String.valueOf(tr.getTempoPercorrenza())
                 };
                 notifyObservers(notificationData);
-            }
         } catch (SQLException e) {
             System.err.println("Errore salvataggio treno: " + e.getMessage());
 
@@ -110,7 +115,6 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
     @Override
     public boolean removeTreno(String trenoID) {
         Treno trenoDaRimuovere = getTreno(trenoID);
-
         String sql = "DELETE FROM Treno WHERE trenoID = ?";
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -120,16 +124,17 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
 
             if (righe > 0 && trenoDaRimuovere != null) {
                 // NOTIFICA GLI OBSERVER CON ARRAY
+                System.out.println("Treno appena rimosso"+trenoID+" LOG <"+adesso.format(formatter)+">");
                 TrattaStandard tratta = trenoDaRimuovere.getTratta();
                 String[] notificationData = {
                         "RIMOSSA",
                         trenoDaRimuovere.getTrenoID(),
-                        null,
+                        " ",
                         tratta.getDataPartenza(),
                         tratta.getDataArrivo(),
-                        null,
-                        null,
-                        null
+                        " ",
+                        " ",
+                        " "
                 };
 
                 notifyObservers(notificationData);

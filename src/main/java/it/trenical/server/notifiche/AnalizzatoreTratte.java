@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +15,9 @@ import java.util.concurrent.TimeUnit;
 
 import it.trenical.server.Biglietto.Biglietto;
 import it.trenical.server.Biglietto.BigliettoDB;
+import it.trenical.server.Cliente.Cliente;
+import it.trenical.server.Cliente.ClienteImpl;
+import it.trenical.server.Cliente.ClienteImplDB;
 import it.trenical.server.Generatore;
 import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoConcr;
@@ -23,10 +27,11 @@ import it.trenical.server.Tratta.TrattaImplDB;
 
 public class AnalizzatoreTratte {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
     public void avviaControlloPeriodico() {
         scheduler.scheduleAtFixedRate(() -> {
             try {
+                System.out.println("Controllo periodico tratte LOG : "+"<"+LocalDateTime.now().format(formatter)+">");
                 controllaTratte();
             } catch (Exception e) {
                 System.err.println("Errore durante il controllo tratte: " + e.getMessage());
@@ -36,48 +41,77 @@ public class AnalizzatoreTratte {
     }
 
     public void controllaTratte() {
-        //rimuoviTratteObsolete();
+        System.out.println("Controllo tratte LOG : "+"<"+LocalDateTime.now().format(formatter)+">");
+        rimuoviTratteObsolete();
         System.out.println("Avvio l'estrazione di informazioni!!!");
         estraiInformazioniTratte();
+        notificheClientiFidelizzati();
     }
     public void estraiInformazioniTratte() {
+        System.out.println("Estrai informazioni tratte LOG : "+"<"+LocalDateTime.now().format(formatter)+">");
         TrattaImplDB trdb= TrattaImplDB.getInstance();
         List<TrattaStandard> trt = trdb.getAllTratte();
         for( TrattaStandard tr : trt ) {
             String dataPartenza = tr.getDataPartenza();
             if(isOggi(dataPartenza) ) {
-                System.out.println(tr.getCodiceTratta()+" È in scadenza");
                 TrenoImplDB trndb= TrenoImplDB.getInstance();
                 List<Treno> treniInPartenza = trndb.getTrenoByTrattaID(tr.getCodiceTratta());
                 for(Treno trn : treniInPartenza ) {
-                    System.out.println(trn.getTrenoID()+" sta per partire");
                     BigliettoDB bigliettoDB = BigliettoDB.getInstance();
                     List<Biglietto> listaClienti = bigliettoDB.getBigliettiByTrenoID(trn.getTrenoID());
                     for(Biglietto biglietto : listaClienti ) {
-                        System.out.println("Il cliente "+biglietto.getTitolareBiglietto().getCodiceFiscale()+" deve affrettarsi a raggiungere il treno "+ trn.getTrenoID());
+                        System.out.println("Il cliente "+biglietto.getTitolareBiglietto().getCodiceFiscale()+" deve affrettarsi a raggiungere il treno "+ trn.getTrenoID()
+                                +" LOG<"+LocalDateTime.now().format(formatter)+">");
                         Notifica nt = new Notifica(biglietto.getTitolareBiglietto().getCodiceFiscale(),
                                 trn.getTrenoID(),tr.getDataPartenza(),tr.getDataArrivo(),
                                 0, biglietto.getBigliettoID(),
                                 "IMMINENTE",null,0,null);
                         NotificaDB ndb = NotificaDB.getInstance();
                         ndb.setNotifica(nt);
+                        System.out.println("Inserimento notifica IMMINENTE a database notifiche LOG<"+LocalDateTime.now().format(formatter)+">");
+
                     }
                 }
             }
 
         }
     }
-    public void gestoreModifiche() {
+    public void notificheClientiFidelizzati() {
+        ClienteImplDB cdb = ClienteImplDB.getInstance();
+        List<Cliente> lista = cdb.getByFiltro(null,null);
+        for(Cliente c : lista) {
+            if(c.getCodiceCliente().startsWith("FTRCL") ) {
+                String messaggioRandom = new String[]{
+                        "Gentile Cliente ci sono tante novità per lei, resti in attesa...",
+                        "Gentile Cliente a breve introdurremo un sistema a punti, resti in attesa...",
+                        "Gentile Cliente la invitamo a controllare la sua mail per non perdere nessuna promozione."
+                }[new Random().nextInt(3)];
 
+                Notifica nt = new Notifica(c.getCodiceFiscale(),
+                        messaggioRandom,
+                        "",
+                        " ",
+                        0,
+                        " ",
+                        "PROMO",
+                        " ",
+                        0,
+                        LocalDateTime.now().format(formatter)
+                        );
+                NotificaDB ndb = NotificaDB.getInstance();
+                ndb.setNotifica(nt);
+                System.out.println("Inserimento notifica PROMO a database notifiche LOG<"+LocalDateTime.now().format(formatter)+">");
+            }
+        }
     }
     public void rimuoviTratteObsolete() {
+        System.out.println("Rimuovi tratte LOG : "+"<"+LocalDateTime.now().format(formatter)+">");
         TrattaImplDB trattaDB = TrattaImplDB.getInstance();
         TrenoImplDB trenoDB = TrenoImplDB.getInstance();
         BigliettoDB bigliettoDB = BigliettoDB.getInstance();
 
         List<String> tratteObsolete = new ArrayList<>();
         List<String> treniDaRimuovere = new ArrayList<>();
-        System.out.println("ciao");
        // System.out.println("OU" + trattaDB.getAllTratte().size());
 
         for (TrattaStandard tratta : trattaDB.getAllTratte()) {

@@ -14,6 +14,8 @@ import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.igGenerator.IdGenerator;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import static it.trenical.server.Cliente.ClienteImplDB.getClienteByRowIndex;
@@ -34,6 +36,8 @@ public class Generatore {
             "Lombardi", "Moretti", "Barbieri", "Fontana", "Santoro", "Mariani",
             "Rinaldi", "Caruso", "Ferrara", "Gatti", "Martini", "Testa"
     };
+    private static LocalTime adesso = LocalTime.now();
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
 
     private static void generaCliente() {
         String nome = nomi[interoCasuale(30)];
@@ -68,6 +72,7 @@ public class Generatore {
             0,
             0,
             interoCasuale(150));
+        System.out.println("Treno appena generato LOG <"+adesso.format(formatter)+">");
             dbt.setTreno(dividiPosti(tr));
     }
     private static void generaBiglietto(int numCLi, int numTre) {
@@ -118,7 +123,7 @@ public class Generatore {
 
         }
         tr.setPostiTot(tr.getPostiTot()-1);
-        dbt.setTreno(tr);
+        //dbt.setTreno(tr);
         if(biglietto != null) {
             bdb.setBiglietto(biglietto);
         } else {
@@ -126,17 +131,22 @@ public class Generatore {
         }
     }
     public static void genera( int numCli, int numTrt, int numTre, int Bgl) {
+        System.out.println("Inizio generazione dati "+" <"+formatter.toString()+" >");
         for(int i = 0; i < numCli; i++) {
+            System.out.println("generazione cliente numero "+i+ " log "+" <"+adesso.format(formatter)+" >");
             generaCliente();
 
         }
         for(int i = 0; i < numTrt; i++) {
+            System.out.println("generazione tratta numero "+i+ " log "+" <"+adesso.format(formatter)+" >");
             generaTratta();
         }
         for(int i = 0; i < numTre; i++) {
+            System.out.println("generazione treno numero "+i+ " log "+" <"+adesso.format(formatter)+" >");
             generaTreno();
         }
         for(int i = 0; i < Bgl; i++) {
+            System.out.println("generazione biglietto numero "+i+ " log "+" <"+adesso.format(formatter)+" >");
             generaBiglietto(numCli, numTre);
         }
     }
