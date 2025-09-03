@@ -499,7 +499,7 @@
     </routine>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-06-27.13:59:16</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-09-02.21:39:09</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1594,335 +1594,424 @@
     <table id="556" parent="191" name="Biglietto_dg_tmp"/>
     <table id="557" parent="191" name="Cliente"/>
     <table id="558" parent="191" name="Notifica"/>
-    <table id="559" parent="191" name="Promozione"/>
-    <table id="560" parent="191" name="Tratta"/>
-    <table id="561" parent="191" name="Treno"/>
-    <table id="562" parent="191" name="sqlite_master">
+    <table id="559" parent="191" name="Notifica_dg_tmp"/>
+    <table id="560" parent="191" name="Promozione"/>
+    <table id="561" parent="191" name="Tratta"/>
+    <table id="562" parent="191" name="Treno"/>
+    <table id="563" parent="191" name="sqlite_master">
       <System>1</System>
     </table>
-    <column id="563" parent="555" name="id">
+    <column id="564" parent="555" name="id">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="564" parent="555" name="classe">
+    <column id="565" parent="555" name="classe">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="565" parent="555" name="treno_id">
+    <column id="566" parent="555" name="treno_id">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="566" parent="555" name="carrozza">
+    <column id="567" parent="555" name="carrozza">
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="567" parent="555" name="posto">
+    <column id="568" parent="555" name="posto">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="568" parent="555" name="cliente_id">
+    <column id="569" parent="555" name="cliente_id">
       <Position>6</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="569" parent="555" name="priorita">
+    <column id="570" parent="555" name="priorita">
       <Position>7</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="570" parent="555" name="prezzo">
+    <column id="571" parent="555" name="prezzo">
       <Position>8</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <index id="571" parent="555" name="sqlite_autoindex_Biglietto_1">
+    <index id="572" parent="555" name="sqlite_autoindex_Biglietto_1">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="572" parent="555">
+    <key id="573" parent="555">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Biglietto_1</UnderlyingIndexName>
     </key>
-    <column id="573" parent="556" name="id">
+    <column id="574" parent="556" name="id">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="574" parent="556" name="classe">
+    <column id="575" parent="556" name="classe">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="575" parent="556" name="treno_id">
+    <column id="576" parent="556" name="treno_id">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="576" parent="556" name="carrozza">
+    <column id="577" parent="556" name="carrozza">
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="577" parent="556" name="posto">
+    <column id="578" parent="556" name="posto">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="578" parent="556" name="cliente_id">
+    <column id="579" parent="556" name="cliente_id">
       <Position>6</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="579" parent="556" name="priorita">
+    <column id="580" parent="556" name="priorita">
       <Position>7</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="580" parent="556" name="prezzo">
+    <column id="581" parent="556" name="prezzo">
       <Position>8</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <index id="581" parent="556" name="sqlite_autoindex_Biglietto_dg_tmp_1">
+    <index id="582" parent="556" name="sqlite_autoindex_Biglietto_dg_tmp_1">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="582" parent="556" name="sqlite_autoindex_Biglietto_dg_tmp_2">
+    <index id="583" parent="556" name="sqlite_autoindex_Biglietto_dg_tmp_2">
       <ColNames>treno_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="583" parent="556">
+    <key id="584" parent="556">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Biglietto_dg_tmp_1</UnderlyingIndexName>
     </key>
-    <key id="584" parent="556" name="Biglietto_pk">
+    <key id="585" parent="556" name="Biglietto_pk">
       <ColNames>treno_id</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_Biglietto_dg_tmp_2</UnderlyingIndexName>
     </key>
-    <column id="585" parent="557" name="codiceFiscale">
+    <column id="586" parent="557" name="codiceFiscale">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="586" parent="557" name="nome">
+    <column id="587" parent="557" name="nome">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="587" parent="557" name="cognome">
+    <column id="588" parent="557" name="cognome">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="588" parent="557" name="codiceCliente">
+    <column id="589" parent="557" name="codiceCliente">
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="589" parent="557" name="eta">
+    <column id="590" parent="557" name="eta">
       <Position>5</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <index id="590" parent="557" name="sqlite_autoindex_Cliente_1">
+    <index id="591" parent="557" name="sqlite_autoindex_Cliente_1">
       <ColNames>codiceFiscale</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="591" parent="557">
+    <key id="592" parent="557">
       <ColNames>codiceFiscale</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Cliente_1</UnderlyingIndexName>
     </key>
-    <column id="592" parent="558" name="cliente">
+    <column id="593" parent="558" name="cliente">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="593" parent="558" name="treno">
+    <column id="594" parent="558" name="treno">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="594" parent="558" name="partenza">
+    <column id="595" parent="558" name="log">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="595" parent="558" name="arrivo">
+    <column id="596" parent="558" name="partenza">
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="596" parent="558" name="tempo">
+    <column id="597" parent="558" name="arrivo">
+      <Position>5</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="598" parent="558" name="tempo">
+      <Position>6</Position>
+      <StoredType>INTEGER|0s</StoredType>
+    </column>
+    <column id="599" parent="558" name="biglietto">
+      <Position>7</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="600" parent="558" name="stato">
+      <Position>8</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="601" parent="558" name="posto">
+      <Position>9</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="602" parent="558" name="binario">
+      <Position>10</Position>
+      <StoredType>INTEGER|0s</StoredType>
+    </column>
+    <index id="603" parent="558" name="sqlite_autoindex_Notifica_1">
+      <ColNames>cliente
+treno
+log</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="604" parent="558">
+      <ColNames>cliente
+treno
+log</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Notifica_1</UnderlyingIndexName>
+    </key>
+    <column id="605" parent="559" name="cliente">
+      <Position>1</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="606" parent="559" name="treno">
+      <Position>2</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="607" parent="559" name="partenza">
+      <Position>3</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="608" parent="559" name="arrivo">
+      <Position>4</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="609" parent="559" name="tempo">
       <Position>5</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="597" parent="558" name="biglietto">
+    <column id="610" parent="559" name="biglietto">
       <Position>6</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <index id="598" parent="558" name="sqlite_autoindex_Notifica_1">
+    <column id="611" parent="559" name="stato">
+      <Position>7</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="612" parent="559" name="posto">
+      <Position>8</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <column id="613" parent="559" name="binario">
+      <Position>9</Position>
+      <StoredType>integer|0s</StoredType>
+    </column>
+    <column id="614" parent="559" name="log">
+      <Position>10</Position>
+      <StoredType>TEXT|0s</StoredType>
+    </column>
+    <index id="615" parent="559" name="sqlite_autoindex_Notifica_dg_tmp_1">
       <ColNames>cliente</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="599" parent="558">
+    <index id="616" parent="559" name="sqlite_autoindex_Notifica_dg_tmp_2">
+      <ColNames>treno</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <index id="617" parent="559" name="sqlite_autoindex_Notifica_dg_tmp_3">
+      <ColNames>biglietto</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="618" parent="559">
       <ColNames>cliente</ColNames>
       <Primary>1</Primary>
-      <UnderlyingIndexName>sqlite_autoindex_Notifica_1</UnderlyingIndexName>
+      <UnderlyingIndexName>sqlite_autoindex_Notifica_dg_tmp_1</UnderlyingIndexName>
     </key>
-    <column id="600" parent="559" name="promozioneID">
+    <key id="619" parent="559" name="Notifica_pk">
+      <ColNames>treno</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_Notifica_dg_tmp_2</UnderlyingIndexName>
+    </key>
+    <key id="620" parent="559" name="Notifica_pk_2">
+      <ColNames>biglietto</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_Notifica_dg_tmp_3</UnderlyingIndexName>
+    </key>
+    <column id="621" parent="560" name="promozioneID">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="601" parent="559" name="trenoID">
+    <column id="622" parent="560" name="trenoID">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="602" parent="559" name="trattaID">
+    <column id="623" parent="560" name="trattaID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="603" parent="559" name="dataPartenza">
+    <column id="624" parent="560" name="dataPartenza">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="604" parent="559" name="dataFine">
+    <column id="625" parent="560" name="dataFine">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="605" parent="559" name="clientiFedelta">
+    <column id="626" parent="560" name="clientiFedelta">
       <DefaultExpression>FALSE</DefaultExpression>
       <Position>6</Position>
       <StoredType>BOOLEAN|0s</StoredType>
     </column>
-    <column id="606" parent="559" name="prezzoPartenza">
+    <column id="627" parent="560" name="prezzoPartenza">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="607" parent="559" name="scontistica">
+    <column id="628" parent="560" name="scontistica">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>REAL|0s</StoredType>
     </column>
-    <index id="608" parent="559" name="sqlite_autoindex_Promozione_1">
+    <index id="629" parent="560" name="sqlite_autoindex_Promozione_1">
       <ColNames>promozioneID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="609" parent="559">
+    <key id="630" parent="560">
       <ColNames>promozioneID</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Promozione_1</UnderlyingIndexName>
     </key>
-    <column id="610" parent="560" name="trattaID">
+    <column id="631" parent="561" name="trattaID">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="611" parent="560" name="stazione_partenza">
+    <column id="632" parent="561" name="stazione_partenza">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="612" parent="560" name="stazione_arrivo">
+    <column id="633" parent="561" name="stazione_arrivo">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="613" parent="560" name="data_partenza">
+    <column id="634" parent="561" name="data_partenza">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="614" parent="560" name="data_arrivo">
+    <column id="635" parent="561" name="data_arrivo">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="615" parent="560" name="distanza">
+    <column id="636" parent="561" name="distanza">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="616" parent="560" name="durata_viaggio">
+    <column id="637" parent="561" name="durata_viaggio">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <index id="617" parent="560" name="sqlite_autoindex_Tratta_1">
+    <index id="638" parent="561" name="sqlite_autoindex_Tratta_1">
       <ColNames>trattaID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="618" parent="560">
+    <key id="639" parent="561">
       <ColNames>trattaID</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Tratta_1</UnderlyingIndexName>
     </key>
-    <column id="619" parent="561" name="trenoID">
+    <column id="640" parent="562" name="trenoID">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="620" parent="561" name="tipoTreno">
+    <column id="641" parent="562" name="tipoTreno">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="621" parent="561" name="trattaID">
+    <column id="642" parent="562" name="trattaID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="622" parent="561" name="prezzo">
+    <column id="643" parent="562" name="prezzo">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="623" parent="561" name="postiPrima">
+    <column id="644" parent="562" name="postiPrima">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="624" parent="561" name="postiSeconda">
+    <column id="645" parent="562" name="postiSeconda">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="625" parent="561" name="postiTerza">
+    <column id="646" parent="562" name="postiTerza">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="626" parent="561" name="postiTot">
+    <column id="647" parent="562" name="postiTot">
       <Position>8</Position>
       <StoredType>INTEGER|0s</StoredType>
     </column>
-    <column id="627" parent="561" name="tempoPercorrenza">
+    <column id="648" parent="562" name="tempoPercorrenza">
       <Position>9</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <foreign-key id="628" parent="561">
+    <foreign-key id="649" parent="562">
       <ColNames>trattaID</ColNames>
       <RefColNames>trattaID</RefColNames>
       <RefTableName>Tratta</RefTableName>
     </foreign-key>
-    <index id="629" parent="561" name="sqlite_autoindex_Treno_1">
+    <index id="650" parent="562" name="sqlite_autoindex_Treno_1">
       <ColNames>trenoID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="630" parent="561">
+    <key id="651" parent="562">
       <ColNames>trenoID</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Treno_1</UnderlyingIndexName>
     </key>
-    <column id="631" parent="562" name="type">
+    <column id="652" parent="563" name="type">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="632" parent="562" name="name">
+    <column id="653" parent="563" name="name">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="633" parent="562" name="tbl_name">
+    <column id="654" parent="563" name="tbl_name">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="634" parent="562" name="rootpage">
+    <column id="655" parent="563" name="rootpage">
       <Position>4</Position>
       <StoredType>INT|0s</StoredType>
     </column>
-    <column id="635" parent="562" name="sql">
+    <column id="656" parent="563" name="sql">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>

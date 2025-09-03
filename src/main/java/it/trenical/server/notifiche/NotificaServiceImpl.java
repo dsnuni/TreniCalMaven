@@ -15,7 +15,7 @@ public class NotificaServiceImpl extends it.trenical.grpc.NotificaServiceGrpc.No
             String codiceFiscale = request.getCliente();
 
             NotificaDB db = NotificaDB.getInstance();
-            List<it.trenical.server.notifiche.Notifica> listaNotifiche = db.getNotifica(codiceFiscale); // questa restituisce già grpc.Notifica
+            List<it.trenical.server.notifiche.Notifica> listaNotifiche = db.getNotifica(codiceFiscale);
 
             GetNotificaResponse.Builder response = GetNotificaResponse.newBuilder();
 
@@ -46,6 +46,11 @@ public class NotificaServiceImpl extends it.trenical.grpc.NotificaServiceGrpc.No
                 .setPartenza(n.getPartenza())
                 .setArrivo(n.getArrivo())
                 .setTempo(n.getTempo())
+                .setBiglietto(n.getBiglietto())
+                .setStato(n.getStato())        // NUOVO
+                .setPosto(n.getPosto())        // NUOVO
+                .setBinario(n.getBinario())    // NUOVO
+                .setLog(n.getLog())            // NUOVO
                 .build();
     }
 }

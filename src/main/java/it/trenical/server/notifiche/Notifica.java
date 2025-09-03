@@ -3,41 +3,84 @@ package it.trenical.server.notifiche;
 public class Notifica {
     private String cliente;
     private String treno;
-    private String Partenza;
+    private String partenza;
     private String arrivo;
     private int tempo;
     private String biglietto;
+    private String stato;
+    private String posto;
+    private int binario;
+    private String log;
 
-    public Notifica(String cliente, String treno, String Partenza, String Arrivo, int tempo,String biglietto) {
+    public Notifica(String cliente, String treno, String partenza, String arrivo,
+                    int tempo, String biglietto, String stato, String posto,
+                    int binario, String log) {
         this.cliente = cliente;
         this.treno = treno;
-        this.Partenza = Partenza;
-        this.arrivo = Arrivo;
+        this.partenza = partenza;
+        this.arrivo = arrivo;
         this.tempo = tempo;
         this.biglietto = biglietto;
-    }
-
-    public String getArrivo() {
-        return arrivo;
-    }
-
-    public String getBiglietto() {
-        return biglietto;
+        this.stato = stato;
+        this.posto = posto;
+        this.binario = binario;
+        this.log = log;
     }
 
     public String getCliente() {
         return cliente;
     }
 
+    public String getTreno() {
+        return treno;
+    }
+
     public String getPartenza() {
-        return Partenza;
+        return partenza;
+    }
+
+    public String getArrivo() {
+        return arrivo;
     }
 
     public int getTempo() {
         return tempo;
     }
 
-    public String getTreno() {
-        return treno;
+    public String getBiglietto() {
+        return biglietto;
+    }
+
+    public String getStato() {
+        return stato;
+    }
+
+    public String getPosto() {
+        return posto;
+    }
+
+    public int getBinario() {
+        return binario;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Notifica{" +
+                "cliente='" + cliente + '\'' +
+                ", treno='" + treno + '\'' +
+                ", partenza='" + partenza + '\'' +
+                ", arrivo='" + arrivo + '\'' +
+                ", tempo=" + tempo +
+                ", biglietto='" + biglietto + '\'' +
+                ", stato='" + stato + '\'' +
+                ", posto='" + posto + '\'' +
+                ", binario=" + binario +
+                ", log='" + log + '\'' +
+                '}';
     }
 }

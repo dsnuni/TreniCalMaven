@@ -47,7 +47,6 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
             stmt.setInt(8, biglietto.getPrezzo());
 
             stmt.executeUpdate();
-            notifyObservers("Aggiunto Biglietto con ID: " + biglietto.getBigliettoID());
 
         } catch (SQLException e) {
             System.err.println("Errore salvataggio biglietto: " + e.getMessage());
@@ -356,9 +355,6 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
             int count = stmt.executeUpdate();
 
             System.out.println("Rimossi " + count + " biglietti per il treno ID: " + trenoID);
-            if (count > 0) {
-                notifyObservers("Rimossi " + count + " biglietti associati al treno " + trenoID);
-            }
 
         } catch (SQLException e) {
             System.err.println("Errore nella rimozione dei biglietti per treno " + trenoID + ": " + e.getMessage());

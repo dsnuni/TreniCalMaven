@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CreatoreBiglietto {
 
-    public static boolean creaBiglietto(ArrayList<String> dati) {
+    public static String creaBiglietto(ArrayList<String> dati) {
         try {
             TrenoImplDB db = TrenoImplDB.getInstance();
             String bigliettoID = IdGenerator.generaBigliettoID();
@@ -90,14 +90,14 @@ public class CreatoreBiglietto {
                     break;
             }
 
-            db.setTreno(treno);
+            //db.setTreno(treno);
             BigliettoDB.getInstance().setBiglietto(promosso);
-            return true;
+            return bigliettoID;
 
         } catch (Exception e) {
             System.err.println("Errore creazione biglietto: " + e.getMessage());
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -113,9 +113,9 @@ public class CreatoreBiglietto {
 
         System.out.println("🔍 Dati pronti: " + dati);
 
-        boolean successo = CreatoreBiglietto.creaBiglietto(dati);
+        String successo = CreatoreBiglietto.creaBiglietto(dati);
 
-        if (successo) {
+        if (successo != null) {
             System.out.println("✅ Biglietto creato e salvato con successo.");
         } else {
             System.out.println("❌ Creazione biglietto fallita.");

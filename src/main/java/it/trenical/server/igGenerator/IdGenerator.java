@@ -5,12 +5,16 @@ import it.trenical.server.Biglietto.BigliettoImpl;
 import it.trenical.server.Cliente.ClienteConcr;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
+import it.trenical.server.Tratta.TrattaImpl;
+import it.trenical.server.Tratta.TrattaImplDB;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImpl;
 import it.trenical.server.Treno.TrenoImplDB;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IdGenerator {
     private static final AtomicInteger trenoCounter = new AtomicInteger(1000);
     private static final AtomicInteger bigliettoCounter = new AtomicInteger(1);
-
+    private static LocalTime adesso = LocalTime.now();
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
     public static String generaClienteID() {
         boolean flag = true;
         String id = " ";
@@ -29,6 +34,7 @@ public class IdGenerator {
             flag=false;
         }
         }
+        System.out.println("Cliente ID: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
         return id;
     }
     public static String generaCodiceCliente(boolean fidelizzato){
@@ -46,6 +52,7 @@ public class IdGenerator {
                 flag = false;
             }
         }
+        System.out.println("Codice Cliente: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
         return id;
     }
     public static String generaCodiceFiscale(String nome, String cognome, int eta) {
@@ -64,7 +71,7 @@ public class IdGenerator {
         // Suffisso casuale per evitare duplicati
         String suffisso = String.valueOf((int)(Math.random() * 900 + 100)); // 3 cifre
         cf.append(suffisso);
-
+        System.out.println("Codice fiscale cliente "+cf+" appena generato LOG <"+adesso.format(formatter)+">");
         return cf.toString().toUpperCase();
     }
 
@@ -87,31 +94,35 @@ public class IdGenerator {
                 flag=false;
             }
         }
+        System.out.println("Biglietto ID: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
         return id;
     }
 
     public static String generaTrenoID() {
         boolean flag = true;
-        String id = " ";
+        String id = "";
         while(flag) {
             id = "TRN-" + UUID.randomUUID().toString().substring(0, 8);
-            ClienteImpl cl= ClienteImplDB.getInstance();
-            if(cl.getCliente(id) == null) {
-                flag=false;
+            TrenoImpl trenoDb = TrenoImplDB.getInstance();  // ✅ USA DATABASE TRENI!
+            if(trenoDb.getTreno(id) == null) {              // ✅ CERCA TRN-xxxx nei TRENI!
+                flag = false;                               // ✅ Ha senso!
             }
         }
+        System.out.println("Treno ID: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
         return id;
     }
+
     public static String generaTrattaID() {
         boolean flag = true;
-        String id = " ";
+        String id = "";
         while(flag) {
             id = "TRT-" + UUID.randomUUID().toString().substring(0, 8);
-            ClienteImpl cl= ClienteImplDB.getInstance();
-            if(cl.getCliente(id) == null) {
-                flag=false;
+            TrattaImpl trattaDb = TrattaImplDB.getInstance();  // ✅ USA DATABASE TRATTE!
+            if(trattaDb.getTratta(id) == null) {               // ✅ CERCA TRT-xxxx nelle TRATTE!
+                flag = false;                                  // ✅ Ha senso!
             }
         }
+        System.out.println("Tratta ID: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
         return id;
     }
     public static String generaTipoTreno() {
@@ -123,6 +134,7 @@ public class IdGenerator {
             int t = random.nextInt(3) + 1;
             return treni[t];
         }
+
         return treno;
     }
     public static TrenoConcr dividiPosti(TrenoConcr tr) {
@@ -131,7 +143,7 @@ public class IdGenerator {
         int postiPrima = (int) Math.round(postiTot * 0.10);
         int postiSeconda = (int) Math.round(postiTot * 0.40);
         int postiTerza = postiTot - postiPrima - postiSeconda; // assegna il resto
-
+        System.out.println("Treno conreto: "+tr.getTrenoID()+" appena generato LOG <"+adesso.format(formatter)+">");
         return new TrenoConcr(
                 tr.getTrenoID(),
                 tr.getTipoTreno(),
@@ -142,6 +154,7 @@ public class IdGenerator {
                 postiTerza,
                 postiTot
         );
+
     }
 
 

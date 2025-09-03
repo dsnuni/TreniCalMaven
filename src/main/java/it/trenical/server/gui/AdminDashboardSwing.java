@@ -286,7 +286,7 @@ public class AdminDashboardSwing extends JFrame {
         filtri.addActionListener(e -> {
             switch (tabellaNome) {
                 case "Cliente":
-                    String[] opzioniC = {"nome", "cognome", "eta"};
+                    String[] opzioniC = {"codiceFiscale","nome", "cognome","codiceCliente","eta"};
                     filtra(tabellaNome, opzioniC, table);
                     break;
                 case "Treno":
@@ -294,7 +294,7 @@ public class AdminDashboardSwing extends JFrame {
                     filtra(tabellaNome, opzioniT, table);
                     break;
                 case "Biglietto":
-                    String[] opzioniB = {"classe", "treno_id", "carrozza", "posto", "cliente_id", "prezzo"};
+                    String[] opzioniB = {"id","classe", "treno_id", "carrozza", "posto", "cliente_id", "prezzo"};
                     filtra(tabellaNome, opzioniB, table);
                     break;
                 case "Promozione":
@@ -350,7 +350,6 @@ public class AdminDashboardSwing extends JFrame {
             caricaDatiDaDB2(tabella, colonna, valore, table);
         }
     }
-
     public void caricaDatiDaDB(String tabella, DefaultTableModel model) {
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement();
@@ -699,23 +698,13 @@ public class AdminDashboardSwing extends JFrame {
         }
         return null;
     }
-    public void aspetta() {
-        boolean attesaCompleta = false;
-        long inizio = System.currentTimeMillis();
-
-        while (!attesaCompleta) {
-            long ora = System.currentTimeMillis();
-            if (ora - inizio >= 100) { // 10 millisecondi passati
-                attesaCompleta = true;
-            }
-        }
-    }
     public static void main(String[] args) {
-      //  System.setProperty("sun.java2d.uiScale", "3.0");
-        SwingUtilities.invokeLater(() -> {
+        /*/
+       // System.setProperty("sun.java2d.uiScale", "3.0");
+        //SwingUtilities.invokeLater(() -> {
          //   System.setProperty("sun.java2d.uiScale", "3.0");
             new AdminDashboardSwing().setVisible(true);
 
-        });
+        });/*/
     }
 }

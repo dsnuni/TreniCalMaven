@@ -43,7 +43,6 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
             stmt.setDouble(8, promo.getScontistica());
 
             stmt.executeUpdate();
-            notifyObservers("Aggiunta promozione per treno " + promo.getTreno().getTrenoID());
 
         } catch (SQLException e) {
             System.err.println("Errore inserimento promozione: " + e.getMessage());
