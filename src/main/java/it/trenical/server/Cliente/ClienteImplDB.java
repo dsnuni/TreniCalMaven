@@ -21,8 +21,8 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
 
     @Override
     public void setCliente(Cliente cliente) {
-        String sql = "INSERT OR REPLACE INTO Cliente (codiceFiscale, nome, cognome, codiceCliente, eta) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT OR REPLACE INTO Cliente (codiceFiscale, nome, cognome, codiceCliente, eta, email) " +
+                "VALUES (?, ?, ?, ?,?, ?)";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -32,6 +32,7 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
             stmt.setString(3, cliente.getCognome());
             stmt.setString(4, cliente.getCodiceCliente());
             stmt.setInt(5, cliente.getEtà());
+            stmt.setString(6, cliente.getEmail());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -55,8 +56,9 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
                 String cognome = rs.getString("cognome");
                 String codiceCliente = rs.getString("codiceCliente");
                 int eta = rs.getInt("eta");
+                String email = rs.getString("email");
 
-                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,eta); // o CSecondaClasse, etc.
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,eta,email); // o CSecondaClasse, etc.
                 (cliente).setEtà(eta);
             }
 
@@ -110,7 +112,8 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
                         rs.getString("nome"),
                         rs.getString("cognome"),
                         rs.getString("codiceCliente"),
-                        rs.getInt("eta")
+                        rs.getInt("eta"),
+                        rs.getString("email")
                 ));
             }
         } catch (SQLException e) {
@@ -131,8 +134,9 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
                 String nome = rs.getString("nome");
                 String cognome = rs.getString("cognome");
                 int eta = rs.getInt("eta");
+                String email = rs.getString("email");
 
-                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta, email);
             }
         } catch (SQLException e) {
             System.err.println("Errore filtro cliente: " + e.getMessage());
@@ -156,8 +160,9 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
                 String cognome = rs.getString("cognome");
                 String codiceCliente = rs.getString("codiceCliente");
                 int eta = rs.getInt("eta");
+                String email = rs.getString("email");
 
-                return new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta);
+                return new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente, eta, email);
             } else {
                 throw new IllegalArgumentException("Nessun cliente alla riga: " + index);
             }

@@ -7,8 +7,11 @@ import it.trenical.grpc.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
-
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
 import it.trenical.grpc.Biglietto;
 
 public class ClientDashboardSwing extends JFrame {
@@ -168,76 +171,6 @@ public class ClientDashboardSwing extends JFrame {
         }
         return panel;
     }
-    private static void creaNotifica(JTabbedPane tabs, ManagedChannel channel) {
-        if (registrato && cliente != null) {
-            JPanel panel = new JPanel(new BorderLayout());
-            System.out.println("Notifiche " + registrato);
-            JPanel buttonPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            JButton ricaricaButton = new JButton("Ricarica");
-            buttonPanel3.add(ricaricaButton);
-            panel.add(buttonPanel3, BorderLayout.NORTH);
-            JPanel notificaPanel = new JPanel(new BorderLayout());
-            notificaPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            notificaPanel.setBackground(new Color(255, 255, 255)); // colore azzurrino chiaro
-
-            JLabel titolo = new JLabel("Notifiche Ricevute");
-            titolo.setFont(new Font("Arial", Font.BOLD, 16));
-            titolo.setHorizontalAlignment(SwingConstants.CENTER);
-            notificaPanel.add(titolo, BorderLayout.NORTH);
-
-            // Colonne tabella
-            String[] colonne = { "Partenza", "Messaggio" };
-            DefaultTableModel notificaModel = new DefaultTableModel(colonne, 0);
-            JTable notificaTable = new JTable(notificaModel);
-            notificaTable.setRowHeight(40);
-            JScrollPane notificaScroll = new JScrollPane(notificaTable);
-            notificaPanel.add(notificaScroll, BorderLayout.CENTER);
-
-            ricaricaButton.addActionListener(e -> {
-            try {
-                notificaModel.setRowCount(0);
-                // gRPC: carica le notifiche per cliente
-                NotificaServiceGrpc.NotificaServiceBlockingStub notificaStub =
-                        NotificaServiceGrpc.newBlockingStub(channel);
-
-                GetNotificaRequest req = GetNotificaRequest.newBuilder()
-                        .setCliente(cliente.getCodiceFiscale())
-                        .build();
-
-                GetNotificaResponse resp = notificaStub.getNotifica(req);
-                for (Notifica n : resp.getNotificheList()) {
-                    if (n.getCliente().equals(cliente.getCodiceFiscale())) {
-
-                    if(n.getStato().equals("RIMOSSA")) {
-                        String messaggioRim = "Gentile "+n.getCliente()+
-                                " ci dispiace infrmorla che il suo treno "+n.getTreno()+" è stato cancellato";
-                        notificaModel.addRow(new Object[]{n.getLog(), messaggioRim});
-
-                    } else if(n.getStato().equals("MODIFICATO")) {
-                        String messaggioMod = "Gentile "+n.getCliente()+
-                                " le comunichiamo che ci sono stati alcuni cambiamenti con la sua prenotazione "+n.getBiglietto()+
-                                " per il treno "+n.getTreno()+ " delle ore "+n.getPartenza()+
-                                " la invitiamo a consultare la sezione info";
-                        notificaModel.addRow(new Object[]{n.getLog(), messaggioMod});
-
-                    } else if(n.getStato().equals("IMMEDIATO")) {
-                        String messaggioImm = "Gentile "+n.getCliente()+
-                                " le ricordiamo che il suo treno "+n.getTreno()+" delle ore "+n.getPartenza() +
-                                " partirà fra meno di un ora";
-                        notificaModel.addRow(new Object[]{n.getLog(), messaggioImm});
-                    } else if(n.getStato().equals("PROMO")) {
-                        notificaModel.addRow( new Object[]{n.getLog(),n.getTreno()});
-                    }
-
-                    }
-                }
-            } catch (Exception e2) {
-                System.err.println("Errore nel caricamento notifiche: " + e2.getMessage());
-            } });
-            panel.add(notificaPanel, BorderLayout.CENTER);
-            tabs.addTab("Notifiche", panel);
-        }
-    }
     private static void caricaDatiDaDB(DefaultTableModel model,  ManagedChannel channel) {
 
         BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
@@ -342,6 +275,8 @@ public class ClientDashboardSwing extends JFrame {
             clientePanel.add(new JLabel("Età:"));
             clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
 
+            clientePanel.add(new JLabel("Email:"));
+            clientePanel.add(new JLabel(String.valueOf(cliente.getEmail())));
             finestraInfo(channel, tabs);
             creaNotifica(tabs, channel);
         });
@@ -371,7 +306,10 @@ public class ClientDashboardSwing extends JFrame {
         JTextField etaField = new JTextField(5);
         clientePanel.add(etaField);
 
-        // ✅ Checkbox Cliente Fedeltà
+        clientePanel.add(new JLabel("email:"));
+        JTextField emailField = new JTextField(20);
+        clientePanel.add(cognomeField);
+
         clientePanel.add(new JLabel("Cliente fedeltà:"));
         JCheckBox fedeltaBox = new JCheckBox();
         clientePanel.add(fedeltaBox);
@@ -386,9 +324,10 @@ public class ClientDashboardSwing extends JFrame {
             String nome = nomeField.getText();
             String cognome = cognomeField.getText();
             String etaStr = etaField.getText();
+            String email = emailField.getText();
             boolean isFedelta = fedeltaBox.isSelected();
 
-            System.out.println(cf + " " + nome + " " + cognome + " " + etaStr + " | Fedeltà: " + isFedelta);
+            System.out.println(cf + " " + nome + " " + cognome + " " + etaStr +" "+email+" | Fedeltà: " + isFedelta);
 
             if (cf.isEmpty() || nome.isEmpty() || cognome.isEmpty() || etaStr.isEmpty()) {
                 JOptionPane.showMessageDialog(clientePanel, "Completa tutti i campi prima di continuare.");
@@ -456,6 +395,16 @@ public class ClientDashboardSwing extends JFrame {
             clientePanel.add(new JLabel("Età:"));
             clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
 
+            clientePanel.add(new JLabel("Email:"));
+            clientePanel.add(new JLabel(cliente.getEmail()));
+
+            clientePanel.add(new JLabel("Fedelta:"));
+            if(cliente.getCodiceCliente().startsWith("FTRCL")) {
+                clientePanel.add(new JLabel("SI"));
+            } else {
+                clientePanel.add(new JLabel("NO"));
+            }
+
         return clientePanel;
         }
     private static void acquistaBiglietto(Object id, ManagedChannel channel) {
@@ -485,7 +434,7 @@ public class ClientDashboardSwing extends JFrame {
 
             model.setRowCount(0);
             model.setColumnIdentifiers(new String[]{
-                    "ID", "Tipo", "TrattaID", "Prezzo", "Posti Prima", "Posti Seconda", "Posti Terza", "PostiTot", "TempoPercorrenza"
+                    "ID", "Tipo", "TrattaID", "Prezzo", "Posti Prima", "Posti Seconda", "Posti Terza", "PostiTot", "TempoPercorrenza", "Binario", "Promozioni"
             });
             for (Treno treno : responseT.getTreniList()) {
                 System.out.println(treno.toString());
@@ -498,7 +447,9 @@ public class ClientDashboardSwing extends JFrame {
                         treno.getPostiSeconda(),
                         treno.getPostiTerza(),
                         treno.getPostiTot(),
-                        treno.getTempoPercorrenza()
+                        treno.getTempoPercorrenza(),
+                        treno.getBinario(),
+                        treno.getPromozione()
                 });
             }
 
@@ -669,41 +620,189 @@ public class ClientDashboardSwing extends JFrame {
         dialog.setVisible(true);
         dialog.dispose();
     }
+    private static void creaNotifica(JTabbedPane tabs, ManagedChannel channel) {
+        if (registrato && cliente != null) {
+            JPanel panel = new JPanel(new BorderLayout());
+            System.out.println("Notifiche " + registrato);
+
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JButton ricaricaButton = new JButton("Ricarica");
+            JLabel lastUpdateLabel = new JLabel("Ultimo aggiornamento: --");
+            lastUpdateLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+
+            buttonPanel.add(lastUpdateLabel);
+            panel.add(buttonPanel, BorderLayout.NORTH);
+
+            JPanel notificaPanel = new JPanel(new BorderLayout());
+            notificaPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            notificaPanel.setBackground(new Color(255, 255, 255));
+
+            JLabel titolo = new JLabel("Notifiche Ricevute");
+            titolo.setFont(new Font("Arial", Font.BOLD, 16));
+            titolo.setHorizontalAlignment(SwingConstants.CENTER);
+            notificaPanel.add(titolo, BorderLayout.NORTH);
+
+            String[] colonne = { "Orario", "Messaggio" };
+            DefaultTableModel notificaModel = new DefaultTableModel(colonne, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            JTable notificaTable = new JTable(notificaModel);
+
+            notificaTable.setRowHeight(25);
+            notificaTable.setFont(new Font("Arial", Font.PLAIN, 12));
+            notificaTable.setGridColor(new Color(200, 200, 200));
+            notificaTable.setSelectionBackground(new Color(173, 216, 230));
+            notificaTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+            notificaTable.getTableHeader().setBackground(new Color(184, 212, 240));
+            notificaTable.getTableHeader().setForeground(Color.BLACK);
+
+            notificaTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+            notificaTable.getColumnModel().getColumn(1).setPreferredWidth(450);
+
+            JScrollPane notificaScroll = new JScrollPane(notificaTable);
+            notificaPanel.add(notificaScroll, BorderLayout.CENTER);
+
+            Runnable aggiornaNotifiche = () -> {
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        System.out.println("Aggiornamento notifiche in corso...");
+                        notificaModel.setRowCount(0);
+
+                        NotificaServiceGrpc.NotificaServiceBlockingStub notificaStub =
+                                NotificaServiceGrpc.newBlockingStub(channel);
+
+                        GetNotificaRequest req = GetNotificaRequest.newBuilder()
+                                .setCliente(cliente.getCodiceFiscale())
+                                .build();
+
+                        GetNotificaResponse resp = notificaStub.getNotifica(req);
+
+                        int count = 0;
+                        for (Notifica n : resp.getNotificheList()) {
+                            if (n.getCliente().equals(cliente.getCodiceFiscale())) {
+                                String messaggio = "";
+
+                                switch (n.getStato()) {
+                                    case "RIMOSSA":
+                                        messaggio = "Gentile " + n.getCliente() +
+                                                " ci dispiace informarla che il suo treno " + n.getTreno() + " è stato cancellato";
+                                        break;
+
+                                    case "MODIFICATO":
+                                        messaggio = "Gentile " + n.getCliente() +
+                                                " le comunichiamo che ci sono stati alcuni cambiamenti con la sua prenotazione " + n.getBiglietto() +
+                                                " per il treno " + n.getTreno() + " delle ore " + n.getPartenza() +
+                                                " la invitiamo a consultare la sezione info";
+                                        break;
+
+                                    case "IMMEDIATO":
+                                        messaggio = "Gentile " + n.getCliente() +
+                                                " le ricordiamo che il suo treno " + n.getTreno() + " delle ore " + n.getPartenza() +
+                                                " partirà fra meno di un ora";
+                                        break;
+
+                                    case "PROMO":
+                                        messaggio = n.getTreno();
+                                        break;
+
+                                    default:
+                                        messaggio = "Notifica: " + n.getStato();
+                                        break;
+                                }
+
+                                notificaModel.addRow(new Object[]{n.getLog(), messaggio});
+                                count++;
+                            }
+                        }
+
+                        System.out.println("Caricate " + count + " notifiche");
+
+                        lastUpdateLabel.setText("Ultimo aggiornamento: " +
+                                java.time.LocalDateTime.now().format(
+                                        java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+                    } catch (Exception e2) {
+                        System.err.println("Errore nel caricamento notifiche: " + e2.getMessage());
+                        e2.printStackTrace();
+                        notificaModel.addRow(new Object[]{"ERRORE", "Errore durante il caricamento delle notifiche: " + e2.getMessage()});
+                    }
+                });
+            };
+
+            ricaricaButton.addActionListener(e -> {
+                System.out.println("Ricarica manuale cliccata");
+                aggiornaNotifiche.run();
+            });
+
+            System.out.println("Caricamento iniziale notifiche");
+            aggiornaNotifiche.run();
+
+            Timer autoRefreshTimer = new Timer(10000, new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    System.out.println("Timer triggered - aggiornamento automatico notifiche");
+                    aggiornaNotifiche.run();
+                }
+            });
+
+            autoRefreshTimer.setRepeats(true);
+            autoRefreshTimer.start();
+            System.out.println("Timer notifiche avviato");
+
+            panel.addHierarchyListener(e -> {
+                if ((e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED) != 0) {
+                    if (!panel.isShowing()) {
+                        System.out.println("Pannello notifiche nascosto - fermo il timer");
+                        autoRefreshTimer.stop();
+                    } else {
+                        System.out.println("Pannello notifiche mostrato - riavvio il timer");
+                        if (!autoRefreshTimer.isRunning()) {
+                            autoRefreshTimer.start();
+                        }
+                    }
+                }
+            });
+
+            panel.add(notificaPanel, BorderLayout.CENTER);
+            tabs.addTab("Notifiche", panel);
+        }
+    }
     public static void finestraInfo(ManagedChannel channel, JTabbedPane tabs) {
         JPanel panel = new JPanel(new BorderLayout());
         System.out.println("INfo " + registrato);
-        if (cliente != null) {
-            // Recupera i biglietti del cliente
-            BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
-            GetBigliettiByFiltroRequest requestA = GetBigliettiByFiltroRequest.newBuilder()
-                    .setColonna("cliente_id")
-                    .setValore(cliente.getCodiceFiscale())
-                    .build();
-            GetBigliettiByFiltroResponse responseA = bigliettoStub.getBigliettiByFiltro(requestA);
-            List<Biglietto> biglietti = responseA.getBigliettiList();
 
-            // Crea il pannello principale per le informazioni complete
+        if (cliente != null) {
+
             JPanel infoPanel = new JPanel(new BorderLayout());
             infoPanel.setBorder(BorderFactory.createTitledBorder("Informazioni Complete Biglietti"));
 
-            // ComboBox per selezionare il biglietto
+
             JPanel selectionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             selectionPanel.add(new JLabel("Seleziona Biglietto:"));
             JComboBox<String> comboBiglietti = new JComboBox<>();
             comboBiglietti.setPreferredSize(new Dimension(300, 25));
             selectionPanel.add(comboBiglietti);
 
-            // Tabella per mostrare le informazioni complete
+
+            JButton refreshButton = new JButton("🔄 Aggiorna");
+           // selectionPanel.add(refreshButton);
+
+            JLabel lastUpdateLabel = new JLabel("Ultimo aggiornamento: --");
+            lastUpdateLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+            selectionPanel.add(lastUpdateLabel);
+
             String[] colonne = {"Campo", "Valore"};
             DefaultTableModel infoModel = new DefaultTableModel(colonne, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    return false; // Tabella in sola lettura
+                    return false;
                 }
             };
             JTable infoTable = new JTable(infoModel);
 
-            // Personalizzazione della tabella (stesso stile del resto del codice)
             infoTable.setRowHeight(25);
             infoTable.setFont(new Font("Arial", Font.PLAIN, 12));
             infoTable.setGridColor(new Color(200, 200, 200));
@@ -712,36 +811,69 @@ public class ClientDashboardSwing extends JFrame {
             infoTable.getTableHeader().setBackground(new Color(184, 212, 240));
             infoTable.getTableHeader().setForeground(Color.BLACK);
 
-            // Larghezza delle colonne
             infoTable.getColumnModel().getColumn(0).setPreferredWidth(200);
             infoTable.getColumnModel().getColumn(1).setPreferredWidth(300);
 
-            JScrollPane scrollPan2e = new JScrollPane(infoTable);
+            JScrollPane scrollPane = new JScrollPane(infoTable);
 
-            // Popola la ComboBox con i biglietti
-            comboBiglietti.removeAllItems();
-            if (biglietti.isEmpty()) {
-                comboBiglietti.addItem("Nessun biglietto trovato");
-                comboBiglietti.setEnabled(false);
-            } else {
-                for (Biglietto b : biglietti) {
-                    String displayText = "Biglietto " + b.getBigliettoID() + " - Treno " + b.getTrenoID();
-                    comboBiglietti.addItem(displayText);
+            List<Biglietto> biglietti = new ArrayList<>();
+
+            Runnable aggiornaDati = () -> {
+                try {
+                    BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
+                    GetBigliettiByFiltroRequest requestA = GetBigliettiByFiltroRequest.newBuilder()
+                            .setColonna("cliente_id")
+                            .setValore(cliente.getCodiceFiscale())
+                            .build();
+                    GetBigliettiByFiltroResponse responseA = bigliettoStub.getBigliettiByFiltro(requestA);
+                    String selectedItem = (String) comboBiglietti.getSelectedItem();
+
+                    biglietti.clear();
+                    biglietti.addAll(responseA.getBigliettiList());
+
+                    comboBiglietti.removeAllItems();
+                    if (biglietti.isEmpty()) {
+                        comboBiglietti.addItem("Nessun biglietto trovato");
+                        comboBiglietti.setEnabled(false);
+                        infoModel.setRowCount(0);
+                    } else {
+                        for (Biglietto b : biglietti) {
+                            String displayText = "Biglietto " + b.getBigliettoID() + " - Treno " + b.getTrenoID();
+                            comboBiglietti.addItem(displayText);
+                        }
+                        comboBiglietti.setEnabled(true);
+
+                        if (selectedItem != null) {
+                            for (int i = 0; i < comboBiglietti.getItemCount(); i++) {
+                                if (comboBiglietti.getItemAt(i).equals(selectedItem)) {
+                                    comboBiglietti.setSelectedIndex(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            comboBiglietti.setSelectedIndex(0);
+                        }
+                    }
+
+                    lastUpdateLabel.setText("Ultimo aggiornamento: " +
+                            java.time.LocalDateTime.now().format(
+                                    java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+                } catch (Exception e) {
+                    System.err.println("Errore durante l'aggiornamento: " + e.getMessage());
+                    infoModel.setRowCount(0);
+                    infoModel.addRow(new Object[]{"ERRORE", "Errore durante l'aggiornamento dei dati"});
                 }
-                comboBiglietti.setEnabled(true);
-            }
+            };
 
-            // ActionListener per la selezione del biglietto
-            comboBiglietti.addActionListener(e -> {
+            Runnable caricaDettagli = () -> {
                 int selectedIndex = comboBiglietti.getSelectedIndex();
                 if (selectedIndex >= 0 && selectedIndex < biglietti.size()) {
                     Biglietto bigliettoSelezionato = biglietti.get(selectedIndex);
 
-                    // Pulisci la tabella
                     infoModel.setRowCount(0);
 
                     try {
-                        // ========== INFORMAZIONI BIGLIETTO ==========
                         infoModel.addRow(new Object[]{"═══ DATI BIGLIETTO ═══", ""});
                         infoModel.addRow(new Object[]{"ID Biglietto", bigliettoSelezionato.getBigliettoID()});
                         infoModel.addRow(new Object[]{"Classe", bigliettoSelezionato.getClasse()});
@@ -752,14 +884,13 @@ public class ClientDashboardSwing extends JFrame {
                                 bigliettoSelezionato.getPrioritaList().isEmpty() ?
                                         "Nessuna" : bigliettoSelezionato.getPrioritaList().toString()});
 
-                        // ========== RECUPERA E MOSTRA DATI TRENO ==========
                         TrenoServiceGrpc.TrenoServiceBlockingStub trenoStub = TrenoServiceGrpc.newBlockingStub(channel);
                         GetTrenoRequest trenoRequest = GetTrenoRequest.newBuilder()
                                 .setTrenoID(bigliettoSelezionato.getTrenoID())
                                 .build();
                         it.trenical.grpc.Treno treno = trenoStub.getTreno(trenoRequest);
 
-                        infoModel.addRow(new Object[]{"", ""}); // Riga vuota per separare
+                        infoModel.addRow(new Object[]{"", ""});
                         infoModel.addRow(new Object[]{"═══ DATI TRENO ═══", ""});
                         infoModel.addRow(new Object[]{"ID Treno", treno.getTrenoID()});
                         infoModel.addRow(new Object[]{"Tipo Treno", treno.getTipoTreno()});
@@ -768,16 +899,16 @@ public class ClientDashboardSwing extends JFrame {
                         infoModel.addRow(new Object[]{"Posti Seconda Classe", treno.getPostiSeconda()});
                         infoModel.addRow(new Object[]{"Posti Terza Classe", treno.getPostiTerza()});
                         infoModel.addRow(new Object[]{"Posti Totali", treno.getPostiTot()});
+                        infoModel.addRow(new Object[]{"Posti Totali", treno.getBinario()});
                         infoModel.addRow(new Object[]{"ID Tratta Associata", treno.getTrattaID()});
 
-                        // ========== RECUPERA E MOSTRA DATI TRATTA ==========
                         TrattaServiceGrpc.TrattaServiceBlockingStub trattaStub = TrattaServiceGrpc.newBlockingStub(channel);
                         GetTrattaRequest trattaRequest = GetTrattaRequest.newBuilder()
                                 .setCodiceTratta(treno.getTrattaID())
                                 .build();
                         it.trenical.grpc.TrattaStandard tratta = trattaStub.getTratta(trattaRequest);
 
-                        infoModel.addRow(new Object[]{"", ""}); // Riga vuota per separare
+                        infoModel.addRow(new Object[]{"", ""});
                         infoModel.addRow(new Object[]{"═══ DATI TRATTA ═══", ""});
                         infoModel.addRow(new Object[]{"ID Tratta", tratta.getCodiceTratta()});
                         infoModel.addRow(new Object[]{"Stazione Partenza", tratta.getStazionePartenza()});
@@ -795,20 +926,45 @@ public class ClientDashboardSwing extends JFrame {
                         infoModel.addRow(new Object[]{"Dettagli errore", ex.getMessage()});
                     }
                 }
+            };
+
+            comboBiglietti.addActionListener(e -> caricaDettagli.run());
+
+            refreshButton.addActionListener(e -> {
+                aggiornaDati.run();
+                if (comboBiglietti.getItemCount() > 0 && !comboBiglietti.getItemAt(0).equals("Nessun biglietto trovato")) {
+                    caricaDettagli.run();
+                }
             });
 
-            // Seleziona automaticamente il primo biglietto se disponibile
+            aggiornaDati.run();
             if (comboBiglietti.getItemCount() > 0 && !comboBiglietti.getItemAt(0).equals("Nessun biglietto trovato")) {
                 comboBiglietti.setSelectedIndex(0);
+                caricaDettagli.run();
             }
 
-            // Assembla il pannello principale
+            Timer autoRefreshTimer = new Timer(5000, e -> {
+                aggiornaDati.run();
+                if (comboBiglietti.getSelectedIndex() >= 0) {
+                    caricaDettagli.run();
+                }
+            });
+            autoRefreshTimer.start();
+
+            JPanel finalPanel = panel;
+            panel.addHierarchyListener(e -> {
+                if ((e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED) != 0) {
+                    if (!finalPanel.isShowing()) {
+                        autoRefreshTimer.stop();
+                    }
+                }
+            });
+
             infoPanel.add(selectionPanel, BorderLayout.NORTH);
-            infoPanel.add(scrollPan2e, BorderLayout.CENTER);
+            infoPanel.add(scrollPane, BorderLayout.CENTER);
             panel = infoPanel;
 
         } else {
-            // Se il cliente non è loggato, mostra messaggio
             JPanel noClientPanel = new JPanel(new GridBagLayout());
             JLabel noClientLabel = new JLabel("Effettua il login per visualizzare le informazioni dei tuoi biglietti");
             noClientLabel.setFont(new Font("Arial", Font.BOLD, 14));

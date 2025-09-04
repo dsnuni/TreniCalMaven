@@ -5,8 +5,8 @@ import it.trenical.server.Tratta.TrattaStandard;
 
 public class TrenoConcr  extends Treno{
 
-    public TrenoConcr(String trenoID, String tipoTreno, TrattaStandard tratta, int prezzo, int postiPrima, int postiSeconda, int postiTerza, int postiTot) {
-        super(trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+    public TrenoConcr(String trenoID, String tipoTreno, TrattaStandard tratta, int prezzo, int postiPrima, int postiSeconda, int postiTerza, int postiTot, int binario, String promozione) {
+        super(trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot, binario, promozione);
     }
 
     @Override

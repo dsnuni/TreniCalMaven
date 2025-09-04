@@ -56,7 +56,8 @@ public class ClienteServiceImpl extends it.trenical.grpc.ClienteServiceGrpc.Clie
                 proto.getNome(),
                 proto.getCognome(),
                 proto.getCodiceCliente(),
-                proto.getEta()
+                proto.getEta(),
+                proto.getEmail()
         );
     }
 
@@ -67,6 +68,7 @@ public class ClienteServiceImpl extends it.trenical.grpc.ClienteServiceGrpc.Clie
                 .setCognome(clienteJava.getCognome())
                 .setCodiceCliente(clienteJava.getCodiceCliente())
                 .setEta(clienteJava.getEtà())
+                .setEmail(clienteJava.getEmail())
                 .build();
     }
 }

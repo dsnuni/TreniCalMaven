@@ -123,8 +123,12 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
                 t.getPostiPrima(),
                 t.getPostiSeconda(),
                 t.getPostiTerza(),
-                t.getPostiTot()
+                t.getPostiTot(),
+                t.getBinario(),
+                t.getPromozione()
+
         );
+
     }
 
     private Treno convertiJavaInProto(TrenoConcr t) {
@@ -139,6 +143,8 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
                 .setPostiSeconda(t.getPostiSeconda())
                 .setPostiTerza(t.getPostiTerza())
                 .setPostiTot(t.getPostiTot())
+                .setBinario(t.getBinario())
+                .setPromozione(t.getPromozione())
                 .build();
     }
 

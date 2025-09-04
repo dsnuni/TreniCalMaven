@@ -51,11 +51,13 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiSeconda = rs.getInt("postiSeconda");
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
+                int binario = rs.getInt("binario");
+                String promozione = rs.getString("promozione");
                // int tempoPercorrenza = rs.getInt("tempoPercorrenza");
                 System.out.println("Treno appena visitato"+trenoID+" LOG <"+adesso.format(formatter)+">");
                 TrattaStandard tratta =  db.getTratta(trattaID);
 
-                t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+                t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot, binario, promozione);
                // System.out.println("il treno è : "+t.toString());
             }
 
@@ -70,8 +72,8 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
     public void setTreno(Treno tr) {
         Treno esistente = getTreno(tr.getTrenoID());
         boolean isUpdate = (esistente != null);
-        String sql = "INSERT OR REPLACE INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza, postiTot, tempoPercorrenza) " +
-                "VALUES (?,?, ?, ?, ?, ?,?,?,?)";
+        String sql = "INSERT OR REPLACE INTO Treno (trenoID, tipoTreno, trattaID, prezzo, postiPrima, postiSeconda, postiTerza, postiTot, tempoPercorrenza, binario, promozione) " +
+                "VALUES (?,?, ?, ?, ?, ?,?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -86,6 +88,8 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             stmt.setInt(7, tr.getPostiTerza());
             stmt.setInt(8, tr.getPostiTot());
             stmt.setInt(9, tr.getTempoPercorrenza());
+            stmt.setInt(10, tr.getBinario());
+            stmt.setString(11, tr.getPromozione());
 
             stmt.executeUpdate();
             if(isUpdate){
@@ -200,10 +204,12 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiSeconda = rs.getInt("postiSeconda");
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
+                int binario = rs.getInt("binario");
+                String promozione = rs.getString("promozione");
 
                 TrattaStandard tratta =  db.getTratta(trattaID);
 
-                t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+                t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot,binario,promozione);
 
             }
 
@@ -230,11 +236,14 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiSeconda = rs.getInt("postiSeconda");
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
+                int binario = rs.getInt("binario");
+                String promozione = rs.getString("promozione");
+
 
 
                 TrattaStandard tratta =  db.getTratta(trattaID);
 
-                Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+                Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot,binario,promozione);
                 treni.add(t);
 
             }}catch (SQLException e) {
@@ -261,10 +270,12 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiSeconda = rs.getInt("postiSeconda");
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
+                int binario = rs.getInt("binario");
+                String promozione = rs.getString("promozione");
 
                 TrattaStandard tratta =  db.getTratta(trattaID);
 
-                Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot);
+                Treno t = new TrenoConcr( trenoID,tipoTreno,tratta,prezzo,postiPrima,postiSeconda,postiTerza,postiTot,binario,promozione);
                 treni.add(t);
 
             }
@@ -294,7 +305,9 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                         rs.getInt("postiPrima"),
                         rs.getInt("postiSeconda"),
                         rs.getInt("postiTerza"),
-                        rs.getInt("postiTot"));
+                        rs.getInt("postiTot"),
+                        rs.getInt("binario"),
+                        rs.getString("promozione"));
                 treni.add(treno);
             }
 
@@ -326,10 +339,12 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 int postiTerza = rs.getInt("postiTerza");
                 int postiTot = rs.getInt("postiTot");
                 int tempoPercorrenza = rs.getInt("tempoPercorrenza");
+                int binario = rs.getInt("binario");
+                String promozione = rs.getString("promozione");
 
                 TrattaStandard tratta = dbt.getTratta(trattaID);
                 return new TrenoConcr(trenoID, tipoTreno, tratta, prezzo, postiPrima,
-                        postiSeconda, postiTerza, postiTot);
+                        postiSeconda, postiTerza, postiTot,binario,promozione);
             } else {
                 throw new IllegalArgumentException("Nessun treno alla riga: " + index);
             }

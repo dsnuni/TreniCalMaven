@@ -188,5 +188,96 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
 
         return risultati;
     }
+    public List<Promozione> getPromozioneByFiltro(String colonna, String valore) {
+        List<Promozione> promozioni = new ArrayList<>();
+        String sql = "SELECT * FROM Promozione WHERE " + colonna + " = ?";
+        TrenoImpl dbtrn = TrenoImplDB.getInstance();
+        TrattaImpl dbtrt = TrattaImplDB.getInstance();
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, valore);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String promozioneID = rs.getString("promozioneID");
+                String trenoID = rs.getString("trenoID");
+                String trattaID = rs.getString("trattaID");
+                String dataPartenza = rs.getString("dataPartenza");
+                String dataFine = rs.getString("dataFine");
+                Boolean clientiFedelta = rs.getBoolean("clientiFedelta");
+                int prezzoPartenza = rs.getInt("prezzoPartenza");
+                int scontistica = rs.getInt("scontistica");
+
+                TrattaPrototype tratta = dbtrt.getTratta(trattaID);
+                Treno treno = dbtrn.getTreno(trenoID);
+
+                Promozione promo = new Promozione.PromozioneBuilder()
+                        .setPromozioneID(promozioneID)
+                        .setTreno(treno)
+                        .setTratta(tratta)
+                        .setDataPartenza(dataPartenza)
+                        .setDataFine(dataFine)
+                        .setClientiFedelta(clientiFedelta)
+                        .setPrezzoPartenza(prezzoPartenza)
+                        .setScontistica(scontistica)
+                        .build();
+
+                promozioni.add(promo);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore filtro promozione: " + e.getMessage());
+        }
+
+        return promozioni;
+    }
+
+    public List<Promozione> getByPrezzo(int prezzo) {
+        List<Promozione> promozioni = new ArrayList<>();
+        String sql = "SELECT * FROM Promozione WHERE prezzoPartenza <= ?";
+        TrenoImpl dbtrn = TrenoImplDB.getInstance();
+        TrattaImpl dbtrt = TrattaImplDB.getInstance();
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, prezzo);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String promozioneID = rs.getString("promozioneID");
+                String trenoID = rs.getString("trenoID");
+                String trattaID = rs.getString("trattaID");
+                String dataPartenza = rs.getString("dataPartenza");
+                String dataFine = rs.getString("dataFine");
+                Boolean clientiFedelta = rs.getBoolean("clientiFedelta");
+                int prezzoPartenza = rs.getInt("prezzoPartenza");
+                int scontistica = rs.getInt("scontistica");
+
+                TrattaPrototype tratta = dbtrt.getTratta(trattaID);
+                Treno treno = dbtrn.getTreno(trenoID);
+
+                Promozione promo = new Promozione.PromozioneBuilder()
+                        .setPromozioneID(promozioneID)
+                        .setTreno(treno)
+                        .setTratta(tratta)
+                        .setDataPartenza(dataPartenza)
+                        .setDataFine(dataFine)
+                        .setClientiFedelta(clientiFedelta)
+                        .setPrezzoPartenza(prezzoPartenza)
+                        .setScontistica(scontistica)
+                        .build();
+
+                promozioni.add(promo);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore filtro promozione per prezzo: " + e.getMessage());
+        }
+
+        return promozioni;
+    }
 
 }

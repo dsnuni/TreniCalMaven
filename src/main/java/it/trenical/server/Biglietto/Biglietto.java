@@ -18,7 +18,7 @@ public abstract class Biglietto {
     protected final BigliettoImpl implementazione;
 
     // Costruttore protetto: usato solo dal builder
-    protected Biglietto(Builder<?> builder) {
+    protected Biglietto(Builder builder) {
         this.bigliettoID = builder.bigliettoID;
         this.titolareBiglietto = builder.titolareBiglietto;
         this.trenoBiglietto = builder.trenoBiglietto;
@@ -53,7 +53,7 @@ public abstract class Biglietto {
     }
 
     // ======== BUILDER ASTRATTO ========
-    public static abstract class Builder<T extends Builder<T>> {
+    public static abstract class Builder  {
         private String bigliettoID;
         private Cliente titolareBiglietto;
         private Treno trenoBiglietto;
@@ -63,50 +63,50 @@ public abstract class Biglietto {
         private int prezzo;
         private BigliettoImpl implementazione;
 
-        public T bigliettoID(String id) {
+        public Builder bigliettoID(String id) {
             this.bigliettoID = id;
-            return self();
+            return this;
         }
 
-        public T titolareBiglietto(Cliente cliente) {
+        public Builder titolareBiglietto(Cliente cliente) {
             this.titolareBiglietto = cliente;
-            return self();
+            return this;
         }
 
-        public T trenoBiglietto(Treno treno) {
+        public Builder trenoBiglietto(Treno treno) {
             this.trenoBiglietto = treno;
-            return self();
+            return this;
         }
 
-        public T carrozza(String carrozza) {
+        public Builder carrozza(String carrozza) {
             this.carrozza = carrozza;
-            return self();
+            return this;
         }
 
-        public T posto(String posto) {
+        public Builder posto(String posto) {
             this.posto = posto;
-            return self();
+            return this;
         }
 
-        public T priorità(List<String> priorità) {
+        public Builder priorità(List<String> priorità) {
             this.priorità = priorità;
-            return self();
+            return this;
         }
 
-        public T prezzo(int prezzo) {
+        public Builder prezzo(int prezzo) {
 //            int prezzoScontato = PromozioniGenerator.getInstance()
 //                    .calcolaPrezzo(prezzo, titolareBiglietto.getCodiceCliente(), trenoBiglietto.getTratta());
 //            this.prezzo = prezzoScontato;
             this.prezzo = prezzo;
-            return self();
+            return this;
         }
 
-        public T implementazione(BigliettoImpl implementazione) {
+        public Builder implementazione(BigliettoImpl implementazione) {
             this.implementazione = implementazione;
-            return self();
+            return this;
         }
 
-        protected abstract T self();
+
         public abstract Biglietto build();
     }
 

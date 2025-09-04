@@ -5,6 +5,7 @@ import it.trenical.server.Cliente.ClienteConcr;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
 import it.trenical.server.Tratta.TrattaImplDB;
+import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoConcr;
@@ -16,6 +17,7 @@ import java.util.Random;
 
 import static it.trenical.server.Cliente.ClienteImplDB.getClienteByRowIndex;
 import static it.trenical.server.igGenerator.IdGenerator.dividiPosti;
+import static it.trenical.server.promozione.ApplicaPromozione.controllaPromozione;
 
 public class Generatore {
     private static final String[] nomi = {
@@ -41,8 +43,9 @@ public class Generatore {
         int eta = interoCasuale(100);
         String cf = IdGenerator.generaCodiceFiscale(nome, cognome, eta);
         String cc = IdGenerator.generaCodiceCliente(booleanCasuale());
+        String email = IdGenerator.generaEmail(nome, cognome, eta);
         ClienteImpl db = ClienteImplDB.getInstance();
-        db.setCliente(new ClienteConcr(cf,nome,cognome,cc,eta));
+        db.setCliente(new ClienteConcr(cf,nome,cognome,cc,eta,email));
 
     }
     private static void generaTratta() {
@@ -59,15 +62,20 @@ public class Generatore {
             return;
         }
         Random random = new Random();
+        String trenoID =IdGenerator.generaTrenoID();
+        TrattaStandard tratta =dbt2.getTrattaByIndex(interoCasuale(numTratteTotali-1));
+        int prezzoPartenza = interoCasuale(200);
         TrenoConcr tr = new TrenoConcr(
-            IdGenerator.generaTrenoID(),
+            trenoID,
             IdGenerator.generaTipoTreno(),
-            dbt2.getTrattaByIndex(interoCasuale(numTratteTotali-1)),
-            interoCasuale(200),
+            tratta,
+            prezzoPartenza,
             0,
             0,
             0,
-            interoCasuale(150));
+            interoCasuale(150),
+            interoCasuale(15),
+            controllaPromozione(trenoID,tratta.getCodiceTratta(),prezzoPartenza));
         System.out.println("Treno appena generato LOG <"+adesso.format(formatter)+">");
             dbt.setTreno(dividiPosti(tr));
     }
@@ -147,10 +155,10 @@ public class Generatore {
         }
     }
     private static int interoCasuale(int num) {
-        return (int) (Math.random() * num); // genera tra 0 e 29
+        return (int) (Math.random() * num);
     }
     private static boolean booleanCasuale() {
-        return Math.random() < 0.5; // 50% true, 50% false
+        return Math.random() < 0.5;
     }
 
     public static void main(String[] args) {

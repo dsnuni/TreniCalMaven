@@ -18,9 +18,11 @@ public abstract class Treno  {
     private int postiTerza;
     private int postiTot;
     private int tempoPercorrenza;
+    private int binario;
+    private String promozione;
 
     public Treno(String trenoID, String tipoTrenoI, TrattaStandard tratta,
-                 int prezzo, int postiPrima, int postiSeconda,int postiTerza, int postiTot) {
+                 int prezzo, int postiPrima, int postiSeconda,int postiTerza, int postiTot, int binario, String promozione) {
       //  System.out.println("tratta passata: " + tratta);
         this.trenoID = trenoID;
         this.tipoTreno = this.setTipoTreno(tipoTrenoI);
@@ -31,6 +33,8 @@ public abstract class Treno  {
         this.postiTerza = postiTerza;
         this.postiTot = postiTot;
         this.tempoPercorrenza = this.setTempoPercorrenza();
+        this.binario = binario;
+        this.promozione= promozione;
 
     }
     private int setTempoPercorrenza() {
@@ -129,7 +133,15 @@ public abstract class Treno  {
     public int getTempoPercorrenza() {
         return tempoPercorrenza;
     }
-// setters posti
+
+    public int getBinario() {
+        return binario;
+    }
+
+    public String getPromozione() {
+        return promozione;
+    }
+    // setters posti
 
 
     public void setPostiPrima(int postiPrima) {
@@ -146,6 +158,14 @@ public abstract class Treno  {
 
     public void setPostiTot(int postiTot) {
         this.postiTot = postiTot;
+    }
+
+    public void setBinario(int binario) {
+        this.binario = binario;
+    }
+
+    public void setPromozione(String promozione) {
+        this.promozione = promozione;
     }
 
     @Override

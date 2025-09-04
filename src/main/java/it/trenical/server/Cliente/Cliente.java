@@ -7,13 +7,15 @@ public abstract class Cliente {
     String cognome = "";
     String codiceCliente = "";
     int età = 0;
+    String email = "";
 
-    public Cliente(String codiceFiscale, String nome, String cognome, String codiceCliente, int età) {
+    public Cliente(String codiceFiscale, String nome, String cognome, String codiceCliente, int età, String email) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
         this.cognome = cognome;
         this.codiceCliente = codiceCliente;
         this.età = età;
+        this.email = email;
     }
 
     public String getCodiceCliente() {
@@ -36,6 +38,9 @@ public abstract class Cliente {
         return cognome;
     }
 
+
+    public String getEmail() { return email; }
+
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
@@ -56,6 +61,7 @@ public abstract class Cliente {
         this.nome = nome;
     }
 
+    public void setEmail(String email) { this.email = email;}
 
     public abstract Cliente getCliente(); //da passare a private con implementazione nel metodo
     public abstract void setCLiente();
@@ -71,23 +77,25 @@ public abstract class Cliente {
         return codiceFiscale.equals(that.codiceFiscale)
                 && nome.equals(that.nome)
                 && cognome.equals(that.cognome)
-                && codiceCliente.equals(that.codiceCliente);
+                && codiceCliente.equals(that.codiceCliente)
+                && email.equals(that.email);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(codiceFiscale, nome, cognome, codiceCliente);
+        return java.util.Objects.hash(codiceFiscale, nome, cognome, codiceCliente,email);
     }
 
     @Override
     public String toString() {
-        return "ClienteConcr{" +
-                "codiceFiscale='" + codiceFiscale + '\'' +
+        return "Cliente{" +
+                "codiceCliente='" + codiceCliente + '\'' +
+                ", codiceFiscale='" + codiceFiscale + '\'' +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
-                ", codiceCliente='" + codiceCliente + '\'' +
+                ", età=" + età +
+                ", email='" + email + '\'' +
                 '}';
     }
-
 }
 

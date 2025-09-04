@@ -144,6 +144,7 @@ public class IdGenerator {
         int postiSeconda = (int) Math.round(postiTot * 0.40);
         int postiTerza = postiTot - postiPrima - postiSeconda; // assegna il resto
         System.out.println("Treno conreto: "+tr.getTrenoID()+" appena generato LOG <"+adesso.format(formatter)+">");
+
         return new TrenoConcr(
                 tr.getTrenoID(),
                 tr.getTipoTreno(),
@@ -152,9 +153,29 @@ public class IdGenerator {
                 postiPrima,
                 postiSeconda,
                 postiTerza,
-                postiTot
-        );
+                postiTot,
+                tr.getBinario(),
+                tr.getPromozione()
 
+        );
+    }
+    public static String generaEmail(String nome, String cognome, int età) {
+        try {
+            if (nome == null || cognome == null || nome.trim().isEmpty() || cognome.trim().isEmpty()) {
+                return "email.non.valida@treniCal.it";
+            }
+
+            String nomeClean = nome.trim().toLowerCase().replaceAll("[^a-zA-Z]", "");
+            String cognomeClean = cognome.trim().toLowerCase().replaceAll("[^a-zA-Z]", "");
+
+            String email = nomeClean + "." + cognomeClean + età + "@treniCal.it";
+
+            return email;
+
+        } catch (Exception e) {
+            System.err.println("Errore durante la generazione dell'email: " + e.getMessage());
+            return "utente.errore@treniCal.it";
+        }
     }
 
 

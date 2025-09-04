@@ -248,7 +248,7 @@ public class GeneratorConcr implements Generator {
                     IdGenerator.generaTrenoID(),
                     IdGenerator.generaTipoTreno(),
                     dbt2.getTrattaByIndex(numTratta),
-                    0, 0, 0, 0, 110
+                    0, 0, 0, 0, 110,0," "
             );
             dbt.setTreno(dividiPosti(tr));
         }

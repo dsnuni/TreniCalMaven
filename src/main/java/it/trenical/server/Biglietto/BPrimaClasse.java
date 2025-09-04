@@ -12,11 +12,7 @@ public class BPrimaClasse extends Biglietto {
         super(builder);
     }
 
-    public static class Builder extends Biglietto.Builder<Builder> {
-        @Override
-        protected Builder self() {
-            return this;
-        }
+    public static class Builder extends Biglietto.Builder {
 
         @Override
         public BPrimaClasse build() {

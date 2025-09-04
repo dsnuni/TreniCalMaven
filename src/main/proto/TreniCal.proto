@@ -13,6 +13,7 @@ message Cliente {
   string cognome = 3;
   string codiceCliente = 4;
   int32 eta = 5;
+  string email = 6;
 }
 
 message AddClienteRequest {
@@ -44,6 +45,7 @@ message TrattaStandard {
   string dataArrivo = 5;
   int32 distanza = 6;
   int32 tempoPercorrenza = 7;
+
 }
 
 message AddTrattaRequest {
@@ -85,6 +87,8 @@ message Treno {
   int32 postiTerza = 7;
   int32 postiTot = 8;
   int32 tempoPercorrenza = 9;
+  int32 binario = 10;
+  string promozione = 11;
 }
 
 message AddTrenoRequest {
