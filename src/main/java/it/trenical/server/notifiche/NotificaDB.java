@@ -65,10 +65,10 @@ public class NotificaDB {
                         rs.getString("arrivo"),
                         rs.getInt("tempo"),
                         rs.getString("biglietto"),
-                        rs.getString("stato"),        // NUOVO
-                        rs.getString("posto"),        // NUOVO
-                        rs.getInt("binario"),         // NUOVO
-                        rs.getString("log")           // NUOVO
+                        rs.getString("stato"),
+                        rs.getString("posto"),
+                        rs.getInt("binario"),
+                        rs.getString("log")
                 );
                 notifiche.add(notifica);
             }

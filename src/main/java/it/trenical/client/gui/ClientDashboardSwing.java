@@ -225,6 +225,8 @@ public class ClientDashboardSwing extends JFrame {
                                 " le ricordiamo che il suo treno "+n.getTreno()+" delle ore "+n.getPartenza() +
                                 " partirà fra meno di un ora";
                         notificaModel.addRow(new Object[]{n.getLog(), messaggioImm});
+                    } else if(n.getStato().equals("PROMO")) {
+                        notificaModel.addRow( new Object[]{n.getLog(),n.getTreno()});
                     }
 
                     }

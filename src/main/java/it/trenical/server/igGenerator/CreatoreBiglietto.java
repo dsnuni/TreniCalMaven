@@ -1,10 +1,10 @@
-package it.trenical.server.Biglietto;
+package it.trenical.server.igGenerator;
 
+import it.trenical.server.Biglietto.*;
 import it.trenical.server.Cliente.Cliente;
 import it.trenical.server.Cliente.ClienteImplDB;
 import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoImplDB;
-import it.trenical.server.igGenerator.IdGenerator;
 import it.trenical.server.promozione.ApplicaPromozione;
 
 import java.util.ArrayList;

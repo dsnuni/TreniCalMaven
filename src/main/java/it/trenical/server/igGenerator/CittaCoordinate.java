@@ -1,4 +1,4 @@
-package it.trenical.server.Tratta;
+package it.trenical.server.igGenerator;
 
 public enum CittaCoordinate {
     LECCE(40.3457, 18.1657),

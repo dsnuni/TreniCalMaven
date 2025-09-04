@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BigliettoTest {}
+public class BigliettoTest {
 /*/
     String bigliettoID = "24C43";
     ClienteConcr titolareBiglietto = new ClienteConcr("QNTDVD03P24D086Q", "Davide", "Iaquinta", "GAY!!!");
@@ -104,5 +104,5 @@ public class BigliettoTest {}
         assertEquals("NUOVA", recuperato.getCarrozza());
         assertEquals("Z9", recuperato.getPosto());
         assertEquals(prezzo + 100, recuperato.getPrezzo());
-    }
-}/*/
+    }/*/
+}

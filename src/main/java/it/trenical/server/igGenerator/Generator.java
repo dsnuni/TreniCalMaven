@@ -1,4 +1,4 @@
-package it.trenical.server.Tratta;
+package it.trenical.server.igGenerator;
 
 public interface Generator {
 

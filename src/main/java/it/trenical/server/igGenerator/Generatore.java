@@ -1,18 +1,14 @@
-package it.trenical.server;
+package it.trenical.server.igGenerator;
 
 import it.trenical.server.Biglietto.*;
-import it.trenical.server.Cliente.Cliente;
 import it.trenical.server.Cliente.ClienteConcr;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
-import it.trenical.server.Tratta.Generator;
-import it.trenical.server.Tratta.GeneratorConcr;
 import it.trenical.server.Tratta.TrattaImplDB;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
-import it.trenical.server.igGenerator.IdGenerator;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

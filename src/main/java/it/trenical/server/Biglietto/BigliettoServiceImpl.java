@@ -6,14 +6,13 @@ import it.trenical.grpc.CreaBigliettoRequest;
 import it.trenical.grpc.CreaBigliettoResponse;
 import it.trenical.grpc.GetBigliettiByFiltroRequest;
 import it.trenical.grpc.GetBigliettiByFiltroResponse;
-import it.trenical.server.Biglietto.*;
 import it.trenical.server.Cliente.Cliente;
-import it.trenical.server.Cliente.ClienteConcr;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
 import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoImpl;
 import it.trenical.server.Treno.TrenoImplDB;
+import it.trenical.server.igGenerator.CreatoreBiglietto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,6 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
     public void addBiglietto(it.trenical.grpc.AddBigliettoRequest request, StreamObserver<it.trenical.grpc.AddBigliettoResponse> responseObserver) {
         try {
             System.out.println("Biglietto ricevuto: " + request.getBiglietto());
-            System.out.println("Ciao");
             Biglietto bigliettoJava = convertiProtoInJava(request.getBiglietto());
             System.out.println("Biglietto convertito: " + bigliettoJava);
 

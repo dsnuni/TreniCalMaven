@@ -1,8 +1,8 @@
-package it.trenical.server.Tratta;
+package it.trenical.server.igGenerator;
 
+import it.trenical.server.Tratta.*;
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
-import it.trenical.server.igGenerator.IdGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

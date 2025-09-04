@@ -1,8 +1,7 @@
-package it.trenical.server.notifiche;
+package it.trenical.server.igGenerator;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -16,14 +15,13 @@ import java.util.concurrent.TimeUnit;
 import it.trenical.server.Biglietto.Biglietto;
 import it.trenical.server.Biglietto.BigliettoDB;
 import it.trenical.server.Cliente.Cliente;
-import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
-import it.trenical.server.Generatore;
 import it.trenical.server.Treno.Treno;
-import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Tratta.TrattaImplDB;
+import it.trenical.server.notifiche.Notifica;
+import it.trenical.server.notifiche.NotificaDB;
 
 public class AnalizzatoreTratte {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();

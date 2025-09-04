@@ -4,6 +4,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import it.trenical.server.Biglietto.BigliettoServiceImpl;
 import it.trenical.server.Cliente.ClienteServiceImpl;
+import it.trenical.server.igGenerator.Generatore;
 import it.trenical.server.notifiche.LogObserver;
 import it.trenical.server.Tratta.TrattaImplDB;
 import it.trenical.server.Tratta.TrattaServiceImpl;
@@ -11,7 +12,7 @@ import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.Treno.TrenoServiceImpl;
 import it.trenical.server.gui.AdminDashboardSwing;
 import it.trenical.server.igGenerator.IDGeneratorServiceImpl;
-import it.trenical.server.notifiche.AnalizzatoreTratte;
+import it.trenical.server.igGenerator.AnalizzatoreTratte;
 import it.trenical.server.notifiche.NotificaServiceImpl;
 
 
