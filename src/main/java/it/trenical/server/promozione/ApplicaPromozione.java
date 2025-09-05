@@ -26,9 +26,10 @@ public class ApplicaPromozione {
         List<Promozione> promozioniTreni = db.cercaPromozioniContenenti(trenoID);
         List<Promozione> promozioniTratte = db.cercaPromozioniContenenti(trattaID);
         List<Promozione> promozioniDataP = db.cercaPromozioniContenenti(dataP);
-
+System.out.println("Promozione appena presa:"+promozioniTreni.get(0).toString());
         if (haPromozioneValida(promozioniTreni, biglietto.getPrezzo())) {
             double sconto = promozioniTreni.get(0).getScontistica();
+            System.out.println(" Sconto appena preso "+sconto);
             return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
         } else if (haPromozioneValida(promozioniTratte, biglietto.getPrezzo())) {
             double sconto = promozioniTratte.get(0).getScontistica();
@@ -87,10 +88,12 @@ public class ApplicaPromozione {
     }
 
     private static double calcolaPrezzoScontato(double prezzoOriginale, double percentuale) {
-        return (prezzoOriginale / 100.0) * percentuale;
+        System.out.println("Sconto :");
+        System.out.println( prezzoOriginale * (1 - percentuale));
+            return prezzoOriginale * (1 - percentuale);
     }
 
-    // Overload per supportare tutte le classi concrete (se serve mantenere firme distinte)
+
     public static double Promozione(BPrimaClasse b) { return Promozione((Biglietto) b); }
     public static double Promozione(BSecondaClasse b) { return Promozione((Biglietto) b); }
     public static double Promozione(BTerzaClasse b) { return Promozione((Biglietto) b); }

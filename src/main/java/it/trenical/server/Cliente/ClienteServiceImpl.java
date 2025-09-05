@@ -8,6 +8,8 @@ import it.trenical.server.Cliente.ClienteConcr; // Cliente Java
 import it.trenical.server.Cliente.ClienteConcr;
 import it.trenical.server.Cliente.ClienteImplDB;
 
+import static it.trenical.server.igGenerator.Regex.*;
+
 public class ClienteServiceImpl extends it.trenical.grpc.ClienteServiceGrpc.ClienteServiceImplBase {
 
     private final ClienteImplDB db = ClienteImplDB.getInstance();
@@ -16,8 +18,15 @@ public class ClienteServiceImpl extends it.trenical.grpc.ClienteServiceGrpc.Clie
     public void addCliente(it.trenical.grpc.AddClienteRequest request, StreamObserver<it.trenical.grpc.AddClienteResponse> responseObserver) {
 
         ClienteConcr clienteJava = convertiProtoInJava(request.getCliente());
-
-        db.setCliente(clienteJava);
+        System.out.println("clienteJava: " + clienteJava);
+        if(validaCodiceFiscale(clienteJava.getCodiceFiscale())
+                && validaNome(clienteJava.getNome())
+                && validaCognome(clienteJava.getCognome())
+                && validaEmail(clienteJava.getEmail())) {
+            db.setCliente(clienteJava);
+        } else {
+            throw new IllegalArgumentException("Dati cliente non validi");
+        }
 
         it.trenical.grpc.AddClienteResponse response = it.trenical.grpc.AddClienteResponse.newBuilder()
                 .setSuccess(true)

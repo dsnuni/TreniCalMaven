@@ -16,11 +16,12 @@ public class ClienteTest {
     private final String nome = "Mario";
     private final String cognome = "Rossi";
     private final int età =23;
+    private final String email = "ciao@";
 
     @BeforeEach
     public void setup() {
         db = ClienteImplDB.getInstance();
-        cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,età);
+        cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,età,email);
         db.removeCliente(codiceFiscale); // pulizia preventiva
     }
 

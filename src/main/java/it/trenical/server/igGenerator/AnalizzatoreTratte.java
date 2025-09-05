@@ -82,7 +82,7 @@ public class AnalizzatoreTratte {
                 String messaggioRandom = new String[]{
                         "Gentile Cliente ci sono tante novità per lei, resti in attesa...",
                         "Gentile Cliente a breve introdurremo un sistema a punti, resti in attesa...",
-                        "Gentile Cliente la invitamo a controllare la sua mail per non perdere nessuna promozione."
+                        "Gentile Cliente la invitamo a controllare la sua email per non perdere nessuna promozione."
                 }[new Random().nextInt(3)];
 
                 Notifica nt = new Notifica(c.getCodiceFiscale(),

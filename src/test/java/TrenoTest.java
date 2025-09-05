@@ -1,5 +1,7 @@
 
 
+import it.trenical.server.Tratta.TrattaImpl;
+import it.trenical.server.Tratta.TrattaImplDB;
 import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Tratta.TrattaStandard;
 import it.trenical.server.Treno.*;
@@ -14,15 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class TrenoTest {
 
     private TrenoImpl db;
+    private TrattaImpl dbt;
     private TrenoConcr treno;
     private TrattaStandard tratta;
 
     @BeforeEach
     public void setup() {
         db = TrenoImplDB.getInstance();
+        dbt = TrattaImplDB.getInstance();
         db.removeTreno("T123");
         tratta = new TrattaStandard("TRT-8c3eae47", "Terni", "Bressanone", "12-06-2025 10:00", "12-06-2025 12:00 ", 468, 2);
-        treno = new TrenoConcr("T123", "FrecciaRossa", tratta, 100, 10, 40, 50, 100);
+        dbt.setTratta(tratta);
+        treno = new TrenoConcr("T123", "FrecciaRossa", tratta, 100, 10, 40, 50, 100, 1,"");
     }
 
     @Test
@@ -74,7 +79,9 @@ class TrenoTest {
                 new TrattaStandard("TRT-8c3eae47", "Roma", "Milano", "2025-06-15", "2025-06-15", 600, 2),
                 100,
                 50, 80, 100,
-                230
+                230,
+                2,
+                " "
         );
 
         db.setTreno(treno);

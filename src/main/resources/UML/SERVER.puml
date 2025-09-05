@@ -1,0 +1,520 @@
+@startuml TreniCalServerUML
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam packageStyle rectangle
+
+package "it.trenical.server" {
+
+    ' Main Server Class
+    class TreniCalServer {
+        +{static} main(args: String[]): void
+    }
+
+    ' Generator
+    class Generatore {
+        +{static} genera(numTreni: int, numTratte: int, numClienti: int, numBiglietti: int): void
+        -{static} generaCliente(num: int): void
+        -{static} generaTratta(numTratteTotali: int): void
+        -{static} generaTreno(numTratteTotali: int): void
+        -{static} generaBiglietto(numCLi: int, numTre: int): void
+        -{static} interoCasuale(max: int): int
+        -{static} dividiPosti(treno: TrenoConcr): TrenoConcr
+    }
+
+    package "Cliente" {
+        interface Cliente {
+            +getCodiceFiscale(): String
+            +getNome(): String
+            +getCognome(): String
+            +getCodiceCliente(): String
+            +getEtà(): int
+            +setEtà(età: int): void
+        }
+
+        interface ClienteImpl {
+            +setCliente(cliente: Cliente): void
+            +getCliente(codiceFiscale: String): Cliente
+            +removeCliente(codiceFiscale: String): boolean
+            +getByFiltro(colonna: String, valore: String): List<Cliente>
+            +getClienteByCodiceCLiente(codiceCL: String): Cliente
+        }
+
+        class ClienteConcr {
+            -codiceFiscale: String
+            -nome: String
+            -cognome: String
+            -codiceCliente: String
+            -età: int
+            +ClienteConcr(codiceFiscale: String, nome: String, cognome: String, codiceCliente: String, età: int)
+            +getCodiceFiscale(): String
+            +getNome(): String
+            +getCognome(): String
+            +getCodiceCliente(): String
+            +getEtà(): int
+            +setEtà(età: int): void
+            +toString(): String
+        }
+
+        class ClienteImplDB <<singleton>> {
+            -{static} instance: ClienteImplDB
+            -url: String
+            -adesso: LocalTime
+            -{static} formatter: DateTimeFormatter
+            +{static} getInstance(): ClienteImplDB
+            +setCliente(cliente: Cliente): void
+            +getCliente(codiceFiscale: String): Cliente
+            +removeCliente(codiceFiscale: String): boolean
+            +getByFiltro(colonna: String, valore: String): List<Cliente>
+            +getClienteByCodiceCLiente(codiceCL: String): Cliente
+            +{static} getClienteByRowIndex(index: int): ClienteConcr
+        }
+
+        class ClienteFactory {
+            -{static} impl: ClienteImpl
+            +ClienteFactory(impl: ClienteImpl)
+            +{static} getClienteByCodiceFiscale(codiceFiscale: String): Cliente
+        }
+
+        class ClienteServiceImpl {
+            -db: ClienteImplDB
+            +addCliente(request: AddClienteRequest, responseObserver: StreamObserver<AddClienteResponse>): void
+            +getCliente(request: GetClienteRequest, responseObserver: StreamObserver<Cliente>): void
+            +removeCliente(request: RemoveClienteRequest, responseObserver: StreamObserver<RemoveClienteResponse>): void
+            -convertiProtoInJava(proto: Cliente): ClienteConcr
+            -convertiJavaInProto(clienteJava: ClienteConcr): Cliente
+        }
+    }
+
+    package "Treno" {
+        interface Treno {
+            +getTrenoID(): String
+            +getTipoTreno(): String
+            +getTrattaTreno(): TrattaStandard
+            +getPrezzo(): int
+            +getPostiPrima(): int
+            +getPostiSeconda(): int
+            +getPostiTerza(): int
+            +getPostiTot(): int
+            +setPostiPrima(postiPrima: int): void
+            +setPostiSeconda(postiSeconda: int): void
+            +setPostiTerza(postiTerza: int): void
+            +setPostiTot(postiTot: int): void
+        }
+
+        interface TrenoImpl {
+            +getTreno(trenoID: String): Treno
+            +setTreno(treno: Treno): void
+            +removeTreno(trenoID: String): boolean
+            +getTrenoByFiltro(colonna: String, valore: String): List<Treno>
+            +getAllTreni(): List<Treno>
+            +getTrenoByTrattaID(trattaID: String): List<Treno>
+        }
+
+        class TrenoConcr {
+            -trenoID: String
+            -tipoTreno: String
+            -trattaTreno: TrattaStandard
+            -prezzo: int
+            -postiPrima: int
+            -postiSeconda: int
+            -postiTerza: int
+            -postiTot: int
+            +TrenoConcr(trenoID: String, tipoTreno: String, trattaTreno: TrattaStandard, prezzo: int, postiPrima: int, postiSeconda: int, postiTerza: int, postiTot: int)
+            +getTrenoID(): String
+            +getTipoTreno(): String
+            +getTrattaTreno(): TrattaStandard
+            +getPrezzo(): int
+            +getPostiPrima(): int
+            +getPostiSeconda(): int
+            +getPostiTerza(): int
+            +getPostiTot(): int
+            +setPostiPrima(postiPrima: int): void
+            +setPostiSeconda(postiSeconda: int): void
+            +setPostiTerza(postiTerza: int): void
+            +setPostiTot(postiTot: int): void
+            +toString(): String
+        }
+
+        class TrenoImplDB <<singleton>> {
+            -url: String
+            -{static} instance: TrenoImplDB
+            -adesso: LocalTime
+            -{static} formatter: DateTimeFormatter
+            -db: TrattaImpl
+            +{static} getInstance(): TrenoImplDB
+            +getTreno(trenoID: String): Treno
+            +setTreno(treno: Treno): void
+            +removeTreno(trenoID: String): boolean
+            +getTrenoByFiltro(colonna: String, valore: String): List<Treno>
+            +getAllTreni(): List<Treno>
+            +getTrenoByTrattaID(trattaID: String): List<Treno>
+            +{static} getTrenoByRowIndex(index: int): TrenoConcr
+        }
+
+        class TrenoFactory {
+            -{static} impl: TrenoImpl
+            +TrenoFactory(impl: TrenoImpl)
+            +{static} getTrenoByID(trenoID: String): Treno
+        }
+
+        class TrenoServiceImpl {
+            -db: TrenoImpl
+            -trattadb: TrattaImpl
+            +addTreno(request: AddTrenoRequest, responseObserver: StreamObserver<AddTrenoResponse>): void
+            +getTreno(request: GetTrenoRequest, responseObserver: StreamObserver<Treno>): void
+            +removeTreno(request: RemoveTrenoRequest, responseObserver: StreamObserver<RemoveTrenoResponse>): void
+            +getAllTreni(request: GetAllTreniRequest, responseObserver: StreamObserver<GetAllTreniResponse>): void
+            +getTreniByTrattaID(request: GetTreniByTrattaIDRequest, responseObserver: StreamObserver<GetTreniByTrattaIDResponse>): void
+            -convertiProtoInJava(proto: Treno): TrenoConcr
+            -convertiJavaInProto(trenoJava: TrenoConcr): Treno
+        }
+    }
+
+    package "Tratta" {
+        interface TrattaPrototype {
+            +getCodiceTratta(): String
+            +getStazionePartenza(): String
+            +getStazioneArrivo(): String
+            +getDataPartenza(): String
+            +getDataArrivo(): String
+            +getDistanza(): int
+            +getTempoPercorrenza(): int
+        }
+
+        interface TrattaImpl {
+            +getTratta(trattaID: String): TrattaStandard
+            +setTratta(tratta: TrattaPrototype): void
+            +removeTratta(trattaID: String): boolean
+            +getAllTratte(): List<TrattaStandard>
+        }
+
+        class TrattaStandard {
+            -codiceTratta: String
+            -stazionePartenza: String
+            -stazioneArrivo: String
+            -dataPartenza: String
+            -dataArrivo: String
+            -distanza: int
+            -tempoPercorrenza: int
+            +TrattaStandard(codiceTratta: String, stazionePartenza: String, stazioneArrivo: String, dataPartenza: String, dataArrivo: String, distanza: int, tempoPercorrenza: int)
+            +getCodiceTratta(): String
+            +getStazionePartenza(): String
+            +getStazioneArrivo(): String
+            +getDataPartenza(): String
+            +getDataArrivo(): String
+            +getDistanza(): int
+            +getTempoPercorrenza(): int
+            +toString(): String
+        }
+
+        class TrattaImplDB <<singleton>> {
+            -url: String
+            -{static} instance: TrattaImplDB
+            -adesso: LocalTime
+            -{static} formatter: DateTimeFormatter
+            +{static} getInstance(): TrattaImplDB
+            +getTratta(trattaID: String): TrattaStandard
+            +setTratta(tratta: TrattaPrototype): void
+            +removeTratta(trattaID: String): boolean
+            +getAllTratte(): List<TrattaStandard>
+            +{static} getTrattaByRowIndex(index: int): TrattaStandard
+        }
+
+        class TrattaServiceImpl {
+            -trattaImpl: TrattaImpl
+            +addTratta(request: AddTrattaRequest, responseObserver: StreamObserver<AddTrattaResponse>): void
+            +getTratta(request: GetTrattaRequest, responseObserver: StreamObserver<TrattaStandard>): void
+            +removeTratta(request: RemoveTrattaRequest, responseObserver: StreamObserver<RemoveTrattaResponse>): void
+            +getAllTratte(request: GetAllTratteRequest, responseObserver: StreamObserver<GetAllTratteResponse>): void
+            -convertiJavaInProto(trattaJava: TrattaPrototype): TrattaStandard
+            -convertiProtoInJava(trattaProto: TrattaStandard): TrattaPrototype
+        }
+    }
+
+    package "Biglietto" {
+        interface BigliettoImpl {
+            +setBiglietto(biglietto: Biglietto): void
+            +getBiglietto(bigliettoID: String): Biglietto
+            +removeBiglietto(bigliettoID: String): boolean
+            +getBigliettiByFiltro(colonna: String, valore: String): List<Biglietto>
+            +getBigliettiByTrenoID(trenoID: String): List<Biglietto>
+            +removeAll(): void
+        }
+
+        abstract class Biglietto {
+            #bigliettoID: String
+            #titolareBiglietto: Cliente
+            #trenoBiglietto: Treno
+            #carrozza: String
+            #posto: String
+            #priorità: List<String>
+            #prezzo: int
+            #implementazione: BigliettoImpl
+            #Biglietto(builder: Builder<?>)
+            +getBigliettoID(): String
+            +getTitolareBiglietto(): Cliente
+            +getTrenoBiglietto(): Treno
+            +getCarrozza(): String
+            +getPosto(): String
+            +getPriorità(): List<String>
+            +getPrezzo(): int
+            +getImplementazione(): BigliettoImpl
+            +getBiglietto(Codice: String): Biglietto
+            +setBiglietto(): void
+            +removeBiglietto(Codice: String): boolean
+            +toString(): String
+            +equals(o: Object): boolean
+            +hashCode(): int
+            +{static} clonaConPrezzo(originale: Biglietto, nuovoPrezzo: int): Biglietto
+        }
+
+        abstract class "Biglietto.Builder<T>" as BigliettoBuilder {
+            #bigliettoID: String
+            #titolareBiglietto: Cliente
+            #trenoBiglietto: Treno
+            #carrozza: String
+            #posto: String
+            #priorità: List<String>
+            #prezzo: int
+            #implementazione: BigliettoImpl
+            +bigliettoID(bigliettoID: String): T
+            +titolareBiglietto(titolareBiglietto: Cliente): T
+            +trenoBiglietto(trenoBiglietto: Treno): T
+            +carrozza(carrozza: String): T
+            +posto(posto: String): T
+            +priorità(priorità: List<String>): T
+            +prezzo(prezzo: int): T
+            +implementazione(implementazione: BigliettoImpl): T
+            #{abstract} self(): T
+            +{abstract} build(): Biglietto
+        }
+
+        class BPrimaClasse {
+            -BPrimaClasse(builder: Builder)
+        }
+
+        class "BPrimaClasse.Builder" as BPrimaClasseBuilder {
+            #self(): Builder
+            +build(): BPrimaClasse
+        }
+
+        class BSecondaClasse {
+            -BSecondaClasse(builder: Builder)
+        }
+
+        class "BSecondaClasse.Builder" as BSecondaClasseBuilder {
+            #self(): Builder
+            +build(): BSecondaClasse
+        }
+
+        class BTerzaClasse {
+            -BTerzaClasse(builder: Builder)
+        }
+
+        class "BTerzaClasse.Builder" as BTerzaClasseBuilder {
+            #self(): Builder
+            +build(): BTerzaClasse
+        }
+
+        class BigliettoDB <<singleton>> {
+            -DB_URL: String
+            -{static} instance: BigliettoDB
+            +{static} getInstance(): BigliettoDB
+            +setBiglietto(biglietto: Biglietto): void
+            +getBiglietto(bigliettoID: String): Biglietto
+            +removeBiglietto(bigliettoID: String): boolean
+            +getBigliettiByFiltro(colonna: String, valore: String): List<Biglietto>
+            +getBigliettiByTrenoID(trenoID: String): List<Biglietto>
+            +removeAll(): void
+        }
+
+        class BigliettoServiceImpl {
+            -db: BigliettoImpl
+            -trenoDB: TrenoImpl
+            -clienteDB: ClienteImpl
+            +addBiglietto(request: AddBigliettoRequest, responseObserver: StreamObserver<AddBigliettoResponse>): void
+            +getBiglietto(request: GetBigliettoRequest, responseObserver: StreamObserver<Biglietto>): void
+            +removeBiglietto(request: RemoveBigliettoRequest, responseObserver: StreamObserver<RemoveBigliettoResponse>): void
+            +getBigliettiByFiltro(request: GetBigliettiByFiltroRequest, responseObserver: StreamObserver<GetBigliettiByFiltroResponse>): void
+            +creaBiglietto(request: CreaBigliettoRequest, responseObserver: StreamObserver<CreaBigliettoResponse>): void
+            -convertiProtoInJava(proto: Biglietto): Biglietto
+            -convertiJavaInProto(java: Biglietto): Biglietto
+        }
+    }
+
+    package "notifiche" {
+        interface Subject {
+            +addObserver(observer: Observer): void
+            +removeObserver(observer: Observer): void
+            +notifyObservers(message: String[]): void
+        }
+
+        interface Observer {
+            +update(messaggio: String[]): void
+        }
+
+        abstract class Observable {
+            -observers: List<Observer>
+            +addObserver(observer: Observer): void
+            +removeObserver(observer: Observer): void
+            +notifyObservers(message: String[]): void
+        }
+
+        class LogObserver {
+            -loggerName: String
+            -{static} adesso: LocalTime
+            -formatter: DateTimeFormatter
+            +LogObserver(name: String)
+            +update(message: String[]): void
+            -{static} inizaTRT(s: String): boolean
+        }
+
+        class Notifica {
+            -cliente: String
+            -treno: String
+            -partenza: String
+            -arrivo: String
+            -tempo: int
+            -biglietto: String
+            -stato: String
+            -posto: String
+            -binario: int
+            -log: String
+            +Notifica(cliente: String, treno: String, partenza: String, arrivo: String, tempo: int, biglietto: String, stato: String, posto: String, binario: int, log: String)
+            +getCliente(): String
+            +getTreno(): String
+            +getPartenza(): String
+            +getArrivo(): String
+            +getTempo(): int
+            +getBiglietto(): String
+            +getStato(): String
+            +getPosto(): String
+            +getBinario(): int
+            +getLog(): String
+        }
+
+        class NotificaDB <<singleton>> {
+            -DB_URL: String
+            -{static} instance: NotificaDB
+            +{static} getInstance(): NotificaDB
+            +setNotifica(notifica: Notifica): void
+            +getNotifica(cliente: String): List<Notifica>
+            +removeNotifica(cliente: String): boolean
+        }
+
+        class NotificaServiceImpl {
+            +getNotifica(request: GetNotificaRequest, responseObserver: StreamObserver<GetNotificaResponse>): void
+            -convertiJavaInProto(n: Notifica): Notifica
+        }
+
+        class AnalizzatoreTratte {
+            -scheduler: ScheduledExecutorService
+            -formatter: DateTimeFormatter
+            +avviaControlloPeriodico(): void
+            +controllaTratte(): void
+            +estraiInformazioniTratte(): void
+            +notificheClientiFidelizzati(): void
+            +rimuoviTratteObsolete(): void
+            -{static} isDataFutura(data: String): boolean
+            -{static} isOggi(data: String): boolean
+            -{static} converti(s: String): String[]
+        }
+    }
+
+    package "igGenerator" {
+        class IdGenerator {
+            -{static} trenoCounter: AtomicInteger
+            -{static} bigliettoCounter: AtomicInteger
+            -{static} adesso: LocalTime
+            -{static} formatter: DateTimeFormatter
+            +{static} generaClienteID(): String
+            +{static} generaCodiceCliente(fidelizzato: boolean): String
+            +{static} generaCodiceFiscale(nome: String, cognome: String, eta: int): String
+            +{static} generaBigliettoID(): String
+            +{static} generaTrenoID(): String
+            +{static} generaTrattaID(): String
+            +{static} generaTipoTreno(): String
+            +{static} generaNome(): String
+            +{static} generaCognome(): String
+            +{static} generaStazione(): String
+            +{static} generaData(): String
+            +{static} generaOra(): String
+            -{static} estraiTreLettere(str: String): String
+            -{static} calcolaCheckDigit(cf: String): char
+        }
+
+        class IDGeneratorServiceImpl {
+            +getGeneratedID(request: GetGeneratedIDRequest, responseObserver: StreamObserver<GetGeneratedIDResponse>): void
+        }
+    }
+
+    package "gui" {
+        class AdminDashboardSwing {
+            -model: DefaultTableModel
+            -modelBiglietti: DefaultTableModel
+            -channel: ManagedChannel
+            +AdminDashboardSwing()
+            +setVisible(visible: boolean): void
+            -{static} caricaDatiDaDB(model: DefaultTableModel, channel: ManagedChannel): void
+            -{static} caricaBigliettiDaDB(model: DefaultTableModel, channel: ManagedChannel): void
+        }
+    }
+}
+
+' Relationships - Inheritance
+ClienteConcr ..|> Cliente
+ClienteImplDB ..|> ClienteImpl
+TrenoConcr ..|> Treno
+TrenoImplDB ..|> TrenoImpl
+TrattaStandard ..|> TrattaPrototype
+TrattaImplDB ..|> TrattaImpl
+BigliettoDB ..|> BigliettoImpl
+BPrimaClasse --|> Biglietto
+BSecondaClasse --|> Biglietto
+BTerzaClasse --|> Biglietto
+BPrimaClasseBuilder --|> BigliettoBuilder
+BSecondaClasseBuilder --|> BigliettoBuilder
+BTerzaClasseBuilder --|> BigliettoBuilder
+Observable ..|> Subject
+LogObserver ..|> Observer
+TrenoImplDB --|> Observable
+TrattaImplDB --|> Observable
+BigliettoDB --|> Observable
+
+' Relationships - Dependencies
+TreniCalServer ..> TrenoImplDB : creates
+TreniCalServer ..> TrattaImplDB : creates
+TreniCalServer ..> LogObserver : creates
+TreniCalServer ..> AnalizzatoreTratte : creates
+TreniCalServer ..> Generatore : calls
+TreniCalServer ..> AdminDashboardSwing : creates
+
+ClienteServiceImpl o-- ClienteImplDB : uses
+TrenoServiceImpl o-- TrenoImplDB : uses
+TrenoServiceImpl o-- TrattaImplDB : uses
+TrattaServiceImpl o-- TrattaImplDB : uses
+BigliettoServiceImpl o-- BigliettoDB : uses
+BigliettoServiceImpl o-- TrenoImplDB : uses
+BigliettoServiceImpl o-- ClienteImplDB : uses
+NotificaServiceImpl o-- NotificaDB : uses
+
+Biglietto o-- Cliente : has
+Biglietto o-- Treno : has
+TrenoConcr o-- TrattaStandard : has
+
+AnalizzatoreTratte ..> TrenoImplDB : uses
+AnalizzatoreTratte ..> TrattaImplDB : uses
+AnalizzatoreTratte ..> BigliettoDB : uses
+AnalizzatoreTratte ..> ClienteImplDB : uses
+AnalizzatoreTratte ..> NotificaDB : uses
+
+ClienteFactory ..> ClienteImplDB : uses
+TrenoFactory ..> TrenoImplDB : uses
+
+BPrimaClasse +-- BPrimaClasseBuilder : inner class
+BSecondaClasse +-- BSecondaClasseBuilder : inner class
+BTerzaClasse +-- BTerzaClasseBuilder : inner class
+
+@enduml

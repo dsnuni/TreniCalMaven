@@ -106,5 +106,18 @@ public class Promozione {
         return almenoUnoSettato && this.prezzoPartenza > 0 && this.scontistica > 0.0;
     }
 
+    @Override
+    public String toString() {
+        return "Promozione{" +
+                "clientiFedelta=" + clientiFedelta +
+                ", promozioneID='" + promozioneID + '\'' +
+                ", treno=" + treno +
+                ", tratta=" + tratta +
+                ", dataPartenza='" + dataPartenza + '\'' +
+                ", dataFine='" + dataFine + '\'' +
+                ", prezzoPartenza=" + prezzoPartenza +
+                ", scontistica=" + scontistica +
+                '}';
     }
+}
 

@@ -63,6 +63,20 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
             return false;
         }
     }
+    public boolean removePromozionePID(String promozioneID) {
+        String sql = "DELETE FROM Promozione WHERE promozioneID = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, promozioneID);
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Errore rimozione promozione: " + e.getMessage());
+            return false;
+        }
+    }
     public Promozione getPromozione(String promozioneID) {
         String sql = "SELECT * FROM Promozione WHERE trenoID = ?";
         Promozione pr = null;
@@ -77,7 +91,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
                 String dataFine = rs.getString("dataFine");
                 boolean clientiFedelta = rs.getBoolean("clientiFedelta");
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
-                double scontistica = rs.getDouble("scontistica");
+                float scontistica = rs.getFloat("scontistica");
 
                 TrattaPrototype trt = trdb.getTratta(trattaID);
                 Treno trn = tdb.getTreno(trenoID);
@@ -117,7 +131,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
                 String dataFine = rs.getString("dataFine");
                 boolean clientiFedelta = rs.getBoolean("clientiFedelta");
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
-                double scontistica = rs.getDouble("scontistica");
+                float scontistica = rs.getFloat("scontistica");
 
                 TrattaPrototype trt = trdb.getTratta(trattaID);
                 Treno trn = tdb.getTreno(trenoID);
@@ -158,7 +172,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
                 String trenoID = rs.getString("trenoID");
                 Boolean clientiFedelta = rs.getBoolean("clientiFedelta");
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
-                int scontistica = rs.getInt("scontistica");
+                float scontistica = rs.getFloat("scontistica");
 
                 // Controllo se uno dei campi contiene la chiave (case-sensitive)
                 if ((promozioneID != null && promozioneID.contains(chiave)) ||
@@ -208,7 +222,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
                 String dataFine = rs.getString("dataFine");
                 Boolean clientiFedelta = rs.getBoolean("clientiFedelta");
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
-                int scontistica = rs.getInt("scontistica");
+                float scontistica = rs.getFloat("scontistica");
 
                 TrattaPrototype tratta = dbtrt.getTratta(trattaID);
                 Treno treno = dbtrn.getTreno(trenoID);
@@ -254,7 +268,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
                 String dataFine = rs.getString("dataFine");
                 Boolean clientiFedelta = rs.getBoolean("clientiFedelta");
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
-                int scontistica = rs.getInt("scontistica");
+                float scontistica = rs.getFloat("scontistica");
 
                 TrattaPrototype tratta = dbtrt.getTratta(trattaID);
                 Treno treno = dbtrn.getTreno(trenoID);

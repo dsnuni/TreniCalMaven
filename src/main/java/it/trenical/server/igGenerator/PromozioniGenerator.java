@@ -1,10 +1,9 @@
-package it.trenical.server.Biglietto;
+package it.trenical.server.igGenerator;
 
 import it.trenical.server.Treno.TrenoConcr;
 import it.trenical.server.Treno.TrenoImplDB;
 import it.trenical.server.Tratta.*;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Random;
 

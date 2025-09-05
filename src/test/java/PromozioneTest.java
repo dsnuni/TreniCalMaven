@@ -9,7 +9,7 @@ public class PromozioneTest {
 
     public static void main(String[] args) {
         TrattaStandard tratta = new TrattaStandard("TRT-8c3eae47", "Terni", "Bressanone", "12-06-2025 10:00", "12-06-2025 12:00 ", 468, 2);
-        TrenoConcr treno = new TrenoConcr(IdGenerator.generaTrenoID(),IdGenerator.generaTipoTreno(), tratta,100,0,0,0,0);
+        TrenoConcr treno = new TrenoConcr(IdGenerator.generaTrenoID(),IdGenerator.generaTipoTreno(), tratta,100,0,0,0,0,0,"");
 
 
         // Creo la Promozione con il Builder

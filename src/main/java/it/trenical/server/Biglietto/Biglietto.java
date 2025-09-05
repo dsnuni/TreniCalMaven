@@ -142,6 +142,8 @@ public abstract class Biglietto {
     }
 
     public static Biglietto clonaConPrezzo(Biglietto originale, int nuovoPrezzo) {
+        System.out.println("Prezzo da scontare :");
+        System.out.println(originale.getPrezzo()-nuovoPrezzo);
         if (originale instanceof BPrimaClasse) {
             return new BPrimaClasse.Builder()
                     .bigliettoID(originale.getBigliettoID())
@@ -150,7 +152,7 @@ public abstract class Biglietto {
                     .carrozza(originale.getCarrozza())
                     .posto(originale.getPosto())
                     .priorità(originale.getPriorità())
-                    .prezzo(nuovoPrezzo)
+                    .prezzo(originale.getPrezzo()-nuovoPrezzo)
                     .implementazione(BigliettoDB.getInstance())
                     .build();
         } else if (originale instanceof BSecondaClasse) {

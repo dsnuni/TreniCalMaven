@@ -88,7 +88,9 @@ public class ClientDashboardSwing extends JFrame {
             case "Biglietto":
                 // Layout a divisione orizzontale (cliente | biglietti)
                 JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-                splitPane.setResizeWeight(0.3);
+                splitPane.setResizeWeight(0.5);
+                splitPane.setDividerLocation(0.5);
+                splitPane.setOneTouchExpandable(true);
                 JPanel buttonPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
                 JButton refreshButton = new JButton("Refresh "+tabellaNome);
                 JButton modificaBigliettoButton = new JButton("Modifica "+tabellaNome);
@@ -161,7 +163,7 @@ public class ClientDashboardSwing extends JFrame {
                 splitPane.setRightComponent(bigliettiPanel);
 
                 panel.setLayout(new BorderLayout());
-                panel.setBackground(sfondoPannelli); // sfondo più chiaro per contrasto
+                panel.setBackground(sfondoPannelli);
                 panel.setOpaque(true);
                 panel.add(splitPane, BorderLayout.CENTER);
 
@@ -303,19 +305,19 @@ public class ClientDashboardSwing extends JFrame {
         clientePanel.add(cognomeField);
 
         clientePanel.add(new JLabel("Età:"));
-        JTextField etaField = new JTextField(5);
+        JTextField etaField = new JTextField(20);
         clientePanel.add(etaField);
 
         clientePanel.add(new JLabel("email:"));
         JTextField emailField = new JTextField(20);
-        clientePanel.add(cognomeField);
+        clientePanel.add(emailField);
 
         clientePanel.add(new JLabel("Cliente fedeltà:"));
         JCheckBox fedeltaBox = new JCheckBox();
         clientePanel.add(fedeltaBox);
 
         JButton submitButton = new JButton("Submit");
-        clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+        clientePanel.add(new JLabel());
         clientePanel.add(submitButton);
         clientePanel.revalidate();
 
@@ -346,6 +348,7 @@ public class ClientDashboardSwing extends JFrame {
                             .setCognome(cognome)
                             .setCodiceCliente(responseID.getCodiceCliente())
                             .setEta(Integer.parseInt(etaStr))
+                            .setEmail(email)
                             .build();
 
 
@@ -374,39 +377,44 @@ public class ClientDashboardSwing extends JFrame {
     return clientePanel;
 }
     private static JPanel panelloClienteRegistrato(ManagedChannel channel, JPanel clientePanel) {
+        clientePanel.removeAll();
+        clientePanel.setLayout(new BorderLayout());
 
-            clientePanel.removeAll(); // pulizia per refresh
-            clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
-            clientePanel.setMaximumSize(new Dimension(400, 220));
+        JPanel datiPanel = new JPanel();
+        datiPanel.setLayout(new BoxLayout(datiPanel, BoxLayout.Y_AXIS));
+        datiPanel.setBorder(BorderFactory.createTitledBorder("Dati Cliente"));
 
+        datiPanel.add(createInfoRow("Codice Fiscale:", cliente.getCodiceFiscale()));
+        datiPanel.add(createInfoRow("Nome:", cliente.getNome()));
+        datiPanel.add(createInfoRow("Cognome:", cliente.getCognome()));
+        datiPanel.add(createInfoRow("Codice Cliente:", cliente.getCodiceCliente()));
+        datiPanel.add(createInfoRow("Età:", String.valueOf(cliente.getEta())));
+        datiPanel.add(createInfoRow("Email:", cliente.getEmail()));
 
-            clientePanel.add(new JLabel("Codice Fiscale:"));
-            clientePanel.add(new JLabel(cliente.getCodiceFiscale()));
+        String fedelta = cliente.getCodiceCliente().startsWith("FTRCL") ? "SI" : "NO";
+        datiPanel.add(createInfoRow("Fedeltà:", fedelta));
 
-            clientePanel.add(new JLabel("Nome:"));
-            clientePanel.add(new JLabel(cliente.getNome()));
-
-            clientePanel.add(new JLabel("Cognome:"));
-            clientePanel.add(new JLabel(cliente.getCognome()));
-
-            clientePanel.add(new JLabel("Codice Cliente:"));
-            clientePanel.add(new JLabel(cliente.getCodiceCliente()));
-
-            clientePanel.add(new JLabel("Età:"));
-            clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
-
-            clientePanel.add(new JLabel("Email:"));
-            clientePanel.add(new JLabel(cliente.getEmail()));
-
-            clientePanel.add(new JLabel("Fedelta:"));
-            if(cliente.getCodiceCliente().startsWith("FTRCL")) {
-                clientePanel.add(new JLabel("SI"));
-            } else {
-                clientePanel.add(new JLabel("NO"));
-            }
+        clientePanel.add(datiPanel, BorderLayout.NORTH);
 
         return clientePanel;
-        }
+    }
+
+    private static JPanel createInfoRow(String label, String value) {
+        JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        row.setMaximumSize(new Dimension(400, 30));
+
+        JLabel labelComponent = new JLabel(label);
+        labelComponent.setPreferredSize(new Dimension(120, 25));
+        labelComponent.setFont(labelComponent.getFont().deriveFont(Font.BOLD));
+
+        JLabel valueComponent = new JLabel(value);
+        valueComponent.setPreferredSize(new Dimension(200, 25));
+
+        row.add(labelComponent);
+        row.add(valueComponent);
+
+        return row;
+    }
     private static void acquistaBiglietto(Object id, ManagedChannel channel) {
 
         if (!registrato) {
@@ -1107,7 +1115,7 @@ public class ClientDashboardSwing extends JFrame {
         dialog.add(new JLabel("CVV:"));
         dialog.add(campoCVV);
 
-        dialog.add(new JLabel("Scadenza (MMYY):"));
+        dialog.add(new JLabel("Scadenza (MM/YY):"));
         dialog.add(campoScadenza);
 
         dialog.add(new JLabel("Circuito (Visa/Mastercard):"));
@@ -1121,9 +1129,9 @@ public class ClientDashboardSwing extends JFrame {
 
         conferma.addActionListener(e -> {
             try {
-                int codiceCarta = Integer.parseInt(campoCarta.getText());
+                String codiceCarta = campoCarta.getText();
                 int cvv = Integer.parseInt(campoCVV.getText());
-                int scadenza = Integer.parseInt(campoScadenza.getText());
+                String scadenza = campoScadenza.getText();
                 String circuito = campoCircuito.getText();
                 String titolare = campoTitolare.getText();
 
