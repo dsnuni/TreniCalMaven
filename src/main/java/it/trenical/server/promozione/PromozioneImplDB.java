@@ -114,7 +114,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
         return pr;
     }
 
-    // Esempio di recupero
+
     public List<Promozione> getAllPromozioni() {
         List<Promozione> list = new ArrayList<>();
         String sql = "SELECT * FROM Promozione";
@@ -174,7 +174,6 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
                 float scontistica = rs.getFloat("scontistica");
 
-                // Controllo se uno dei campi contiene la chiave (case-sensitive)
                 if ((promozioneID != null && promozioneID.contains(chiave)) ||
                         (dataPartenza != null && dataPartenza.contains(chiave)) ||
                         (dataFine != null && dataFine.contains(chiave)) ||

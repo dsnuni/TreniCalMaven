@@ -143,7 +143,7 @@ public class GeneratorConcr implements Generator {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c; // distanza in chilometri
+        return R * c;
     }
 
     private void setDPartenza() {
@@ -171,7 +171,7 @@ public class GeneratorConcr implements Generator {
 
     private int tempoPercorrenza() {
         this.tempoPercorrenza=distanza/180;
-        return (distanza/ 180); //  tempo di percorrenza medio in ore
+        return (distanza/ 180);
     }
 
     public static boolean verificaOra(String orarioPartenza, int durataOre) {
@@ -213,9 +213,9 @@ public class GeneratorConcr implements Generator {
     }
 */
     private static String[] creaRangeDate(int giorni) {
-        int totaleGiorni = 10; // 3 giorni prima + oggi + giorni futuri
+        int totaleGiorni = 10;
         String[] date = new String[totaleGiorni];
-        LocalDate oggi = LocalDate.now().minusDays(0); // parte da 3 giorni fa
+        LocalDate oggi = LocalDate.now().minusDays(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         for (int i = 0; i < totaleGiorni; i++) {

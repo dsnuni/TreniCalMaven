@@ -58,7 +58,7 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
                 int eta = rs.getInt("eta");
                 String email = rs.getString("email");
 
-                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,eta,email); // o CSecondaClasse, etc.
+                cliente = new ClienteConcr(codiceFiscale, nome, cognome, codiceCliente,eta,email);
                 (cliente).setEtà(eta);
             }
 
@@ -97,14 +97,21 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
     public List<Cliente> getByFiltro(String colonna, String valore) {
         List<Cliente> clienti = new ArrayList<>();
         String sql;
-        if (colonna == null && valore== null) {
+
+        if (colonna == null && valore == null) {
             sql = "SELECT * FROM Cliente";
         } else {
             sql = "SELECT * FROM Cliente WHERE " + colonna + " = ?";
         }
+
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, valore);
+
+
+            if (colonna != null && valore != null) {
+                stmt.setString(1, valore);
+            }
+
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 clienti.add(new ClienteConcr(
@@ -145,7 +152,7 @@ public class ClienteImplDB extends Observable implements ClienteImpl {
     }
 
     public static ClienteConcr getClienteByRowIndex(int index) {
-        String DB_URL = "jdbc:sqlite:db/treniCal.db"; // aggiorna se il path è diverso
+        String DB_URL = "jdbc:sqlite:db/treniCal.db";
         String sql = "SELECT * FROM Cliente LIMIT 1 OFFSET ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);

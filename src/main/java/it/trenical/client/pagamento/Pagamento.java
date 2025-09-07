@@ -8,7 +8,7 @@ public class Pagamento {
         try {
             return validaNumeroCarta(String.valueOf(codiceCarta)) &&
                     validaCVV(String.valueOf(cvv)) &&
-                    validaScadenza(scadenza) &&
+
                     circuito != null && !circuito.trim().isEmpty() &&
                     titolare != null && !titolare.trim().isEmpty();
         } catch (Exception e) {

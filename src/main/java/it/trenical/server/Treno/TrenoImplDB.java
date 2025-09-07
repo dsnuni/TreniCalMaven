@@ -92,12 +92,15 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             stmt.setString(11, tr.getPromozione());
 
             stmt.executeUpdate();
-            if(isUpdate){
-                System.out.println("Treno appena modificato "+tr.getTrenoID()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
-            } else {
-                System.out.println("Treno appena aggiunto "+tr.getTrenoID()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
-            }
-            // NOTIFICA GLI OBSERVER
+
+            boolean shouldNotify = !isUpdate || confrontaTreni(tr);
+
+            if (shouldNotify) {
+                if (!isUpdate) {
+                    System.out.println("Treno appena aggiunto " + tr.getTrenoID() + " BOOLEANO <" + isUpdate + "> " + " LOG <" + adesso.format(formatter) + ">");
+                } else {
+                    System.out.println("Treno appena modificato " + tr.getTrenoID() + " BOOLEANO <" + isUpdate + "> " + " LOG <" + adesso.format(formatter) + ">");
+                }
 
                 String[] notificationData = {
                         isUpdate ? "MODIFICATO" : "AGGIUNTO",
@@ -110,11 +113,15 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                         String.valueOf(tr.getTempoPercorrenza())
                 };
                 notifyObservers(notificationData);
+            } else {
+                System.out.println("Modifica posti treno " + tr.getTrenoID() + " - notifica soppressa LOG <" + adesso.format(formatter) + ">");
+            }
+
         } catch (SQLException e) {
             System.err.println("Errore salvataggio treno: " + e.getMessage());
-
         }
     }
+
 
     @Override
     public boolean removeTreno(String trenoID) {
@@ -368,7 +375,6 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             while (rs.next()) {
                 String trenoID = rs.getString("trenoID");
 
-                // Usa il metodo esistente per eliminare il treno
                 boolean successo = removeTreno(trenoID);
                 if (successo) {
                     treniEliminati.add(trenoID);
@@ -382,6 +388,22 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         return treniEliminati;
     }
 
+    private boolean confrontaTreni(Treno treno1) {
+        try {
+            Treno treno2 = getTreno(treno1.getTrenoID());
+            if (treno2 == null) {
+                return false;
+            }
 
+            return treno1.getTrenoID() == treno2.getTrenoID() && treno1.getPostiPrima() == treno2.getPostiPrima() &&
+                    treno1.getPostiSeconda() == treno2.getPostiSeconda() &&
+                    treno1.getPostiTerza() == treno2.getPostiTerza() &&
+                    treno1.getPostiTot() == treno2.getPostiTot();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

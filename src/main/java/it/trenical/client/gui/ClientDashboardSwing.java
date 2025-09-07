@@ -76,7 +76,6 @@ public class ClientDashboardSwing extends JFrame {
                     int row = table.getSelectedRow();
 
                     if (row != -1) {
-                        // Recupera il modello e i dati dalla riga selezionata
                         Object id = table.getValueAt(row, 0);
                         System.out.println("Primo campo della riga selezionata: " + id.toString());
                         acquistaBiglietto(id,channel);
@@ -86,7 +85,7 @@ public class ClientDashboardSwing extends JFrame {
                 break;
 
             case "Biglietto":
-                // Layout a divisione orizzontale (cliente | biglietti)
+                // Layout a divisione cliente e bigltti
                 JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
                 splitPane.setResizeWeight(0.5);
                 splitPane.setDividerLocation(0.5);
@@ -96,11 +95,11 @@ public class ClientDashboardSwing extends JFrame {
                 JButton modificaBigliettoButton = new JButton("Modifica "+tabellaNome);
                 buttonPanel2.add(modificaBigliettoButton);
                 buttonPanel2.add(refreshButton);
-                // Colori personalizzati
+
                 Color sfondoPrincipale = panel.getBackground();
 
-                Color sfondoPannelli = new Color(255, 255, 255); // grigio chiaro per il pannello principale
-                Color sfondoScuro = new Color(255, 255, 255);    // un po' più scuro per i pannelli interni
+                Color sfondoPannelli = new Color(255, 255, 255);
+                Color sfondoScuro = new Color(255, 255, 255);
 
                 // Pannello Cliente
                 JPanel clientePanel = new JPanel();
@@ -133,7 +132,7 @@ public class ClientDashboardSwing extends JFrame {
             });
 
                 modificaBigliettoButton.addActionListener(e -> {
-                    int row = bigliettiTable.getSelectedRow(); // ✅ tabella corretta
+                    int row = bigliettiTable.getSelectedRow();
                     System.out.println("Modifica " + row);
 
                     if (row == -1) {
@@ -158,7 +157,6 @@ public class ClientDashboardSwing extends JFrame {
                     dialog2.setVisible(true);
                 });
 
-                // Assemblo i due pannelli
                 splitPane.setLeftComponent(clientePanel);
                 splitPane.setRightComponent(bigliettiPanel);
 
@@ -177,8 +175,8 @@ public class ClientDashboardSwing extends JFrame {
 
         BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoStub = BigliettoServiceGrpc.newBlockingStub(channel);
         GetBigliettiByFiltroRequest request = GetBigliettiByFiltroRequest.newBuilder()
-                .setColonna("cliente_id")  // esempio: "dataPartenza", "trenoID", "codiceCliente", ecc.
-                .setValore(cliente.getCodiceFiscale())           // il valore da cercare
+                .setColonna("cliente_id")
+                .setValore(cliente.getCodiceFiscale())
                 .build();
         GetBigliettiByFiltroResponse response = bigliettoStub.getBigliettiByFiltro(request);
         List<Biglietto> biglietti = response.getBigliettiList();
@@ -204,13 +202,13 @@ public class ClientDashboardSwing extends JFrame {
     }
     private static JPanel ingresso(JPanel panel, ManagedChannel channel,JTabbedPane tabs) {
         JPanel clientePanel  = new JPanel();
-        clientePanel.removeAll(); // pulizia per refresh
-        clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
+        clientePanel.removeAll();
+        clientePanel.setLayout(new GridLayout(7, 2, 5, 5));
         clientePanel.setMaximumSize(new Dimension(400, 220));
         //clientePanel.setBackground(new Color(180, 180, 180));
         JButton accessButton = new JButton("Accedi");
         JButton registratoButton = new JButton("Registrati");
-        clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+        clientePanel.add(new JLabel());
         clientePanel.add(registratoButton);
         clientePanel.add(accessButton);
         clientePanel.revalidate();
@@ -232,8 +230,8 @@ public class ClientDashboardSwing extends JFrame {
     }
     private static JPanel pannelloAccesso(JTabbedPane tabs, ManagedChannel channel) {
         JPanel clientePanel  = new JPanel();
-        clientePanel.removeAll(); // pulizia per refresh
-        clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
+        clientePanel.removeAll();
+        clientePanel.setLayout(new GridLayout(7, 2, 5, 5));
         clientePanel.setMaximumSize(new Dimension(400, 220));
         //clientePanel.setBackground(new Color(255, 255, 255));
 
@@ -242,7 +240,7 @@ public class ClientDashboardSwing extends JFrame {
         clientePanel.add(codiceFiscaleField);
 
         JButton submitButton = new JButton("Accedi");
-        clientePanel.add(new JLabel()); // spazio vuoto per allineamento
+        clientePanel.add(new JLabel());
         clientePanel.add(submitButton);
         clientePanel.revalidate();
 
@@ -256,7 +254,7 @@ public class ClientDashboardSwing extends JFrame {
             cliente = clienteGrpc;
             System.out.println("Il cliente che ha appena fatto l'accesso "+cliente);
 
-            clientePanel.removeAll(); // pulizia per refresh
+            clientePanel.removeAll();
             clientePanel.setLayout(new GridLayout(6, 2, 5, 5));
             clientePanel.setMaximumSize(new Dimension(400, 220));
            // clientePanel.setBackground(new Color(180, 180, 180));
@@ -286,8 +284,8 @@ public class ClientDashboardSwing extends JFrame {
     }
     private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel) {
     JPanel clientePanel  = new JPanel();
-    clientePanel.removeAll(); // pulizia per refresh
-    clientePanel.setLayout(new GridLayout(7, 2, 5, 5)); // aumentato da 6 a 7
+    clientePanel.removeAll();
+    clientePanel.setLayout(new GridLayout(7, 2, 5, 5));
     clientePanel.setMaximumSize(new Dimension(400, 220));
     //clientePanel.setBackground(new Color(180, 180, 180));
 
@@ -398,7 +396,6 @@ public class ClientDashboardSwing extends JFrame {
 
         return clientePanel;
     }
-
     private static JPanel createInfoRow(String label, String value) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
         row.setMaximumSize(new Dimension(400, 30));
@@ -501,7 +498,7 @@ public class ClientDashboardSwing extends JFrame {
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(new BorderLayout());
 
-        // Stub per treno
+
         TrenoServiceGrpc.TrenoServiceBlockingStub trenoStub = TrenoServiceGrpc.newBlockingStub(channel);
         GetTrenoRequest request = GetTrenoRequest.newBuilder().setTrenoID(trenoID).build();
         Treno treno = trenoStub.getTreno(request);
@@ -528,7 +525,6 @@ public class ClientDashboardSwing extends JFrame {
         else
             classiDisponibili = new String[0];
 
-        // Pannello centrale
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
@@ -553,7 +549,6 @@ public class ClientDashboardSwing extends JFrame {
         centerPanel.add(prioritaLabel);
         centerPanel.add(prioritaField);
 
-        // Pulsanti
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton okButton = new JButton("OK");
         JButton annullaButton = new JButton("Annulla");
@@ -562,38 +557,41 @@ public class ClientDashboardSwing extends JFrame {
             String scelta = comboBox.getSelectedItem().toString();
             String priorita = prioritaField.getText().trim();
 
-             // Metodo di autorizzazione
-
             if(biglietto == null) {
-                autorizzaPagamento();
-                BigliettoServiceGrpc.BigliettoServiceBlockingStub stub = BigliettoServiceGrpc.newBlockingStub(channel);
-                CreaBigliettoRequest requestBiglietto = CreaBigliettoRequest.newBuilder()
-                        .addDati(scelta) // classe
-                        .addDati(trenoID)
-                        .addDati(cliente.getCodiceFiscale())
-                        .addDati(priorita)
+
+                if (!autorizzaPagamento()) {
+                    return;
+                }
+
+                BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoPf =  BigliettoServiceGrpc.newBlockingStub(channel);
+                CreazionePrezzoFinaleRequest bigliettoPFRequest = CreazionePrezzoFinaleRequest.newBuilder()
+                        .setTrenoID(trenoID)
+                        .setClasse(scelta)
                         .build();
+                CreazionePrezzoFinaleResponse prezzoFinale = bigliettoPf.creazionePrezzoFinale(bigliettoPFRequest);
+                int prezzoFinaleUltimo = prezzoFinale.getPrezzoFinale();
 
-                CreaBigliettoResponse response = stub.creaBiglietto(requestBiglietto);
-                if (response.getSuccess()) {
-                    int prezzoFinale = response.getPrezzoFinale();
+                boolean pagamentoConfermato = mostraFinestraPagamento(prezzoFinaleUltimo, () -> {
+                    creaBigliettoDopoConfermaPagamento(scelta, trenoID, priorita, prezzoFinaleUltimo, channel, dialog);
+                });
 
-                try {
-                    mostraFinestraPagamento(prezzoFinale);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                if (pagamentoConfermato) {
+                    dialog.dispose();
                 }
 
-                    JOptionPane.showMessageDialog(dialog, "Biglietto creato con successo!");
-                } else {
-                    JOptionPane.showMessageDialog(dialog, "Errore nella creazione del biglietto.");
-                }
-                dialog.dispose();
+            } else {
+                String trenoNuovoID = rowData[0].toString();
+                BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoPf =  BigliettoServiceGrpc.newBlockingStub(channel);
+                CreazionePrezzoFinaleRequest bigliettoPFRequest = CreazionePrezzoFinaleRequest.newBuilder()
+                        .setTrenoID(trenoNuovoID)
+                        .setClasse(scelta)
+                        .build();
+                CreazionePrezzoFinaleResponse prezzoFinale = bigliettoPf.creazionePrezzoFinale(bigliettoPFRequest);
 
-            } else { //usiamo la funzione acquisto per cambiare biglietto
-                int prezzoTreno = Integer.parseInt(rowData[3].toString());
+                int prezzoTreno = prezzoFinale.getPrezzoFinale();
                 int prezzoVecchio = biglietto.getPrezzo();
-                System.out.println(prezzoTreno + "SUCA " + prezzoVecchio);
+
+
                 int diff=0;
                 boolean flg = false;
                 if(prezzoTreno < prezzoVecchio) {
@@ -602,7 +600,7 @@ public class ClientDashboardSwing extends JFrame {
                 } else {
                     diff= prezzoTreno - prezzoVecchio;
                 }
-                mostraCambioBiglietto(scelta,priorita,trenoID,channel,flg,diff);
+                mostraCambioBiglietto(scelta,priorita,trenoID,prezzoTreno,channel,flg,diff);
                 BigliettoServiceGrpc.BigliettoServiceBlockingStub stubREM =
                         BigliettoServiceGrpc.newBlockingStub(channel);
 
@@ -627,6 +625,157 @@ public class ClientDashboardSwing extends JFrame {
         dialog.add(buttonPanel, BorderLayout.SOUTH);
         dialog.setVisible(true);
         dialog.dispose();
+    }
+    private static boolean autorizzaPagamento() {
+        final boolean[] autorizzato = {false};
+
+        JDialog dialog = new JDialog((JFrame) null, "Autorizzazione Pagamento", true);
+        dialog.setSize(400, 300);
+        dialog.setLayout(new GridLayout(6, 2, 10, 5));
+        dialog.setLocationRelativeTo(null);
+
+        JTextField campoCarta = new JTextField();
+        JTextField campoCVV = new JTextField();
+        JTextField campoScadenza = new JTextField();
+        JTextField campoCircuito = new JTextField();
+        JTextField campoTitolare = new JTextField();
+
+        dialog.add(new JLabel("Codice Carta:"));
+        dialog.add(campoCarta);
+        dialog.add(new JLabel("CVV:"));
+        dialog.add(campoCVV);
+        dialog.add(new JLabel("Scadenza (MMYY):"));
+        dialog.add(campoScadenza);
+        dialog.add(new JLabel("Circuito (Visa/Mastercard):"));
+        dialog.add(campoCircuito);
+        dialog.add(new JLabel("Titolare:"));
+        dialog.add(campoTitolare);
+
+        JButton conferma = new JButton("Conferma");
+        JButton annulla = new JButton("Annulla");
+
+        conferma.addActionListener(e -> {
+            try {
+                String codiceCarta = campoCarta.getText();
+                int cvv = Integer.parseInt(campoCVV.getText());
+                String scadenza = campoScadenza.getText();
+                String circuito = campoCircuito.getText();
+                String titolare = campoTitolare.getText();
+
+                boolean validi = Pagamento.inserimentoDati(codiceCarta, cvv, scadenza, circuito, titolare);
+
+                if (validi) {
+                    autorizzato[0] = true;
+                    dialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Dati non validi. Riprova.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialog, "Inserisci solo numeri nei campi numerici.");
+            }
+        });
+
+        annulla.addActionListener(e -> {
+            autorizzato[0] = false;
+            dialog.dispose();
+        });
+
+        dialog.add(annulla);
+        dialog.add(conferma);
+        dialog.setVisible(true);
+
+        return autorizzato[0];
+    }
+    private static boolean mostraFinestraPagamento(int importo, Runnable onSuccess) {
+        final boolean[] confermato = {false};
+
+        JDialog dialog = new JDialog((JFrame) null, "Pagamento", true);
+        dialog.setSize(400, 300);
+        dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel labelTipo = new JLabel("Tipo: pagamento elettronico");
+        JLabel labelProcesso = new JLabel("Processiamo l'operazione...");
+        JLabel labelBanca = new JLabel("Contattiamo la banca...");
+        JLabel labelImporto = new JLabel("Stai per pagare l'importo di " + importo + " euro.");
+        JLabel labelConferma = new JLabel("Confermi l'acquisto?");
+
+        labelTipo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelProcesso.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelBanca.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelImporto.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelConferma.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton annullaButton = new JButton("Annulla");
+        JButton confermaButton = new JButton("Conferma");
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(annullaButton);
+        buttonPanel.add(confermaButton);
+
+        annullaButton.addActionListener(e -> {
+            confermato[0] = false;
+            dialog.dispose();
+            JOptionPane.showMessageDialog(null, "Pagamento annullato. Nessun biglietto creato.");
+        });
+
+        confermaButton.addActionListener(e -> {
+            confermato[0] = true;
+            dialog.dispose();
+
+            if (onSuccess != null) {
+                onSuccess.run();
+            }
+        });
+
+        panel.add(labelTipo);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(labelProcesso);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(labelBanca);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(labelImporto);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(labelConferma);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(buttonPanel);
+
+        dialog.setContentPane(panel);
+        dialog.setVisible(true);
+
+        return confermato[0];
+    }
+    private static void creaBigliettoDopoConfermaPagamento(String scelta, String trenoID, String priorita, int prezzo, ManagedChannel channel, JDialog parentDialog) {
+        try {
+            BigliettoServiceGrpc.BigliettoServiceBlockingStub stub = BigliettoServiceGrpc.newBlockingStub(channel);
+            CreaBigliettoRequest requestBiglietto = CreaBigliettoRequest.newBuilder()
+                    .addDati(scelta)
+                    .addDati(trenoID)
+                    .addDati(cliente.getCodiceFiscale())
+                    .addDati(priorita)
+                    .addDati(String.valueOf(prezzo))
+
+                    .build();
+
+            CreaBigliettoResponse response = stub.creaBiglietto(requestBiglietto);
+
+            if (response.getSuccess()) {
+                JOptionPane.showMessageDialog(null,
+                        "Pagamento confermato!\nBiglietto creato con successo!\nPrezzo finale: " +
+                                response.getPrezzoFinale() + " euro");
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Errore nella creazione del biglietto dopo pagamento confermato.\nContattare il supporto.");
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Errore durante la creazione del biglietto: " + ex.getMessage());
+        }
     }
     private static void creaNotifica(JTabbedPane tabs, ManagedChannel channel) {
         if (registrato && cliente != null) {
@@ -882,21 +1031,23 @@ public class ClientDashboardSwing extends JFrame {
                     infoModel.setRowCount(0);
 
                     try {
-                        infoModel.addRow(new Object[]{"═══ DATI BIGLIETTO ═══", ""});
-                        infoModel.addRow(new Object[]{"ID Biglietto", bigliettoSelezionato.getBigliettoID()});
-                        infoModel.addRow(new Object[]{"Classe", bigliettoSelezionato.getClasse()});
-                        infoModel.addRow(new Object[]{"Carrozza", bigliettoSelezionato.getCarrozza()});
-                        infoModel.addRow(new Object[]{"Posto", bigliettoSelezionato.getPosto()});
-                        infoModel.addRow(new Object[]{"Prezzo", "€ " + bigliettoSelezionato.getPrezzo()});
-                        infoModel.addRow(new Object[]{"Priorità",
-                                bigliettoSelezionato.getPrioritaList().isEmpty() ?
-                                        "Nessuna" : bigliettoSelezionato.getPrioritaList().toString()});
-
                         TrenoServiceGrpc.TrenoServiceBlockingStub trenoStub = TrenoServiceGrpc.newBlockingStub(channel);
                         GetTrenoRequest trenoRequest = GetTrenoRequest.newBuilder()
                                 .setTrenoID(bigliettoSelezionato.getTrenoID())
                                 .build();
                         it.trenical.grpc.Treno treno = trenoStub.getTreno(trenoRequest);
+
+                        infoModel.addRow(new Object[]{"═══ DATI BIGLIETTO ═══", ""});
+                        infoModel.addRow(new Object[]{"ID Biglietto", bigliettoSelezionato.getBigliettoID()});
+                        infoModel.addRow(new Object[]{"Classe", bigliettoSelezionato.getClasse()});
+                        infoModel.addRow(new Object[]{"Carrozza", bigliettoSelezionato.getCarrozza()});
+                        infoModel.addRow(new Object[]{"Posto", bigliettoSelezionato.getPosto()});
+                        infoModel.addRow(new Object[]{"Binario", treno.getBinario()});
+                        infoModel.addRow(new Object[]{"Prezzo", "€ " + bigliettoSelezionato.getPrezzo()});
+                        infoModel.addRow(new Object[]{"Priorità",
+                                bigliettoSelezionato.getPrioritaList().isEmpty() ?
+                                        "Nessuna" : bigliettoSelezionato.getPrioritaList().toString()});
+
 
                         infoModel.addRow(new Object[]{"", ""});
                         infoModel.addRow(new Object[]{"═══ DATI TRENO ═══", ""});
@@ -925,8 +1076,6 @@ public class ClientDashboardSwing extends JFrame {
                         infoModel.addRow(new Object[]{"Data Arrivo", tratta.getDataArrivo()});
                         infoModel.addRow(new Object[]{"Distanza", tratta.getDistanza() + " km"});
                         infoModel.addRow(new Object[]{"Durata Media", tratta.getTempoPercorrenza() + " min"});
-
-                        System.out.println("Informazioni complete caricate per biglietto: " + bigliettoSelezionato.getBigliettoID());
 
                     } catch (Exception ex) {
                         System.err.println("Errore nel recupero delle informazioni: " + ex.getMessage());
@@ -982,7 +1131,7 @@ public class ClientDashboardSwing extends JFrame {
         }
         tabs.addTab("Info", panel);
     }
-    public static void mostraCambioBiglietto(String scelta, String priorita,String trenoID, ManagedChannel channel,boolean flag, int diff) {
+    public static void mostraCambioBiglietto(String scelta, String priorita,String trenoID, int prezzo,ManagedChannel channel,boolean flag, int diff) {
         JDialog dialog = new JDialog( (JFrame) null, "Modifica Biglietto", true);
         dialog.setSize(400, 250);
         dialog.setLocationRelativeTo(null);
@@ -1013,14 +1162,15 @@ public class ClientDashboardSwing extends JFrame {
         conferma.addActionListener(e -> {
             BigliettoServiceGrpc.BigliettoServiceBlockingStub stub = BigliettoServiceGrpc.newBlockingStub(channel);
             CreaBigliettoRequest requestBiglietto = CreaBigliettoRequest.newBuilder()
-                    .addDati(scelta) // classe
+                    .addDati(scelta)
                     .addDati(trenoID)
                     .addDati(cliente.getCodiceFiscale())
                     .addDati(priorita)
+                    .addDati(String.valueOf(prezzo))
                     .build();
 
             CreaBigliettoResponse response = stub.creaBiglietto(requestBiglietto);
-            //mostraFinestraPagamento(0);
+
             if (response.getSuccess()) {
                 JOptionPane.showMessageDialog(dialog, "Biglietto creato con successo!");
             } else {
@@ -1039,121 +1189,8 @@ public class ClientDashboardSwing extends JFrame {
         dialog.setContentPane(panel);
         dialog.setVisible(true);
     }
-    public static void mostraFinestraPagamento(double importo) {
-        JDialog dialog = new JDialog((JFrame) null, "Pagamento", true);
-        dialog.setSize(400, 300);
-        dialog.setLocationRelativeTo(null);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Etichette
-        JLabel labelTipo = new JLabel("Tipo: pagamento elettronico");
-        JLabel labelProcesso = new JLabel("Processiamo l'operazione...");
-        JLabel labelBanca = new JLabel("Contattiamo la banca...");
-        JLabel labelImporto = new JLabel("Stai per pagare l'importo di " + importo + " euro.");
-        JLabel labelConferma = new JLabel("Confermi l'acquisto?");
-
-        // Allineamento centrale
-        labelTipo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelProcesso.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelBanca.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelImporto.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelConferma.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Bottoni
-        JButton annullaButton = new JButton("Annulla");
-        JButton confermaButton = new JButton("Conferma");
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-        buttonPanel.add(annullaButton);
-        buttonPanel.add(confermaButton);
-
-        // Azione "Annulla"
-        annullaButton.addActionListener(e -> dialog.dispose());
-
-        // Azione "Conferma"
-        confermaButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(dialog, "Acquisto effettuato con successo!");
-            dialog.dispose();
-        });
-
-        // Aggiunta componenti al pannello
-        panel.add(labelTipo);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(labelProcesso);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(labelBanca);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(labelImporto);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(labelConferma);
-        panel.add(Box.createVerticalStrut(20));
-        panel.add(buttonPanel);
-
-        dialog.setContentPane(panel);
-        dialog.setVisible(true);
-    }
-    private static void autorizzaPagamento() {
-        JDialog dialog = new JDialog((JFrame) null , "Autorizzazione Pagamento", true);
-        dialog.setSize(400, 300);
-        dialog.setLayout(new GridLayout(6, 2, 10, 5));
-        dialog.setLocationRelativeTo(null);
-
-        JTextField campoCarta = new JTextField();
-        JTextField campoCVV = new JTextField();
-        JTextField campoScadenza = new JTextField();
-        JTextField campoCircuito = new JTextField();
-        JTextField campoTitolare = new JTextField();
-
-        dialog.add(new JLabel("Codice Carta:"));
-        dialog.add(campoCarta);
-
-        dialog.add(new JLabel("CVV:"));
-        dialog.add(campoCVV);
-
-        dialog.add(new JLabel("Scadenza (MM/YY):"));
-        dialog.add(campoScadenza);
-
-        dialog.add(new JLabel("Circuito (Visa/Mastercard):"));
-        dialog.add(campoCircuito);
-
-        dialog.add(new JLabel("Titolare:"));
-        dialog.add(campoTitolare);
-
-        JButton conferma = new JButton("Conferma");
-        JButton annulla = new JButton("Annulla");
-
-        conferma.addActionListener(e -> {
-            try {
-                String codiceCarta = campoCarta.getText();
-                int cvv = Integer.parseInt(campoCVV.getText());
-                String scadenza = campoScadenza.getText();
-                String circuito = campoCircuito.getText();
-                String titolare = campoTitolare.getText();
-
-                boolean validi = Pagamento.inserimentoDati(codiceCarta, cvv, scadenza, circuito, titolare);
-                if (validi) {
-                    JOptionPane.showMessageDialog(dialog, "Dati validi. Procedo al pagamento.");
-                    dialog.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(dialog, "Dati non validi. Riprova.");
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(dialog, "Inserisci solo numeri nei campi numerici.");
-            }
-        });
-
-        annulla.addActionListener(e -> dialog.dispose());
-
-        dialog.add(annulla);
-        dialog.add(conferma);
-
-        dialog.setVisible(true);
-    }
 
     public static void main(String[] args) {
         //System.setProperty("sun.java2d.uiScale", "3.0");

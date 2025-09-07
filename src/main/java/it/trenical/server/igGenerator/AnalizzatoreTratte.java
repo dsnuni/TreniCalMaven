@@ -178,13 +178,13 @@ public class AnalizzatoreTratte {
             LocalDateTime dataOraInput = LocalDateTime.parse(dataStr, formatter);
             LocalDateTime adesso = LocalDateTime.now();
 
-            // Verifica che la data sia oggi
+
             boolean stessaData = dataOraInput.toLocalDate().equals(adesso.toLocalDate());
 
-            // Calcola differenza in minuti
+
             long differenzaMinuti = Duration.between(adesso, dataOraInput).toMinutes();
 
-            // Deve essere oggi e mancare meno di 60 minuti (ma non negativa)
+
             return stessaData && differenzaMinuti >= 0 && differenzaMinuti < 60;
 
         } catch (Exception e) {
@@ -199,7 +199,7 @@ public class AnalizzatoreTratte {
             LocalDate dataFornita = LocalDate.parse(dataInput, formatter);
             LocalDate oggi = LocalDate.now();
 
-            return dataFornita.isAfter(oggi); // true se futura, false se oggi o passata
+            return dataFornita.isAfter(oggi);
         } catch (DateTimeParseException e) {
             System.err.println("Formato data non valido: " + dataInput);
             return false;
@@ -210,8 +210,7 @@ public class AnalizzatoreTratte {
         public static void main(String[] args) {
             System.out.println("Avvio pulizia delle tratte obsolete...");
          //   Generatore.genera(50,30,100,70);
-            // Istanza della classe contenente il metodo
-            // Supponiamo che la classe si chiami GestorePulizia (modifica se diversa)
+
             AnalizzatoreTratte pulitore = new AnalizzatoreTratte();
             //pulitore.rimuoviTratteObsolete();
             pulitore.controllaTratte();

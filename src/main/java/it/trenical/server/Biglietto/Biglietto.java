@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public abstract class Biglietto {
     protected final String bigliettoID;
     protected final Cliente titolareBiglietto;
@@ -17,7 +18,7 @@ public abstract class Biglietto {
     protected final int prezzo;
     protected final BigliettoImpl implementazione;
 
-    // Costruttore protetto: usato solo dal builder
+
     protected Biglietto(Builder builder) {
         this.bigliettoID = builder.bigliettoID;
         this.titolareBiglietto = builder.titolareBiglietto;
@@ -29,7 +30,6 @@ public abstract class Biglietto {
         this.implementazione = builder.implementazione;
     }
 
-    // ======== GETTER ========
     public String getBigliettoID() { return bigliettoID; }
     public Cliente getTitolareBiglietto() { return titolareBiglietto; }
     public Treno getTrenoBiglietto() { return trenoBiglietto; }
@@ -39,7 +39,7 @@ public abstract class Biglietto {
     public int getPrezzo() { return prezzo; }
     public BigliettoImpl getImplementazione() { return implementazione; }
 
-    // ======== INTERFACCIA DB ========
+
     public Biglietto getBiglietto(String Codice) {
         return implementazione.getBiglietto(Codice);
     }
@@ -52,7 +52,7 @@ public abstract class Biglietto {
         return implementazione.removeBiglietto(bigliettoID);
     }
 
-    // ======== BUILDER ASTRATTO ========
+
     public static abstract class Builder  {
         private String bigliettoID;
         private Cliente titolareBiglietto;
@@ -110,7 +110,7 @@ public abstract class Biglietto {
         public abstract Biglietto build();
     }
 
-    // ======== EQUALS / HASH / TOSTRING ========
+
     @Override
     public String toString() {
         return "Biglietto{" +
@@ -142,43 +142,52 @@ public abstract class Biglietto {
     }
 
     public static Biglietto clonaConPrezzo(Biglietto originale, int nuovoPrezzo) {
-        System.out.println("Prezzo da scontare :");
-        System.out.println(originale.getPrezzo()-nuovoPrezzo);
-        if (originale instanceof BPrimaClasse) {
-            return new BPrimaClasse.Builder()
-                    .bigliettoID(originale.getBigliettoID())
-                    .titolareBiglietto(originale.getTitolareBiglietto())
-                    .trenoBiglietto(originale.getTrenoBiglietto())
-                    .carrozza(originale.getCarrozza())
-                    .posto(originale.getPosto())
-                    .priorità(originale.getPriorità())
-                    .prezzo(originale.getPrezzo()-nuovoPrezzo)
-                    .implementazione(BigliettoDB.getInstance())
-                    .build();
-        } else if (originale instanceof BSecondaClasse) {
-            return new BSecondaClasse.Builder()
-                    .bigliettoID(originale.getBigliettoID())
-                    .titolareBiglietto(originale.getTitolareBiglietto())
-                    .trenoBiglietto(originale.getTrenoBiglietto())
-                    .carrozza(originale.getCarrozza())
-                    .posto(originale.getPosto())
-                    .priorità(originale.getPriorità())
-                    .prezzo(nuovoPrezzo)
-                    .implementazione(BigliettoDB.getInstance())
-                    .build();
-        } else if (originale instanceof BTerzaClasse) {
-            return new BTerzaClasse.Builder()
-                    .bigliettoID(originale.getBigliettoID())
-                    .titolareBiglietto(originale.getTitolareBiglietto())
-                    .trenoBiglietto(originale.getTrenoBiglietto())
-                    .carrozza(originale.getCarrozza())
-                    .posto(originale.getPosto())
-                    .priorità(originale.getPriorità())
-                    .prezzo(nuovoPrezzo)
-                    .implementazione(BigliettoDB.getInstance())
-                    .build();
-        }
+        try {
+            if (nuovoPrezzo == 0) {
+                return originale;
+            }
+            System.out.println("PREZZO FIANELC "+originale.getPrezzo()+"  PREZZO DA SOTTRARRE : "+nuovoPrezzo);
+            System.out.println("Prezzo da scontare :");
+            System.out.println(originale.getPrezzo() - nuovoPrezzo);
+            if (originale instanceof BPrimaClasse) {
+                return new BPrimaClasse.Builder()
+                        .bigliettoID(originale.getBigliettoID())
+                        .titolareBiglietto(originale.getTitolareBiglietto())
+                        .trenoBiglietto(originale.getTrenoBiglietto())
+                        .carrozza(originale.getCarrozza())
+                        .posto(originale.getPosto())
+                        .priorità(originale.getPriorità())
+                        .prezzo(nuovoPrezzo)
+                        .implementazione(BigliettoDB.getInstance())
+                        .build();
+            } else if (originale instanceof BSecondaClasse) {
+                return new BSecondaClasse.Builder()
+                        .bigliettoID(originale.getBigliettoID())
+                        .titolareBiglietto(originale.getTitolareBiglietto())
+                        .trenoBiglietto(originale.getTrenoBiglietto())
+                        .carrozza(originale.getCarrozza())
+                        .posto(originale.getPosto())
+                        .priorità(originale.getPriorità())
+                        .prezzo(nuovoPrezzo)
+                        .implementazione(BigliettoDB.getInstance())
+                        .build();
+            } else if (originale instanceof BTerzaClasse) {
+                return new BTerzaClasse.Builder()
+                        .bigliettoID(originale.getBigliettoID())
+                        .titolareBiglietto(originale.getTitolareBiglietto())
+                        .trenoBiglietto(originale.getTrenoBiglietto())
+                        .carrozza(originale.getCarrozza())
+                        .posto(originale.getPosto())
+                        .priorità(originale.getPriorità())
+                        .prezzo(nuovoPrezzo)
+                        .implementazione(BigliettoDB.getInstance())
+                        .build();
+            }
 
+        } catch (Exception e) {
+            System.err.println("Errore durante l'applicazione della promozione: " + e.getMessage());
+
+        }
         return null;
     }
 

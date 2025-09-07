@@ -31,7 +31,6 @@ public class Promozione {
 
     }
 
-    // Getter opzionali
     public String getPromozioneID() { return promozioneID; }
     public Treno getTreno() { return treno; }
     public TrattaPrototype getTratta() { return tratta; }
@@ -41,7 +40,7 @@ public class Promozione {
     public int getPrezzoPartenza() { return prezzoPartenza; }
     public double getScontistica() { return scontistica; }
 
-    // Static Builder
+
     public static class PromozioneBuilder {
         private String promozioneID;
         private Treno treno;
@@ -93,7 +92,7 @@ public class Promozione {
             return new Promozione(this);
         }
     }
-    //Verifica idoneità
+
     public boolean verificaValidità() {
         boolean almenoUnoSettato =
             this.treno != null ||

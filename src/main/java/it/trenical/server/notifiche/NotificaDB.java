@@ -35,10 +35,10 @@ public class NotificaDB {
             stmt.setString(4, nt.getArrivo());
             stmt.setInt(5, nt.getTempo());
             stmt.setString(6, nt.getBiglietto());
-            stmt.setString(7, nt.getStato());        // NUOVO
-            stmt.setString(8, nt.getPosto());        // NUOVO
-            stmt.setInt(9, nt.getBinario());         // NUOVO
-            stmt.setString(10, nt.getLog());         // NUOVO
+            stmt.setString(7, nt.getStato());
+            stmt.setString(8, nt.getPosto());
+            stmt.setInt(9, nt.getBinario());
+            stmt.setString(10, nt.getLog());
 
             stmt.executeUpdate();
         } catch (SQLException e) {

@@ -58,18 +58,14 @@ public class IdGenerator {
     public static String generaCodiceFiscale(String nome, String cognome, int eta) {
         StringBuilder cf = new StringBuilder();
 
-        // Primi 3 caratteri del cognome (con padding se serve)
+
         cf.append(estraiTreLettere(cognome));
 
-        // Primi 3 caratteri del nome (con padding se serve)
         cf.append(estraiTreLettere(nome));
 
-        // Età convertita in "anno" (es. 25 → 1999)
         int annoPresunto = LocalDate.now().getYear() - eta;
-        cf.append(String.valueOf(annoPresunto).substring(2)); // solo ultime 2 cifre
-
-        // Suffisso casuale per evitare duplicati
-        String suffisso = String.valueOf((int)(Math.random() * 900 + 100)); // 3 cifre
+        cf.append(String.valueOf(annoPresunto).substring(2));
+        String suffisso = String.valueOf((int)(Math.random() * 900 + 100));
         cf.append(suffisso);
         System.out.println("Codice fiscale cliente "+cf+" appena generato LOG <"+adesso.format(formatter)+">");
         return cf.toString().toUpperCase();
@@ -80,7 +76,7 @@ public class IdGenerator {
         if (s.length() >= 3) {
             return s.substring(0, 3);
         } else {
-            return String.format("%-3s", s).replace(' ', 'X'); // pad con 'X'
+            return String.format("%-3s", s).replace(' ', 'X');
         }
     }
 
@@ -103,9 +99,9 @@ public class IdGenerator {
         String id = "";
         while(flag) {
             id = "TRN-" + UUID.randomUUID().toString().substring(0, 8);
-            TrenoImpl trenoDb = TrenoImplDB.getInstance();  // ✅ USA DATABASE TRENI!
-            if(trenoDb.getTreno(id) == null) {              // ✅ CERCA TRN-xxxx nei TRENI!
-                flag = false;                               // ✅ Ha senso!
+            TrenoImpl trenoDb = TrenoImplDB.getInstance();
+            if(trenoDb.getTreno(id) == null) {
+                flag = false;
             }
         }
         System.out.println("Treno ID: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
@@ -117,9 +113,9 @@ public class IdGenerator {
         String id = "";
         while(flag) {
             id = "TRT-" + UUID.randomUUID().toString().substring(0, 8);
-            TrattaImpl trattaDb = TrattaImplDB.getInstance();  // ✅ USA DATABASE TRATTE!
-            if(trattaDb.getTratta(id) == null) {               // ✅ CERCA TRT-xxxx nelle TRATTE!
-                flag = false;                                  // ✅ Ha senso!
+            TrattaImpl trattaDb = TrattaImplDB.getInstance();
+            if(trattaDb.getTratta(id) == null) {
+                flag = false;
             }
         }
         System.out.println("Tratta ID: "+id+" appena generato LOG <"+adesso.format(formatter)+">");
@@ -142,7 +138,7 @@ public class IdGenerator {
 
         int postiPrima = (int) Math.round(postiTot * 0.10);
         int postiSeconda = (int) Math.round(postiTot * 0.40);
-        int postiTerza = postiTot - postiPrima - postiSeconda; // assegna il resto
+        int postiTerza = postiTot - postiPrima - postiSeconda;
         System.out.println("Treno conreto: "+tr.getTrenoID()+" appena generato LOG <"+adesso.format(formatter)+">");
 
         return new TrenoConcr(
@@ -202,9 +198,9 @@ public class IdGenerator {
         TrenoImpl tr = TrenoImplDB.getInstance();
 
         System.out.println("TEST GENERAZIONE ID:");
-        System.out.println("Cliente ID: " + clienteID + " -> nel DB? " + (cl.getCliente(clienteID) != null));
-        System.out.println("Codice Cliente: " + codiceCliente + " -> nel DB? " + (cl.getClienteByCodiceCLiente(codiceCliente) != null));
-        System.out.println("Biglietto ID: " + bigliettoID + " -> nel DB? " + (bg.getBiglietto(bigliettoID) != null));
-        System.out.println("Treno ID: " + trenoID + " -> nel DB? " + (tr.getTreno(trenoID) != null));
+        System.out.println("Cliente ID: " + clienteID + " nel DB " + (cl.getCliente(clienteID) != null));
+        System.out.println("Codice Cliente: " + codiceCliente + " nel DB" + (cl.getClienteByCodiceCLiente(codiceCliente) != null));
+        System.out.println("Biglietto ID: " + bigliettoID + " nel DB " + (bg.getBiglietto(bigliettoID) != null));
+        System.out.println("Treno ID: " + trenoID + " nel DB " + (tr.getTreno(trenoID) != null));
     }
 }

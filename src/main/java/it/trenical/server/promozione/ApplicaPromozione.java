@@ -15,32 +15,72 @@ import java.util.List;
 public class ApplicaPromozione {
 
     public static double Promozione(Biglietto biglietto) {
-        PromozioneImplDB db = PromozioneImplDB.getInstance();
-        Treno treno = biglietto.getTrenoBiglietto();
-        TrattaPrototype tratta = treno.getTratta();
+        try {
+            PromozioneImplDB db = PromozioneImplDB.getInstance();
+            Treno treno = biglietto.getTrenoBiglietto();
+            TrattaPrototype tratta = treno.getTratta();
 
-        String trenoID = treno.getTrenoID();
-        String trattaID = tratta.getCodiceTratta();
-        String dataP = tratta.getDataPartenza();
+            String trenoID = treno.getTrenoID();
+            String trattaID = tratta.getCodiceTratta();
+            String dataP = tratta.getDataPartenza();
 
-        List<Promozione> promozioniTreni = db.cercaPromozioniContenenti(trenoID);
-        List<Promozione> promozioniTratte = db.cercaPromozioniContenenti(trattaID);
-        List<Promozione> promozioniDataP = db.cercaPromozioniContenenti(dataP);
-System.out.println("Promozione appena presa:"+promozioniTreni.get(0).toString());
-        if (haPromozioneValida(promozioniTreni, biglietto.getPrezzo())) {
-            double sconto = promozioniTreni.get(0).getScontistica();
-            System.out.println(" Sconto appena preso "+sconto);
-            return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
-        } else if (haPromozioneValida(promozioniTratte, biglietto.getPrezzo())) {
-            double sconto = promozioniTratte.get(0).getScontistica();
-            return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
-        } else if (haPromozioneValida(promozioniDataP, biglietto.getPrezzo())) {
-            double sconto = promozioniDataP.get(0).getScontistica();
-            return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
+            List<Promozione> promozioniTreni = db.cercaPromozioniContenenti(trenoID);
+            List<Promozione> promozioniTratte = db.cercaPromozioniContenenti(trattaID);
+            List<Promozione> promozioniDataP = db.cercaPromozioniContenenti(dataP);
+
+            if (haPromozioneValida(promozioniTreni, biglietto.getPrezzo())) {
+                double scontoPercentuale = promozioniTreni.get(0).getScontistica();
+                double sconto = intToPercentage(scontoPercentuale);
+                System.out.println("Promozione treno - Sconto: " + sconto);
+                return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
+            } else if (haPromozioneValida(promozioniTratte, biglietto.getPrezzo())) {
+                double scontoPercentuale = promozioniTratte.get(0).getScontistica();
+                double sconto = intToPercentage(scontoPercentuale);
+                System.out.println("Promozione tratta - Sconto: " + sconto);
+                return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
+            } else if (haPromozioneValida(promozioniDataP, biglietto.getPrezzo())) {
+                double scontoPercentuale = promozioniDataP.get(0).getScontistica();
+                double sconto = intToPercentage(scontoPercentuale);
+                System.out.println("Promozione data - Sconto: " + sconto);
+                return calcolaPrezzoScontato(biglietto.getPrezzo(), sconto);
+            }
+
+            return biglietto.getPrezzo();
+        } catch (Exception e) {
+            System.err.println("Errore durante l'applicazione della promozione: " + e.getMessage());
+            return biglietto.getPrezzo();
         }
-
-        return biglietto.getPrezzo();
     }
+    public static String ciSonoPromozioni(String trenoID, String trattaID, int prezzo) {
+        try {
+            PromozioneImplDB ndb = PromozioneImplDB.getInstance();
+
+            if (trenoID != null) {
+                for(Promozione n : ndb.getPromozioneByFiltro("trenoID", trenoID)) {
+                    if(prezzo >= n.getPrezzoPartenza()) {
+                        return n.getPromozioneID();
+                    }
+                }
+            }
+            if (trattaID != null) {
+                for(Promozione n : ndb.getPromozioneByFiltro("trattaID", trattaID)) {
+                    if(prezzo >= n.getPrezzoPartenza()) {
+                        return n.getPromozioneID();
+                    }
+                }
+            }
+                return null;
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Errore: riferimento null", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nella ricerca promozioni", e);
+        }
+    }
+    public static double applicaPromozione(String promoID) {
+        PromozioneImplDB ndb = PromozioneImplDB.getInstance();
+        return ndb.getPromozione(promoID).getScontistica();
+    }
+
     public static String controllaPromozione(String trenoID, String trattaID, int prezzoPartenza) {
         try {
             List<Promozione> lista = new ArrayList<>();
@@ -56,19 +96,14 @@ System.out.println("Promozione appena presa:"+promozioniTreni.get(0).toString())
             String dataA = tr.getDataArrivo();
 
             for (Promozione n : pdb.getPromozioneByFiltro("trenoID", trenoID)) {
-                lista.add(n);
+                if (prezzoPartenza >= n.getPrezzoPartenza()) {
+                    lista.add(n);
+                }
             }
             for (Promozione n : pdb.getPromozioneByFiltro("trattaID", trattaID)) {
-                lista.add(n);
-            }
-            for (Promozione n : pdb.getPromozioneByFiltro("dataPartenza", dataP)) {
-                lista.add(n);
-            }
-            for (Promozione n : pdb.getPromozioneByFiltro("dataFine", dataA)) {
-                lista.add(n);
-            }
-            for (Promozione n : pdb.getByPrezzo(prezzoPartenza)) {
-                lista.add(n);
+                if (prezzoPartenza >= n.getPrezzoPartenza()) {
+                    lista.add(n);
+                }
             }
 
             if (lista.isEmpty()) {
@@ -90,10 +125,12 @@ System.out.println("Promozione appena presa:"+promozioniTreni.get(0).toString())
     private static double calcolaPrezzoScontato(double prezzoOriginale, double percentuale) {
         System.out.println("Sconto :");
         System.out.println( prezzoOriginale * (1 - percentuale));
-            return prezzoOriginale * (1 - percentuale);
+        return prezzoOriginale * (1 - percentuale);
     }
 
-
+    public static double intToPercentage(double value) {
+        return value / 100.0;
+    }
     public static double Promozione(BPrimaClasse b) { return Promozione((Biglietto) b); }
     public static double Promozione(BSecondaClasse b) { return Promozione((Biglietto) b); }
     public static double Promozione(BTerzaClasse b) { return Promozione((Biglietto) b); }

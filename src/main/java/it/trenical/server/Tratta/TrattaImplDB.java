@@ -141,7 +141,7 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
 
     @Override
     public boolean removeTratta(String trattaID) {
-        // Prima recupera i dati per la notifica
+
         TrattaStandard trattaDaRimuovere = getTratta(trattaID);
 
         String sql = "DELETE FROM Tratta WHERE trattaID = ?";

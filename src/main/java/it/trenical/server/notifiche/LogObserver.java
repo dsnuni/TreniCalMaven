@@ -10,9 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Observer che logga tutte le operazioni con timestamp
- */
+
 public class LogObserver implements Observer {
     private String loggerName;
     private static LocalTime adesso = LocalTime.now();

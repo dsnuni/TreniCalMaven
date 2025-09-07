@@ -15,7 +15,6 @@ public class TrattaServiceImpl extends TrattaServiceGrpc.TrattaServiceImplBase {
 
     @Override
     public void addTratta(AddTrattaRequest request, StreamObserver<AddTrattaResponse> responseObserver) {
-        // Usa convertiProtoInJava per passare oggetto Java al database
         TrattaStandard trattaJava = (TrattaStandard) convertiProtoInJava(request.getTratta());
         trattaImpl.setTratta(trattaJava);
 

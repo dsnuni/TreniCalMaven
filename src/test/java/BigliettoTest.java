@@ -181,7 +181,7 @@ public class BigliettoTest {
                 .setDataFine("2025-12-31")
                 .setClientiFedelta(false)
                 .setPrezzoPartenza(50)
-                .setScontistica(0.20)
+                .setScontistica(20)
                 .build();
         System.out.println("Promozione :"+promozione.toString());
         promozioneDB.setPromozione(promozione);
@@ -190,7 +190,8 @@ public class BigliettoTest {
 
         double prezzoOriginale = biglietto.getPrezzo();
         double prezzoScontato = ApplicaPromozione.Promozione(biglietto);
-
+        System.out.println("Prezzo originale :"+prezzoOriginale);
+        System.out.println("Prezzo Scontato :"+prezzoScontato);
         assertTrue(prezzoScontato < prezzoOriginale);
         System.out.println("I test potrebbero non funzionare in presenza di altre promozioni simili, TreniCal prende la prima promozione applicabile");
 
@@ -211,7 +212,7 @@ public class BigliettoTest {
                 .setDataFine("2025-12-31")
                 .setClientiFedelta(false)
                 .setPrezzoPartenza(150)
-                .setScontistica(0.30)
+                .setScontistica(30)
                 .build();
 
         promozioneDB.setPromozione(promozione);

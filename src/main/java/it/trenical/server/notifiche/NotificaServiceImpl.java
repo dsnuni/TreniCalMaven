@@ -47,10 +47,10 @@ public class NotificaServiceImpl extends it.trenical.grpc.NotificaServiceGrpc.No
                 .setArrivo(n.getArrivo())
                 .setTempo(n.getTempo())
                 .setBiglietto(n.getBiglietto())
-                .setStato(n.getStato())        // NUOVO
-                .setPosto(n.getPosto())        // NUOVO
-                .setBinario(n.getBinario())    // NUOVO
-                .setLog(n.getLog())            // NUOVO
+                .setStato(n.getStato())
+                .setPosto(n.getPosto())
+                .setBinario(n.getBinario())
+                .setLog(n.getLog())
                 .build();
     }
 }

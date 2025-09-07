@@ -2,10 +2,7 @@ package it.trenical.server.Biglietto;
 
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import it.trenical.grpc.CreaBigliettoRequest;
-import it.trenical.grpc.CreaBigliettoResponse;
-import it.trenical.grpc.GetBigliettiByFiltroRequest;
-import it.trenical.grpc.GetBigliettiByFiltroResponse;
+import it.trenical.grpc.*;
 import it.trenical.server.Cliente.Cliente;
 import it.trenical.server.Cliente.ClienteImpl;
 import it.trenical.server.Cliente.ClienteImplDB;
@@ -94,12 +91,12 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
         return switch (proto.getClasse()) {
             case "PrimaClasse" -> new BPrimaClasse.Builder()
                     .bigliettoID(proto.getBigliettoID())
-                    .titolareBiglietto(cliente)  // deve venire prima
+                    .titolareBiglietto(cliente)
                     .trenoBiglietto(treno)
                     .carrozza(proto.getCarrozza())
                     .posto(proto.getPosto())
                     .priorità(priorita)
-                    .prezzo(proto.getPrezzo())  // usa cliente, quindi dopo
+                    .prezzo(proto.getPrezzo())
                     .implementazione(db)
                     .build();
 
@@ -130,7 +127,7 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
     private it.trenical.grpc.Biglietto convertiJavaInProto(Biglietto java) {
         return it.trenical.grpc.Biglietto.newBuilder()
                 .setBigliettoID(java.getBigliettoID())
-                .setClasse(java.getClass().getSimpleName().replace("B", "")) // es. BSecondaClasse → SecondaClasse
+                .setClasse(java.getClass().getSimpleName().replace("B", ""))
                 .setTrenoID(java.getTrenoBiglietto().getTrenoID())
                 .setCarrozza(java.getCarrozza())
                 .setPosto(java.getPosto())
@@ -189,6 +186,17 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
             responseObserver.onCompleted();
         }
     }
+    @Override
+    public void creazionePrezzoFinale(CreazionePrezzoFinaleRequest request, StreamObserver<CreazionePrezzoFinaleResponse> responseObserver) {
+        String trenoID = request.getTrenoID();
+        String classe = request.getClasse();
+        int prezzoFInale = CreatoreBiglietto.calcoloPrezzoPrePagamento(trenoID, classe);
 
+        CreazionePrezzoFinaleResponse response = CreazionePrezzoFinaleResponse.newBuilder()
+                .setPrezzoFinale(prezzoFInale)
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
 }

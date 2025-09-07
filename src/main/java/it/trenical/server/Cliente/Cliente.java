@@ -63,7 +63,7 @@ public abstract class Cliente {
 
     public void setEmail(String email) { this.email = email;}
 
-    public abstract Cliente getCliente(); //da passare a private con implementazione nel metodo
+    public abstract Cliente getCliente();
     public abstract void setCLiente();
     public abstract boolean remove();
 

@@ -32,10 +32,10 @@ public class TreniCalServer {
         System.out.println("✅ LogObserver registrato - notifiche automatiche attive!");
         AnalizzatoreTratte pulitore = new AnalizzatoreTratte();
         pulitore.avviaControlloPeriodico();
-        Generatore.genera(50,30,100,10);
+       // Generatore.genera(50,30,100,10);
        //    System.setProperty("sun.java2d.uiScale", "3.0");
         SwingUtilities.invokeLater(() -> {
-              System.setProperty("sun.java2d.uiScale", "3.0");
+           //   System.setProperty("sun.java2d.uiScale", "3.0");
             new AdminDashboardSwing().setVisible(true);
 
         });

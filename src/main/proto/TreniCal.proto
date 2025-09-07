@@ -182,6 +182,15 @@ message CreaBigliettoResponse {
   string messaggioPromozione = 7;
 }
 
+message CreazionePrezzoFinaleRequest {
+  string trenoID=1;
+  string classe=2;
+}
+
+message CreazionePrezzoFinaleResponse {
+  int32 prezzoFinale = 1;
+}
+
 
 // ID Generator
 message GetGeneratedIDRequest {
@@ -239,6 +248,7 @@ service BigliettoService {
   rpc RemoveBiglietto(RemoveBigliettoRequest) returns (RemoveBigliettoResponse);
   rpc GetBigliettiByFiltro (GetBigliettiByFiltroRequest) returns (GetBigliettiByFiltroResponse);
   rpc CreaBiglietto(CreaBigliettoRequest) returns (CreaBigliettoResponse);
+  rpc CreazionePrezzoFinale(CreazionePrezzoFinaleRequest) returns (CreazionePrezzoFinaleResponse);
 }
 
 service TrattaService {

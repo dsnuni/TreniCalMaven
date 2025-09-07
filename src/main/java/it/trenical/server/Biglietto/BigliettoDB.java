@@ -43,7 +43,7 @@ public class BigliettoDB extends Observable implements BigliettoImpl {
             stmt.setString(4, biglietto.getCarrozza());
             stmt.setString(5, biglietto.getPosto());
             stmt.setString(6, biglietto.getTitolareBiglietto().getCodiceFiscale());
-            stmt.setString(7, String.join(",", biglietto.getPriorità())); // serializza lista in CSV
+            stmt.setString(7, String.join(",", biglietto.getPriorità()));
             stmt.setInt(8, biglietto.getPrezzo());
 
             stmt.executeUpdate();

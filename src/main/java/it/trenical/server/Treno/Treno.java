@@ -38,7 +38,7 @@ public abstract class Treno  {
 
     }
     private int setTempoPercorrenza() {
-       // System.out.println("📌 Avvio calcolo tempo percorrenza");
+       // System.out.println(" Avvio calcolo tempo percorrenza");
 
         if (this.tratta == null) {
             System.err.println("❌ ERRORE: Tratta non inizializzata (null)");
@@ -77,8 +77,7 @@ public abstract class Treno  {
         double tempo = distanza / velocita;
         int tempoArrotondato = (int) Math.ceil(tempo);
 
-        //System.out.println("🛤 TipoTreno: " + tipoTreno + " → Velocità media: " + velocita + " km/h");
-      //  System.out.println("⏱ Tempo stimato (raw): " + tempo + " h → Arrotondato: " + tempoArrotondato + " h");
+
 
         return tempoArrotondato;
 
@@ -95,7 +94,7 @@ public abstract class Treno  {
 
     }
 
-    // Metodi abstract da implementare nelle sottoclassi
+
     public abstract Treno getTreno();
     public abstract void setTreno();
     public abstract boolean remove();

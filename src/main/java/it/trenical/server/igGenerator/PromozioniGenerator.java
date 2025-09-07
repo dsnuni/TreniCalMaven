@@ -12,12 +12,12 @@ public class PromozioniGenerator {
     private static PromozioniGenerator instance;
     private final Random random;
 
-    // Costruttore privato (Singleton)
+
     private PromozioniGenerator() {
         this.random = new Random();
     }
 
-    // Accesso all'unica istanza
+
     public static PromozioniGenerator getInstance() {
         if (instance == null) {
             instance = new PromozioniGenerator();
