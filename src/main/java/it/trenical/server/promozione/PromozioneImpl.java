@@ -8,6 +8,6 @@ public interface PromozioneImpl {
     void setPromozione(Promozione promo);
 
     boolean removePromozione(String trenoID);
-
+    boolean removePromozionePID(String promozioneID);
     List<Promozione> getAllPromozioni();
 }

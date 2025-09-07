@@ -43,7 +43,7 @@ public class AnalizzatoreTratte {
         rimuoviTratteObsolete();
         System.out.println("Avvio l'estrazione di informazioni!!!");
         estraiInformazioniTratte();
-       // notificheClientiFidelizzati();
+        notificheClientiFidelizzati();
     }
     public void estraiInformazioniTratte() {
         System.out.println("Estrai informazioni tratte LOG : "+"<"+LocalDateTime.now().format(formatter)+">");
@@ -63,7 +63,7 @@ public class AnalizzatoreTratte {
                         Notifica nt = new Notifica(biglietto.getTitolareBiglietto().getCodiceFiscale(),
                                 trn.getTrenoID(),tr.getDataPartenza(),tr.getDataArrivo(),
                                 0, biglietto.getBigliettoID(),
-                                "IMMINENTE",null,0,null);
+                                "IMMINENTE"," ",0,LocalDateTime.now().format(formatter));
                         NotificaDB ndb = NotificaDB.getInstance();
                         ndb.setNotifica(nt);
                         System.out.println("Inserimento notifica IMMINENTE a database notifiche LOG<"+LocalDateTime.now().format(formatter)+">");
@@ -74,8 +74,34 @@ public class AnalizzatoreTratte {
 
         }
     }
+    public void notificheClientiFidelizzati() {
+        ClienteImplDB cdb = ClienteImplDB.getInstance();
+        List<Cliente> lista = cdb.getByFiltro(null,null);
+        for(Cliente c : lista) {
+            if(c.getCodiceCliente().startsWith("FTRCL") ) {
+                String messaggioRandom = new String[]{
+                        "Gentile Cliente ci sono tante novità per lei, resti in attesa...",
+                        "Gentile Cliente a breve introdurremo un sistema a punti, resti in attesa...",
+                        "Gentile Cliente la invitamo a controllare la sua email per non perdere nessuna promozione."
+                }[new Random().nextInt(3)];
 
-
+                Notifica nt = new Notifica(c.getCodiceFiscale(),
+                        messaggioRandom,
+                        "",
+                        " ",
+                        0,
+                        " ",
+                        "PROMO",
+                        " ",
+                        0,
+                        LocalDateTime.now().format(formatter)
+                        );
+                NotificaDB ndb = NotificaDB.getInstance();
+                ndb.setNotifica(nt);
+                System.out.println("Inserimento notifica PROMO a database notifiche LOG<"+LocalDateTime.now().format(formatter)+">");
+            }
+        }
+    }
     public void rimuoviTratteObsolete() {
         System.out.println("Rimuovi tratte LOG : "+"<"+LocalDateTime.now().format(formatter)+">");
         TrattaImplDB trattaDB = TrattaImplDB.getInstance();

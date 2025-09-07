@@ -981,7 +981,7 @@ public class ClientDashboardSwing extends JFrame {
                                                 " la invitiamo a consultare la sezione info";
                                         break;
 
-                                    case "IMMEDIATO":
+                                    case "IMMINENTE":
                                         messaggio = "Gentile " + n.getCliente() +
                                                 " le ricordiamo che il suo treno " + n.getTreno() + " delle ore " + n.getPartenza() +
                                                 " partirà fra meno di un ora";
@@ -1181,7 +1181,7 @@ public class ClientDashboardSwing extends JFrame {
                         infoModel.addRow(new Object[]{"Posti Seconda Classe", treno.getPostiSeconda()});
                         infoModel.addRow(new Object[]{"Posti Terza Classe", treno.getPostiTerza()});
                         infoModel.addRow(new Object[]{"Posti Totali", treno.getPostiTot()});
-                        infoModel.addRow(new Object[]{"Posti Totali", treno.getBinario()});
+                        infoModel.addRow(new Object[]{"Binario", treno.getBinario()});
                         infoModel.addRow(new Object[]{"ID Tratta Associata", treno.getTrattaID()});
 
                         TrattaServiceGrpc.TrattaServiceBlockingStub trattaStub = TrattaServiceGrpc.newBlockingStub(channel);
@@ -1198,7 +1198,7 @@ public class ClientDashboardSwing extends JFrame {
                         infoModel.addRow(new Object[]{"Data Partenza", tratta.getDataPartenza()});
                         infoModel.addRow(new Object[]{"Data Arrivo", tratta.getDataArrivo()});
                         infoModel.addRow(new Object[]{"Distanza", tratta.getDistanza() + " km"});
-                        infoModel.addRow(new Object[]{"Durata Media", tratta.getTempoPercorrenza() + " min"});
+                        infoModel.addRow(new Object[]{"Durata Media", tratta.getTempoPercorrenza() + " ore"});
 
                     } catch (Exception ex) {
                         System.err.println("Errore nel recupero delle informazioni: " + ex.getMessage());

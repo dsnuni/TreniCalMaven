@@ -5,9 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e2b5f30-b4a1-4e43-97b3-084d6831942b" name="Changes" comment="Modifiche finali previa l'ultima">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6138fca0-f240-42f7-a81c-aaf53657764d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6138fca0-f240-42f7-a81c-aaf53657764d.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/treniCal.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/treniCal.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/TreniCalServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/gui/AdminDashboardSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/AnalizzatoreTratte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/AnalizzatoreTratte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/GeneratorConcr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/GeneratorConcr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/Generatore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/igGenerator/Generatore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/notifiche/NotificaDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/trenical/server/promozione/PromozioneImplDB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -289,7 +299,7 @@
       <workItem from="1757192493431" duration="40000" />
       <workItem from="1757195057673" duration="7331000" />
       <workItem from="1757233885336" duration="13412000" />
-      <workItem from="1757247519711" duration="14645000" />
+      <workItem from="1757247519711" duration="24949000" />
     </task>
     <task id="LOCAL-00001" summary="tutte le classi importate con successo nessun erorre di compilazione o di import">
       <option name="closed" value="true" />
@@ -587,7 +597,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757269877438</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Modifiche finali previa l'ultima">
+      <option name="closed" value="true" />
+      <created>1757272592468</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1757272592468</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -620,5 +638,16 @@
     <MESSAGE value="Modifiche finali" />
     <MESSAGE value="Modifiche finali previa l'ultima" />
     <option name="LAST_COMMIT_MESSAGE" value="Modifiche finali previa l'ultima" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/trenical/client/gui/ClientDashboardSwing.java</url>
+          <line>906</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

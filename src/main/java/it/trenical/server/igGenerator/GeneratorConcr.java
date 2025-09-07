@@ -171,7 +171,7 @@ public class GeneratorConcr implements Generator {
 
     private int tempoPercorrenza() {
         this.tempoPercorrenza=distanza/180;
-        return (distanza/ 180);
+        return (distanza/ 180)+1;
     }
 
     public static boolean verificaOra(String orarioPartenza, int durataOre) {
@@ -190,7 +190,7 @@ public class GeneratorConcr implements Generator {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate data = LocalDate.parse(dataStringa, formatter);
-            LocalDate giornoSuccessivo = data.plusDays(1);
+            LocalDate giornoSuccessivo = data.plusDays(0);
 
             return giornoSuccessivo.format(formatter);
 

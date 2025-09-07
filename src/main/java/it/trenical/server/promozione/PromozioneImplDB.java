@@ -57,6 +57,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
 
             stmt.setString(1, trenoID);
             int rows = stmt.executeUpdate();
+            AnalizzatoreTreni.verificaPromozioniPerTuttiITreni();
             return rows > 0;
 
         } catch (SQLException e) {
@@ -64,6 +65,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
             return false;
         }
     }
+    @Override
     public boolean removePromozionePID(String promozioneID) {
         String sql = "DELETE FROM Promozione WHERE promozioneID = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -71,6 +73,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
 
             stmt.setString(1, promozioneID);
             int rows = stmt.executeUpdate();
+            AnalizzatoreTreni.verificaPromozioniPerTuttiITreni();
             return rows > 0;
 
         } catch (SQLException e) {

@@ -186,9 +186,7 @@ public class AdminDashboardSwing extends JFrame {
                     System.out.println("Clienti Fedeltà: " + clientiFedelta);
                     System.out.println("Prezzo Partenza: " + prezzoPartenza);
                     System.out.println("Scontistica: " + scontistica);
-                    System.out.println("==================================");
 
-                    // Recupero oggetti da DB (assumendo i metodi già esistenti)
                     Treno treno3 = TrenoImplDB.getInstance().getTreno(trenoID3);
                     TrattaPrototype tratta3 = TrattaImplDB.getInstance().getTratta(trattaID3);
                     if (rowData.length < 8) {
@@ -433,7 +431,7 @@ public class AdminDashboardSwing extends JFrame {
                 break;
             case "Promozione":
                 PromozioneImpl promozione = PromozioneImplDB.getInstance();
-                promozione.removePromozione(id.toString());
+                promozione.removePromozionePID(id.toString());
                 break;
 
 

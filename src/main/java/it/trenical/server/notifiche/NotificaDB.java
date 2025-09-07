@@ -22,8 +22,9 @@ public class NotificaDB {
     public static NotificaDB getInstance() {
         return instance;
     }
+
     public void setNotifica(Notifica nt) {
-        String sql = "INSERT INTO Notifica (cliente, treno, partenza, arrivo, tempo, biglietto, stato, posto, binario, log) " +
+        String sql = "INSERT OR REPLACE INTO Notifica (cliente, treno, partenza, arrivo, tempo, biglietto, stato, posto, binario, log) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -45,38 +46,46 @@ public class NotificaDB {
             System.err.println("Errore inserimento notifica: " + e.getMessage());
         }
     }
-
     public List<Notifica> getNotifica(String cl) {
         List<Notifica> notifiche = new ArrayList<>();
-
         String sql = "SELECT * FROM Notifica WHERE cliente = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            System.out.println("Cercando notifiche per cliente: " + cl);
             stmt.setString(1, cl);
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Notifica notifica = new Notifica(
-                        rs.getString("cliente"),
-                        rs.getString("treno"),
-                        rs.getString("partenza"),
-                        rs.getString("arrivo"),
-                        rs.getInt("tempo"),
-                        rs.getString("biglietto"),
-                        rs.getString("stato"),
-                        rs.getString("posto"),
-                        rs.getInt("binario"),
-                        rs.getString("log")
-                );
-                notifiche.add(notifica);
+                System.out.println("Trovata notifica, creando oggetto...");
+                try {
+                    Notifica notifica = new Notifica(
+                            rs.getString("cliente"),
+                            rs.getString("treno"),
+                            rs.getString("partenza"),
+                            rs.getString("arrivo"),
+                            rs.getInt("tempo"),
+                            rs.getString("biglietto"),
+                            rs.getString("stato"),
+                            rs.getString("posto"),
+                            rs.getInt("binario"),
+                            rs.getString("log")
+                    );
+                    notifiche.add(notifica);
+                    System.out.println("Notifica creata con successo");
+                } catch (Exception e) {
+                    System.err.println("Errore nella creazione della notifica: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
 
         } catch (SQLException e) {
-            System.err.println("Errore lettura notifiche: " + e.getMessage());
+            System.err.println("Errore SQL in getNotifica: " + e.getMessage());
+            e.printStackTrace();
         }
 
+        System.out.println("Totale notifiche trovate: " + notifiche.size());
         return notifiche;
     }
 

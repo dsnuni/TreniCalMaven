@@ -64,7 +64,7 @@ public class Generatore {
         Random random = new Random();
         String trenoID =IdGenerator.generaTrenoID();
         TrattaStandard tratta =dbt2.getTrattaByIndex(interoCasuale(numTratteTotali-1));
-        int prezzoPartenza = interoCasuale(200);
+        int prezzoPartenza = interoCasuale(200)+20;
         TrenoConcr tr = new TrenoConcr(
             trenoID,
             IdGenerator.generaTipoTreno(),
