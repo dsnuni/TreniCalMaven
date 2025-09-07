@@ -28,10 +28,10 @@ public class ClientDashboardSwing extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Biglietti", creaTabella("Biglietto",tabs));
         tabs.addTab("Tratte", creaTabella("Tratta", tabs));
-       // tabs.addTab("Info", creaTabella("Info", tabs));
+        //tabs.addTab("Info", creaTabella("Info", tabs));
 
         //tabs.addTab("Treni", creaTabella("Treno"));
-       // tabs.addTab("Notifiche",new JPanel(new GridLayout(1, 2)));
+        //tabs.addTab("Notifiche",new JPanel(new GridLayout(1, 2)));
 
 
         add(tabs);
@@ -239,7 +239,8 @@ public class ClientDashboardSwing extends JFrame {
                 }
                 refreshButton.addActionListener(e -> {
                 DefaultTableModel nuovoModel = new DefaultTableModel(
-                        new Object[]{"Biglietto_id","Classe","treno_id", "Carrozza", "Posto","priorità", "Prezzo", "Partenza", "Arrivo"}, 0
+                    //    new Object[]{"Biglietto_id","Classe","treno_id", "Carrozza", "Posto","priorità", "Prezzo", "Partenza", "Arrivo"}, 0
+                        new Object[]{"ID", "Classe", "Treno", "Carrozza", "Posto", "Prezzo", "Partenza", "Arrivo"}, 0
                 );
                 caricaDatiDaDB(nuovoModel, channel);
                 bigliettiTable.setModel(nuovoModel);
@@ -336,7 +337,7 @@ public class ClientDashboardSwing extends JFrame {
         });
         registratoButton.addActionListener(e -> {
             panel.removeAll();
-            panel.add(pannelloCLiente(panel, channel));
+            panel.add(pannelloCLiente(panel, channel,tabs));
             panel.revalidate();
             panel.repaint();
         });
@@ -396,7 +397,7 @@ public class ClientDashboardSwing extends JFrame {
         });
         return clientePanel;
     }
-    private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel) {
+    private static JPanel pannelloCLiente(JPanel panel, ManagedChannel channel,JTabbedPane tabs) {
     JPanel clientePanel  = new JPanel();
     clientePanel.removeAll();
     clientePanel.setLayout(new GridLayout(7, 2, 5, 5));
@@ -475,7 +476,7 @@ public class ClientDashboardSwing extends JFrame {
                         System.out.println(registrato);
                         clientePanel.revalidate();
                         clientePanel.setVisible(false);
-                        panel.add(panelloClienteRegistrato(channel, panel));
+                        panel.add(panelloClienteRegistrato(channel, panel,tabs));
                     } else {
                         JOptionPane.showMessageDialog(clientePanel, "Errore: cliente non aggiunto.");
                     }
@@ -488,27 +489,34 @@ public class ClientDashboardSwing extends JFrame {
     }
     return clientePanel;
 }
-    private static JPanel panelloClienteRegistrato(ManagedChannel channel, JPanel clientePanel) {
+    private static JPanel panelloClienteRegistrato(ManagedChannel channel, JPanel clientePanel2,JTabbedPane tabs) {
+        JPanel clientePanel = new JPanel();
         clientePanel.removeAll();
-        clientePanel.setLayout(new BorderLayout());
+        clientePanel.setLayout(new GridLayout(7, 2, 5, 5));
+        clientePanel.setMaximumSize(new Dimension(400, 220));
 
-        JPanel datiPanel = new JPanel();
-        datiPanel.setLayout(new BoxLayout(datiPanel, BoxLayout.Y_AXIS));
-        datiPanel.setBorder(BorderFactory.createTitledBorder("Dati Cliente"));
 
-        datiPanel.add(createInfoRow("Codice Fiscale:", cliente.getCodiceFiscale()));
-        datiPanel.add(createInfoRow("Nome:", cliente.getNome()));
-        datiPanel.add(createInfoRow("Cognome:", cliente.getCognome()));
-        datiPanel.add(createInfoRow("Codice Cliente:", cliente.getCodiceCliente()));
-        datiPanel.add(createInfoRow("Età:", String.valueOf(cliente.getEta())));
-        datiPanel.add(createInfoRow("Email:", cliente.getEmail()));
+        clientePanel.add(new JLabel("Codice Fiscale:"));
+        clientePanel.add(new JLabel(cliente.getCodiceFiscale()));
 
-        String fedelta = cliente.getCodiceCliente().startsWith("FTRCL") ? "SI" : "NO";
-        datiPanel.add(createInfoRow("Fedeltà:", fedelta));
+        clientePanel.add(new JLabel("Nome:"));
+        clientePanel.add(new JLabel(cliente.getNome()));
 
-        clientePanel.add(datiPanel, BorderLayout.NORTH);
+        clientePanel.add(new JLabel("Cognome:"));
+        clientePanel.add(new JLabel(cliente.getCognome()));
 
-        return clientePanel;
+        clientePanel.add(new JLabel("Codice Cliente:"));
+        clientePanel.add(new JLabel(cliente.getCodiceCliente()));
+
+        clientePanel.add(new JLabel("Età:"));
+        clientePanel.add(new JLabel(String.valueOf(cliente.getEta())));
+
+        clientePanel.add(new JLabel("Email:"));
+        clientePanel.add(new JLabel(String.valueOf(cliente.getEmail())));
+        finestraInfo(channel, tabs);
+        creaNotifica(tabs, channel);
+        clientePanel2.add(clientePanel);
+        return clientePanel2;
     }
     private static JPanel createInfoRow(String label, String value) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -731,6 +739,8 @@ public class ClientDashboardSwing extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(dialog, "Errore nella eliminazione del biglietto.");
                 }
+                dialog.setVisible(true);
+                dialog.dispose();
             }
         });
         annullaButton.addActionListener(e -> dialog.dispose());
@@ -834,6 +844,7 @@ public class ClientDashboardSwing extends JFrame {
 
         annullaButton.addActionListener(e -> {
             confermato[0] = false;
+            dialog.setVisible(true);
             dialog.dispose();
             JOptionPane.showMessageDialog(null, "Pagamento annullato. Nessun biglietto creato.");
         });
