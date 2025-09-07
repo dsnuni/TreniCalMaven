@@ -237,10 +237,10 @@ public class AdminDashboardSwing extends JFrame {
                     System.out.println("ID: " + bigliettoID + " | CF Cliente: " + cfCliente + " | Treno: " + trenoID4);
                     System.out.println("Carrozza: " + carrozza + " | Posto: " + posto);
                     System.out.println("Priorità: " + prioritaStr + " | Prezzo: " + prezzo4);
-                    System.out.println("==========================");
 
 
-                    // Recupero da DB
+
+
                     Cliente cliente4 = ClienteImplDB.getInstance().getCliente(cfCliente);
                     Treno treno4 = TrenoImplDB.getInstance().getTreno(trenoID4);
                     List<String> priorita = Arrays.asList(prioritaStr.split(","));
@@ -256,9 +256,9 @@ public class AdminDashboardSwing extends JFrame {
                     System.out.println("-- Oggetti Recuperati --");
                     System.out.println("Cliente: " + (cliente4 != null ? cliente4.toString() : "NON TROVATO"));
                     System.out.println("Treno: " + (treno4 != null ? treno4.toString() : "NON TROVATO"));
-                    System.out.println("================================");
+
                     BigliettoImpl bdb = BigliettoDB.getInstance();
-                    // Costruzione Biglietto Seconda Classe
+
                     Biglietto b = new BSecondaClasse.Builder()
                             .bigliettoID(bigliettoID)
                             .titolareBiglietto(cliente4)

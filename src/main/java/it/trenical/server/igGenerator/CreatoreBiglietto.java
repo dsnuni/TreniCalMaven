@@ -81,7 +81,7 @@ public class CreatoreBiglietto {
                     break;
             }
 
-            db.setTreno(treno);
+            db.setPosti(treno);
             BigliettoDB.getInstance().setBiglietto(biglietto);
             return bigliettoID;
 
@@ -93,6 +93,7 @@ public class CreatoreBiglietto {
     }
     public static int calcoloPrezzoPrePagamento(String trenoID, String classe) {
         try {
+
             TrenoImplDB db = TrenoImplDB.getInstance();
            // String bigliettoID = IdGenerator.generaBigliettoID();
             String trattaID = db.getTreno(trenoID).getTratta().getCodiceTratta();
@@ -113,7 +114,7 @@ public class CreatoreBiglietto {
             String codicePromo=ApplicaPromozione.ciSonoPromozioni(trenoID,trattaID,prezzoFinale);
             if (codicePromo != null) {
                 double percentualeSconto = ApplicaPromozione.applicaPromozione(codicePromo);
-                prezzoFinale = (int) (prezzoFinale - (prezzoFinale * percentualeSconto));
+                prezzoFinale = (int) (prezzoFinale - (prezzoFinale * percentualeSconto/100));
             }
             return prezzoFinale;
         } catch (NullPointerException e) {

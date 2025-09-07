@@ -23,7 +23,7 @@ public class NotificaDB {
         return instance;
     }
     public void setNotifica(Notifica nt) {
-        String sql = "INSERT OR REPLACE INTO Notifica (cliente, treno, partenza, arrivo, tempo, biglietto, stato, posto, binario, log) " +
+        String sql = "INSERT INTO Notifica (cliente, treno, partenza, arrivo, tempo, biglietto, stato, posto, binario, log) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);

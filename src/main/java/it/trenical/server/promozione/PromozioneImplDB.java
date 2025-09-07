@@ -6,6 +6,7 @@ import it.trenical.server.Tratta.TrattaPrototype;
 import it.trenical.server.Treno.Treno;
 import it.trenical.server.Treno.TrenoImpl;
 import it.trenical.server.Treno.TrenoImplDB;
+import it.trenical.server.igGenerator.AnalizzatoreTreni;
 import it.trenical.server.notifiche.Observable;
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
             stmt.setDouble(8, promo.getScontistica());
 
             stmt.executeUpdate();
-
+            AnalizzatoreTreni.verificaPromozioniPerTuttiITreni();
         } catch (SQLException e) {
             System.err.println("Errore inserimento promozione: " + e.getMessage());
         }
@@ -78,43 +79,69 @@ public class PromozioneImplDB extends Observable implements PromozioneImpl {
         }
     }
     public Promozione getPromozione(String promozioneID) {
-        String sql = "SELECT * FROM Promozione WHERE trenoID = ?";
-        Promozione pr = null;
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
+        if (promozioneID == null || promozioneID.trim().isEmpty()) {
+            System.err.println("PromozioneID non valido: " + promozioneID);
+            return null;
+        }
 
+        String sql = "SELECT * FROM Promozione WHERE promozioneID = ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, promozioneID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
                 String trenoID = rs.getString("trenoID");
                 String trattaID = rs.getString("trattaID");
                 String dataPartenza = rs.getString("dataPartenza");
                 String dataFine = rs.getString("dataFine");
                 boolean clientiFedelta = rs.getBoolean("clientiFedelta");
                 int prezzoPartenza = rs.getInt("prezzoPartenza");
-                float scontistica = rs.getFloat("scontistica");
+                double scontistica = rs.getDouble("scontistica");
 
-                TrattaPrototype trt = trdb.getTratta(trattaID);
-                Treno trn = tdb.getTreno(trenoID);
+                TrattaPrototype trt = null;
+                Treno trn = null;
 
-                 pr = new Promozione.PromozioneBuilder()
-                    .setPromozioneID(promozioneID)
-                    .setTreno(trn)
-                    .setTratta(trt)
-                    .setDataPartenza(dataPartenza)
-                    .setDataFine(dataFine)
-                    .setClientiFedelta( clientiFedelta)
-                    .setPrezzoPartenza(prezzoPartenza)
-                    .setScontistica(scontistica)
-                    .build();
+                if (trattaID != null) {
+                    trt = trdb.getTratta(trattaID);
+                    if (trt == null) {
+                        System.err.println("Tratta non trovata per ID: " + trattaID);
+                    }
+                }
+
+                if (trenoID != null) {
+                    trn = tdb.getTreno(trenoID);
+                    if (trn == null) {
+                        System.err.println("Treno non trovato per ID: " + trenoID);
+                    }
+                }
+
+                Promozione pr = new Promozione.PromozioneBuilder()
+                        .setPromozioneID(promozioneID)
+                        .setTreno(trn)
+                        .setTratta(trt)
+                        .setDataPartenza(dataPartenza)
+                        .setDataFine(dataFine)
+                        .setClientiFedelta(clientiFedelta)
+                        .setPrezzoPartenza(prezzoPartenza)
+                        .setScontistica(scontistica)
+                        .build();
+
                 return pr;
             }
-        }catch (SQLException e) {
-            System.err.println("Errore lettura promozioni: " + e.getMessage());
+
+        } catch (SQLException e) {
+            System.err.println("Errore SQL durante la lettura della promozione " + promozioneID + ": " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Errore generico durante la lettura della promozione " + promozioneID + ": " + e.getMessage());
+            e.printStackTrace();
         }
-        return pr;
+
+        return null;
     }
-
-
     public List<Promozione> getAllPromozioni() {
         List<Promozione> list = new ArrayList<>();
         String sql = "SELECT * FROM Promozione";

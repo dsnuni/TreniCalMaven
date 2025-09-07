@@ -76,6 +76,14 @@ message GetAllTratteResponse {
   repeated TrattaStandard tratta = 1;
 }
 
+message GetTratteByFiltroRequest {
+  string colonna = 1;
+  string valore = 2;
+}
+
+message GetTratteByFiltroResponse {
+  repeated TrattaStandard tratta = 1;
+}
 // Treno messages
 message Treno {
   string trenoID = 1;
@@ -256,6 +264,7 @@ service TrattaService {
   rpc GetTratta(GetTrattaRequest) returns (TrattaStandard);
   rpc RemoveTratta(RemoveTrattaRequest) returns (RemoveTrattaResponse);
   rpc GetAllTratte(GetAllTratteRequest) returns (GetAllTratteResponse);
+  rpc GetTratteByFiltro(GetTratteByFiltroRequest) returns (GetTratteByFiltroResponse);
 }
 
 service IDGeneratorService {

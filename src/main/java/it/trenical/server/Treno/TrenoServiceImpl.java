@@ -18,7 +18,7 @@ public class TrenoServiceImpl extends it.trenical.grpc.TrenoServiceGrpc.TrenoSer
     @Override
     public void addTreno(it.trenical.grpc.AddTrenoRequest request, StreamObserver<it.trenical.grpc.AddTrenoResponse> responseObserver) {
         TrenoConcr trenoJava = convertiProtoInJava(request.getTreno());
-
+        System.out.println("SET TRENO");
         db.setTreno(trenoJava);
         it.trenical.grpc.AddTrenoResponse response = it.trenical.grpc.AddTrenoResponse.newBuilder()
                 .setSuccess(true)

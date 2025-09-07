@@ -100,6 +100,34 @@ public class TrattaServiceImpl extends TrattaServiceGrpc.TrattaServiceImplBase {
                     .asRuntimeException());
         }
     }
+    @Override
+    public void getTratteByFiltro(GetTratteByFiltroRequest request, StreamObserver<GetTratteByFiltroResponse> responseObserver) {
+        try {
+            String colonna = request.getColonna();
+            String valore = request.getValore();
 
+            List<TrattaPrototype> tratteJava = trattaImpl.getTratteByFiltro(colonna, valore);
+
+            GetTratteByFiltroResponse.Builder responseBuilder = GetTratteByFiltroResponse.newBuilder();
+
+            for (TrattaPrototype tratta : tratteJava) {
+                it.trenical.grpc.TrattaStandard trattaProto = convertiJavaInProto(tratta);
+                responseBuilder.addTratta(trattaProto);
+            }
+
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+
+        } catch (Exception e) {
+            System.err.println("Errore in getTratteByFiltro: " + e.getMessage());
+            e.printStackTrace();
+            responseObserver.onError(
+                    io.grpc.Status.INTERNAL
+                            .withDescription("Errore durante il filtro delle tratte")
+                            .withCause(e)
+                            .asRuntimeException()
+            );
+        }
+    }
 
 }

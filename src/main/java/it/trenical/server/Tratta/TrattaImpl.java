@@ -9,4 +9,5 @@ public interface TrattaImpl {
      void setTratta( TrattaPrototype tratta );
      boolean removeTratta( String trattaID);
       List<TrattaStandard> getAllTratte();
+      List<TrattaPrototype> getTratteByFiltro(String colonna, String valore);
 }

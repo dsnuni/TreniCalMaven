@@ -190,6 +190,8 @@ public class BigliettoServiceImpl extends it.trenical.grpc.BigliettoServiceGrpc.
     public void creazionePrezzoFinale(CreazionePrezzoFinaleRequest request, StreamObserver<CreazionePrezzoFinaleResponse> responseObserver) {
         String trenoID = request.getTrenoID();
         String classe = request.getClasse();
+        System.out.println("TRENO ID : " + trenoID);
+        System.out.println("CLASSE : " + classe);
         int prezzoFInale = CreatoreBiglietto.calcoloPrezzoPrePagamento(trenoID, classe);
 
         CreazionePrezzoFinaleResponse response = CreazionePrezzoFinaleResponse.newBuilder()

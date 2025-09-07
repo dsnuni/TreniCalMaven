@@ -52,7 +52,9 @@ public class ClientDashboardSwing extends JFrame {
             case "Tratta":
                 JPanel buttonPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
                 JButton buyButton2 = new JButton("Acquista Treno");
+                JButton filtroButton = new JButton("Filtra Tratte");
                 buttonPanel3.add(buyButton2);
+                buttonPanel3.add(filtroButton);
                 panel.add(buttonPanel3, BorderLayout.NORTH);
 
                 TrattaServiceGrpc.TrattaServiceBlockingStub trattaStub = TrattaServiceGrpc.newBlockingStub(channel);
@@ -72,15 +74,127 @@ public class ClientDashboardSwing extends JFrame {
                             tratta.getTempoPercorrenza()
                     });
                 }
+
+                filtroButton.addActionListener(e -> {
+                    JDialog filtroDialog = new JDialog((Frame) null, "Filtro Tratte", true);
+                    filtroDialog.setSize(500, 350);
+                    filtroDialog.setLocationRelativeTo(null);
+                    filtroDialog.setLayout(new BorderLayout());
+
+                    JPanel formPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+                    formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+                    JTextField codiceTrattaField = new JTextField();
+                    JTextField cittaPartenzaField = new JTextField();
+                    JTextField cittaArrivoField = new JTextField();
+                    JTextField dataPartenzaField = new JTextField();
+                    JTextField dataArrivoField = new JTextField();
+
+                    formPanel.add(new JLabel("Codice Tratta:"));
+                    formPanel.add(codiceTrattaField);
+                    formPanel.add(new JLabel("Città Partenza:"));
+                    formPanel.add(cittaPartenzaField);
+                    formPanel.add(new JLabel("Città Arrivo:"));
+                    formPanel.add(cittaArrivoField);
+                    formPanel.add(new JLabel("Giorno Partenza (DD-MM-YYYY):"));
+                    formPanel.add(dataPartenzaField);
+                    formPanel.add(new JLabel("Giorno Arrivo (DD-MM-YYYY):"));
+                    formPanel.add(dataArrivoField);
+
+                    JPanel buttonFilterPanel = new JPanel(new FlowLayout());
+                    JButton applicaFiltroButton = new JButton("Applica Filtro");
+                    JButton resetFiltroButton = new JButton("Reset");
+                    buttonFilterPanel.add(applicaFiltroButton);
+                    buttonFilterPanel.add(resetFiltroButton);
+
+                    filtroDialog.add(formPanel, BorderLayout.CENTER);
+                    filtroDialog.add(buttonFilterPanel, BorderLayout.SOUTH);
+
+                    applicaFiltroButton.addActionListener(filterEvent -> {
+                        DefaultTableModel filteredModel = new DefaultTableModel();
+                        filteredModel.setColumnIdentifiers(new String[]{
+                                "ID", "stazione_Partenza", "stazione_Arrivo", "data_Partenza", "data_Arrivo", "distanza", "durata_media"
+                        });
+
+                        String codiceTratta = codiceTrattaField.getText().trim();
+                        String cittaPartenza = cittaPartenzaField.getText().trim();
+                        String cittaArrivo = cittaArrivoField.getText().trim();
+                        String dataPartenza = dataPartenzaField.getText().trim();
+                        String dataArrivo = dataArrivoField.getText().trim();
+
+                        for (TrattaStandard tratta : response.getTrattaList()) {
+                            boolean match = true;
+
+                            if (!codiceTratta.isEmpty() && !tratta.getCodiceTratta().toLowerCase().contains(codiceTratta.toLowerCase())) {
+                                match = false;
+                            }
+                            if (!cittaPartenza.isEmpty() && !tratta.getStazionePartenza().toLowerCase().contains(cittaPartenza.toLowerCase())) {
+                                match = false;
+                            }
+                            if (!cittaArrivo.isEmpty() && !tratta.getStazioneArrivo().toLowerCase().contains(cittaArrivo.toLowerCase())) {
+                                match = false;
+                            }
+                            if (!dataPartenza.isEmpty()) {
+                                String giornoPartenza = tratta.getDataPartenza().split(" ")[0];
+                                if (!giornoPartenza.equals(dataPartenza)) {
+                                    match = false;
+                                }
+                            }
+                            if (!dataArrivo.isEmpty()) {
+                                String giornoArrivo = tratta.getDataArrivo().split(" ")[0];
+                                if (!giornoArrivo.equals(dataArrivo)) {
+                                    match = false;
+                                }
+                            }
+
+                            if (match) {
+                                filteredModel.addRow(new Object[]{
+                                        tratta.getCodiceTratta(),
+                                        tratta.getStazionePartenza(),
+                                        tratta.getStazioneArrivo(),
+                                        tratta.getDataPartenza(),
+                                        tratta.getDataArrivo(),
+                                        tratta.getDistanza(),
+                                        tratta.getTempoPercorrenza()
+                                });
+                            }
+                        }
+
+                        table.setModel(filteredModel);
+                        filtroDialog.dispose();
+                    });
+
+                    resetFiltroButton.addActionListener(resetEvent -> {
+                        DefaultTableModel originalModel = new DefaultTableModel();
+                        originalModel.setColumnIdentifiers(new String[]{
+                                "ID", "stazione_Partenza", "stazione_Arrivo", "data_Partenza", "data_Arrivo", "distanza", "durata_media"
+                        });
+                        for (TrattaStandard tratta : response.getTrattaList()) {
+                            originalModel.addRow(new Object[]{
+                                    tratta.getCodiceTratta(),
+                                    tratta.getStazionePartenza(),
+                                    tratta.getStazioneArrivo(),
+                                    tratta.getDataPartenza(),
+                                    tratta.getDataArrivo(),
+                                    tratta.getDistanza(),
+                                    tratta.getTempoPercorrenza()
+                            });
+                        }
+                        table.setModel(originalModel);
+                        filtroDialog.dispose();
+                    });
+
+                    filtroDialog.setVisible(true);
+                });
+
                 buyButton2.addActionListener(e -> {
                     int row = table.getSelectedRow();
-
                     if (row != -1) {
                         Object id = table.getValueAt(row, 0);
                         System.out.println("Primo campo della riga selezionata: " + id.toString());
-                        acquistaBiglietto(id,channel);
-                            }
-                    });
+                        acquistaBiglietto(id, channel);
+                    }
+                });
                 panel.add(scrollPane, BorderLayout.CENTER);
                 break;
 
@@ -559,9 +673,10 @@ public class ClientDashboardSwing extends JFrame {
 
             if(biglietto == null) {
 
-                if (!autorizzaPagamento()) {
-                    return;
-                }
+               if (!autorizzaPagamento()) {
+                   System.out.println("Scegli richiesta non valida");
+                  return;
+               }
 
                 BigliettoServiceGrpc.BigliettoServiceBlockingStub bigliettoPf =  BigliettoServiceGrpc.newBlockingStub(channel);
                 CreazionePrezzoFinaleRequest bigliettoPFRequest = CreazionePrezzoFinaleRequest.newBuilder()
@@ -865,9 +980,6 @@ public class ClientDashboardSwing extends JFrame {
                                         messaggio = n.getTreno();
                                         break;
 
-                                    default:
-                                        messaggio = "Notifica: " + n.getStato();
-                                        break;
                                 }
 
                                 notificaModel.addRow(new Object[]{n.getLog(), messaggio});
@@ -1177,7 +1289,7 @@ public class ClientDashboardSwing extends JFrame {
                 JOptionPane.showMessageDialog(dialog, "Errore nella creazione del biglietto.");
             }
 
-            dialog.dispose();
+           dialog.dispose();
         });
 
         panel.add(messaggio);

@@ -92,18 +92,9 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
             stmt.setString(11, tr.getPromozione());
 
             stmt.executeUpdate();
-
-            boolean shouldNotify = !isUpdate || confrontaTreni(tr);
-
-            if (shouldNotify) {
-                if (!isUpdate) {
-                    System.out.println("Treno appena aggiunto " + tr.getTrenoID() + " BOOLEANO <" + isUpdate + "> " + " LOG <" + adesso.format(formatter) + ">");
-                } else {
-                    System.out.println("Treno appena modificato " + tr.getTrenoID() + " BOOLEANO <" + isUpdate + "> " + " LOG <" + adesso.format(formatter) + ">");
-                }
-
+            if(isUpdate) {
                 String[] notificationData = {
-                        isUpdate ? "MODIFICATO" : "AGGIUNTO",
+                        "MODIFICATO",
                         tr.getTrenoID(),
                         null,
                         tratta.getDataPartenza(),
@@ -114,8 +105,19 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
                 };
                 notifyObservers(notificationData);
             } else {
-                System.out.println("Modifica posti treno " + tr.getTrenoID() + " - notifica soppressa LOG <" + adesso.format(formatter) + ">");
+                String[] notificationData = {
+                        "AGGIUNTO",
+                        tr.getTrenoID(),
+                        null,
+                        tratta.getDataPartenza(),
+                        tratta.getDataArrivo(),
+                        null,
+                        null,
+                        String.valueOf(tr.getTempoPercorrenza())
+                };
+                notifyObservers(notificationData);
             }
+
 
         } catch (SQLException e) {
             System.err.println("Errore salvataggio treno: " + e.getMessage());
@@ -291,7 +293,35 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         }
         return treni;
     }
+    public void setPosti(Treno tr) {
+        String sql = "UPDATE Treno SET postiPrima = ?, postiSeconda = ?, postiTerza = ?, postiTot = ? WHERE trenoID = ?";
 
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, tr.getPostiPrima());
+            stmt.setInt(2, tr.getPostiSeconda());
+            stmt.setInt(3, tr.getPostiTerza());
+            stmt.setInt(4, tr.getPostiTot());
+            stmt.setString(5, tr.getTrenoID());
+
+            int righeAggiornate = stmt.executeUpdate();
+
+            if (righeAggiornate > 0) {
+                System.out.println("Posti aggiornati per treno " + tr.getTrenoID() +
+                        " - Prima: " + tr.getPostiPrima() +
+                        ", Seconda: " + tr.getPostiSeconda() +
+                        ", Terza: " + tr.getPostiTerza() +
+                        ", Tot: " + tr.getPostiTot() +
+                        " LOG <" + adesso.format(formatter) + ">");
+            } else {
+                System.err.println("Nessun treno trovato con ID: " + tr.getTrenoID());
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore aggiornamento posti treno " + tr.getTrenoID() + ": " + e.getMessage());
+        }
+    }
     public List<Treno> getTrenoByTrattaID(String trattaID) {
         List<Treno> treni = new ArrayList<>();
         TrattaImplDB dbtrt = TrattaImplDB.getInstance();
@@ -388,22 +418,6 @@ public class TrenoImplDB extends Observable implements TrenoImpl {
         return treniEliminati;
     }
 
-    private boolean confrontaTreni(Treno treno1) {
-        try {
-            Treno treno2 = getTreno(treno1.getTrenoID());
-            if (treno2 == null) {
-                return false;
-            }
 
-            return treno1.getTrenoID() == treno2.getTrenoID() && treno1.getPostiPrima() == treno2.getPostiPrima() &&
-                    treno1.getPostiSeconda() == treno2.getPostiSeconda() &&
-                    treno1.getPostiTerza() == treno2.getPostiTerza() &&
-                    treno1.getPostiTot() == treno2.getPostiTot();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
 }

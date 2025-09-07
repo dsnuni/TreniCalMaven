@@ -81,7 +81,7 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
                 System.out.println("Tratta appena aggiunta "+tratta.getCodiceTratta()+" BOOLEANO <"+isUpdate+"> "+" LOG <"+adesso.format(formatter)+">");
             }
             String[] notificationData = {
-                    isUpdate ? "MODIFICATA" : "AGGIUNTA",
+                    isUpdate ? "MODIFICATO" : "AGGIUNTA",
                     tratta.getCodiceTratta(),
                     null,
                     tratta.getDataPartenza(),
@@ -223,4 +223,43 @@ public class TrattaImplDB extends Observable implements TrattaImpl {
         return tratte;
     }
 
+    public List<TrattaPrototype> getTratteByFiltro(String colonna, String valore) {
+        List<TrattaPrototype> tratte = new ArrayList<>();
+        String sql = "SELECT * FROM Tratta WHERE " + colonna + " = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, valore);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String codiceTratta = rs.getString("trattaID");
+                String stazionePartenza = rs.getString("stazione_partenza");
+                String stazioneArrivo = rs.getString("stazione_arrivo");
+                String dataPartenza = rs.getString("data_partenza");
+                String dataArrivo = rs.getString("data_arrivo");
+                int distanza = rs.getInt("distanza");
+                int durataViaggio = rs.getInt("durata_viaggio");
+
+                TrattaPrototype tratta = new TrattaStandard(
+                        codiceTratta,
+                        stazionePartenza,
+                        stazioneArrivo,
+                        dataPartenza,
+                        dataArrivo,
+                        distanza,
+                        durataViaggio
+                );
+
+                tratte.add(tratta);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante il filtro delle tratte: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return tratte;
+    }
 }
