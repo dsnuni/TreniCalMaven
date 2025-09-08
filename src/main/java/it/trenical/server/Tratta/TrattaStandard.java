@@ -1,8 +1,10 @@
 package it.trenical.server.Tratta;
 
-public class TrattaStandard extends TrattaPrototype{
-    public TrattaStandard(){}
-    public TrattaStandard(String codiceTratta, String stazionePartenza, String stazioneArrivo,String dataPartenza, String dataArrivo, int distanza, int tempoPercorrenza){
+public class TrattaStandard extends TrattaPrototype {
+    public TrattaStandard() {
+    }
+
+    public TrattaStandard(String codiceTratta, String stazionePartenza, String stazioneArrivo, String dataPartenza, String dataArrivo, int distanza, int tempoPercorrenza) {
         super();
         this.codiceTratta = codiceTratta;
         this.stazionePartenza = stazionePartenza;
@@ -15,7 +17,11 @@ public class TrattaStandard extends TrattaPrototype{
 
     @Override
     public TrattaPrototype clone() {
-        return new TrattaStandard(codiceTratta,stazionePartenza,stazioneArrivo,dataPartenza,dataArrivo,distanza,tempoPercorrenza);
+        try {
+            return (TrattaPrototype) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // Non dovrebbe mai accadere dato che TrattaPrototype implementa Cloneable
+            throw new AssertionError("Errore durante la clonazione", e);
+        }
     }
-
 }

@@ -2,7 +2,7 @@ package it.trenical.server.Tratta;
 
 import java.util.Objects;
 
-public abstract class TrattaPrototype {
+public abstract class TrattaPrototype implements Cloneable {
     String codiceTratta;
     String stazionePartenza;
     String stazioneArrivo;
